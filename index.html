@@ -100,6 +100,25 @@
   #months-container [data-kind] {
     font-weight: 400;
   }
+  /* Current month highlights */
+  #months-container > .month-section.is-current-month > div:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  #months-container > .month-section.is-current-month > div:first-child::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background-color: rgb(99 102 241); /* indigo-500 */
+  }
+  #events-list .month-section.is-current-month {
+    background-color: rgb(238 242 255 / 0.25); /* indigo-50 @ 25% */
+    border-radius: 12px;
+    border: 1px solid rgb(199 210 254); /* indigo-200 */
+    padding: 10px 10px;
+  }
   /* Mobile: force calendar-only (no list view) */
   @media (max-width: 639px) {
     #list-view {
@@ -257,14 +276,6 @@
 </section>
 
 <section id="list-view" class="hidden" aria-label="List view">
-  <div class="flex items-center gap-2 mb-3">
-    <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      <path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-    </svg>
-    <h2 class="text-sm font-bold text-gray-900">List view</h2>
-  </div>
-
   <div class="bg-gray-25 border border-gray-200 rounded-2xl shadow-sm p-4 sm:p-5 space-y-6">
     <div id="events-list">
       <div class="text-xs font-bold text-gray-900 mb-2">All events</div>
@@ -498,6 +509,31 @@
       }
     }
 
+    const highlightCurrentMonth = () => {
+      const now = new Date()
+      const currentLabel = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(now)
+
+      // Calendar grid month cards
+      if (monthContainer) {
+        const monthSections = Array.from(monthContainer.querySelectorAll('.month-section'))
+        for (const section of monthSections) {
+          const titleEl = section.firstElementChild
+          const label = titleEl?.textContent?.trim() || ''
+          section.classList.toggle('is-current-month', label === currentLabel)
+        }
+      }
+
+      // List view month groups (within "All events")
+      if (listEventsRoot) {
+        const listMonthGroups = Array.from(listEventsRoot.querySelectorAll('.month-section'))
+        for (const group of listMonthGroups) {
+          const titleEl = group.firstElementChild
+          const label = titleEl?.textContent?.trim() || ''
+          group.classList.toggle('is-current-month', label === currentLabel)
+        }
+      }
+    }
+
     for (const btn of legendButtons) {
       btn.addEventListener('click', () => {
         const filter = btn.dataset.filter
@@ -520,6 +556,7 @@
     if (viewListBtn) viewListBtn.addEventListener('click', () => setView('list'))
     setView('calendar')
     applyFilter('all')
+    highlightCurrentMonth()
   })()
 </script>
 </body>
