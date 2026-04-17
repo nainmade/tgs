@@ -101,6 +101,11 @@
   #months-container [data-kind] {
     font-weight: 400;
   }
+  /* Chips: remove background for calendar + list (except long breaks) */
+  #months-container [data-kind]:not([data-kind="break"]),
+  #events-list [data-kind]:not([data-kind="break"]) {
+    background-color: transparent !important;
+  }
   /* Current month highlights */
   #months-container > .month-section.is-current-month > div:first-child {
     display: inline-flex;
@@ -234,7 +239,7 @@
   /* Chips (calendar + list events only) */
   html.dark #months-container [data-kind],
   html.dark #events-list [data-kind] {
-    background-color: rgb(31 41 55 / 0.6) !important; /* gray-800/60 */
+    background-color: transparent !important;
     color: rgb(229 231 235) !important;              /* gray-200 */
     border-color: rgb(55 65 81) !important;          /* gray-700 */
   }
@@ -246,13 +251,13 @@
   }
   html.dark #months-container [data-kind="holiday"],
   html.dark #events-list [data-kind="holiday"] {
-    background-color: rgb(6 78 59 / 0.4) !important;  /* emerald-900/40 */
+    background-color: transparent !important;
     color: rgb(167 243 208) !important;               /* emerald-200 */
     border-color: rgb(6 95 70) !important;            /* emerald-800 */
   }
   html.dark #months-container [data-kind="exam"],
   html.dark #events-list [data-kind="exam"] {
-    background-color: rgb(120 53 15 / 0.35) !important; /* amber-900/35 */
+    background-color: transparent !important;
     color: rgb(253 230 138) !important;                 /* amber-200 */
     border-color: rgb(146 64 14) !important;            /* amber-800 */
   }
