@@ -101,9 +101,9 @@
   #months-container [data-kind] {
     font-weight: 400;
   }
-  /* Chips: remove background for calendar + list (except long breaks) */
-  #months-container [data-kind]:not([data-kind="break"]),
-  #events-list [data-kind]:not([data-kind="break"]) {
+  /* Chips: remove background for calendar + list (except long breaks + exams) */
+  #months-container [data-kind]:not([data-kind="break"]):not([data-kind="exam"]),
+  #events-list [data-kind]:not([data-kind="break"]):not([data-kind="exam"]) {
     background-color: transparent !important;
   }
   /* Current month highlights */
@@ -257,7 +257,7 @@
   }
   html.dark #months-container [data-kind="exam"],
   html.dark #events-list [data-kind="exam"] {
-    background-color: transparent !important;
+    background-color: rgb(120 53 15 / 0.35) !important; /* amber-900/35 */
     color: rgb(253 230 138) !important;                 /* amber-200 */
     border-color: rgb(146 64 14) !important;            /* amber-800 */
   }
@@ -285,8 +285,8 @@
 <h1 class="text-xl font-semibold leading-tight">The Gera School — Holiday Planner</h1>
 <div class="text-sm text-gray-500 mb-6">Academic Year 2026–2027</div>
 
-<div class="mb-6 flex items-center justify-between gap-3">
-<div class="pill-tabs pill-tabs--category pill-tabs--mobile-swipe inline-flex h-fit flex-nowrap sm:flex-wrap gap-1 p-1 rounded-2xl bg-gray-100 border border-gray-200 items-center overflow-x-auto sm:overflow-visible" role="tablist" aria-label="Category filter">
+<div class="mb-6 flex items-start justify-between gap-3">
+<div class="pill-tabs pill-tabs--category pill-tabs--mobile-swipe inline-flex h-fit flex-nowrap gap-1 p-1 rounded-2xl bg-gray-100 border border-gray-200 items-center overflow-x-auto sm:overflow-visible" role="tablist" aria-label="Category filter">
   <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300 bg-white text-gray-900" type="button" data-filter="all" aria-pressed="true" data-active="true">
     <span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span> All
   </button>
