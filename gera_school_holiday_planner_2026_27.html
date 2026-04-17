@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gera School — Holiday Planner 2026–27</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          gray: {
+            25: '#FCFCFD',
+          },
+        },
+      },
+    },
+  }
+</script>
+<style>
+  /* Unified hover for both tab groups */
+  .pill-tabs > button:hover {
+    background-color: rgb(229 231 235 / 0.6) !important; /* gray-200/60 */
+  }
+  .pill-tabs > button[aria-pressed="true"]:hover {
+    background-color: #fff !important;
+  }
+  /* Mobile: force calendar-only (no list view) */
+  @media (max-width: 639px) {
+    #list-view {
+      display: none !important;
+    }
+  }
+</style>
+</head>
+<body class="font-sans bg-gray-100 text-gray-900">
+<div class="max-w-5xl mx-auto px-4 py-8">
+
+<h1 class="text-xl font-semibold leading-tight">The Gera School — Holiday Planner</h1>
+<div class="text-sm text-gray-500 mb-6">Academic Year 2026–2027</div>
+
+<div class="mb-6 pb-4 border-b border-gray-200 flex items-center justify-between gap-3">
+<div class="pill-tabs inline-flex h-fit flex-wrap gap-1 p-1 rounded-2xl bg-gray-100 border border-gray-200 items-center" role="tablist" aria-label="Category filter">
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300 bg-white text-gray-900 shadow-sm" type="button" data-filter="all" aria-pressed="true" data-active="true">
+    <span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span> All
+  </button>
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="break" aria-pressed="false">
+    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span> Long breaks
+  </button>
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="holiday" aria-pressed="false">
+    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Public holidays
+  </button>
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="event" aria-pressed="false">
+    <span class="w-2.5 h-2.5 rounded-full bg-gray-500"></span> School events
+  </button>
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="exam" aria-pressed="false">
+    <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span> Exams
+  </button>
+</div>
+
+  <div class="pill-tabs hidden sm:inline-flex h-fit gap-1 px-1 py-1 rounded-2xl bg-gray-100 border border-gray-200 items-center" role="tablist" aria-label="View switcher">
+    <button id="view-calendar" type="button" data-view="calendar" aria-pressed="true" aria-label="Calendar view" title="Calendar view" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-xl bg-white text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
+      <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8 3v3M16 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M4 8h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M6 5h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button id="view-list" type="button" data-view="list" aria-pressed="false" aria-label="List view" title="List view" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-lg text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
+      <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<section id="calendar-view" aria-label="Calendar view" class="mb-6">
+  <div class="flex items-center gap-2 mb-3">
+    <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M8 3v3M16 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M4 8h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M6 5h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    </svg>
+    <h2 class="text-sm font-bold text-gray-900">Calendar view</h2>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0" id="months-container">
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">April 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School opens — Mon 6 Apr</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dr Ambedkar Jayanti — Tue 14 Apr</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Investiture Ceremony — Thu 23 Apr</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">May 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Summer Vacation — 1 May–9 Jun</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">June 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens — Wed 10 Jun</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">July 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">IIMUN Gr 7–12 — 10–12 Jul</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term I Exams Gr 6–12</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">August 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Independence Day — Sat 15 Aug</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-e-Milad* — Tue 25 Aug</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">September 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Gr 6–12 — Fri 11 Sep</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Ganesh Chaturthi Break — 14–20 Sep</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 10 Mock Prelims</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">October 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Gandhi Jayanti — Fri 2 Oct</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Excursion Week — 3–9 Oct</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dussehra — Tue 20 Oct</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">November 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Diwali Break — 6–15 Nov</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Assessment Week Gr 6–12</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">December 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">St Francis Xavier Feast — Thu 3 Dec</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Sports Day</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Winter Fete</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Goa Liberation Day — Sat 19 Dec</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Winter Break — 23 Dec–4 Jan</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">January 2027</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens — Tue 5 Jan</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Republic Day — Tue 26 Jan</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">February 2027</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Nursery–Gr 5</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">March 2027</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-ul-Fitr* — Wed 10 Mar</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 5 & 8 Checkpoint Exams</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term III Exams Gr 6–9</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Holi* — Mon 22 Mar</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Good Friday — Fri 26 Mar</span>
+  </div>
+</div>
+</div>
+</section>
+
+<hr class="my-6 border-gray-200">
+<section id="list-view" class="hidden" aria-label="List view">
+  <div class="flex items-center gap-2 mb-3">
+    <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <h2 class="text-sm font-bold text-gray-900">List view</h2>
+  </div>
+
+  <div class="bg-gray-25 border border-gray-200 rounded-2xl shadow-sm p-4 sm:p-5 space-y-6">
+    <div id="events-list">
+      <div class="text-xs font-bold text-gray-900 mb-2">All events</div>
+      <div class="space-y-4">
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">April 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School opens — Mon 6 Apr</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dr Ambedkar Jayanti — Tue 14 Apr</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Investiture Ceremony — Thu 23 Apr</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">May 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Summer Vacation — 1 May–9 Jun</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">June 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens — Wed 10 Jun</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">July 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">IIMUN Gr 7–12 — 10–12 Jul</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term I Exams Gr 6–12</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">August 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Independence Day — Sat 15 Aug</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-e-Milad* — Tue 25 Aug</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">September 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Gr 6–12 — Fri 11 Sep</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Ganesh Chaturthi Break — 14–20 Sep</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 10 Mock Prelims</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">October 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Gandhi Jayanti — Fri 2 Oct</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Excursion Week — 3–9 Oct</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dussehra — Tue 20 Oct</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">November 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Diwali Break — 6–15 Nov</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Assessment Week Gr 6–12</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">December 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">St Francis Xavier Feast — Thu 3 Dec</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Sports Day</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Winter Fete</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Goa Liberation Day — Sat 19 Dec</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Winter Break — 23 Dec–4 Jan</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">January 2027</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens — Tue 5 Jan</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Republic Day — Tue 26 Jan</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">February 2027</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Nursery–Gr 5</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">March 2027</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-ul-Fitr* — Wed 10 Mar</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 5 & 8 Checkpoint Exams</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term III Exams Gr 6–9</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Holi* — Mon 22 Mar</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Good Friday — Fri 26 Mar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-bold text-gray-900 mb-2">Long breaks</div>
+      <div id="breaks-container" class="space-y-3">
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Summer Vacation</div>
+  <div class="text-xs text-gray-600 mt-0.5">Fri, 1 May – Tue, 9 Jun 2026</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">~40 days</span>
+  <div class="text-[11px] text-gray-600 mt-1">Biggest window of the year — good for long-haul travel</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Ganesh Chaturthi Break</div>
+  <div class="text-xs text-gray-600 mt-0.5">Mon, 14 Sep – Sun, 20 Sep 2026</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">7 days</span>
+  <div class="text-[11px] text-gray-600 mt-1">Good for a quick getaway</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Whole School Excursion Week</div>
+  <div class="text-xs text-gray-600 mt-0.5">Sat, 3 Oct – Fri, 9 Oct 2026</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">7 days</span>
+  <div class="text-[11px] text-gray-600 mt-1">School-organised — check if your son needs to attend</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Diwali Break</div>
+  <div class="text-xs text-gray-600 mt-0.5">Fri, 6 Nov – Sun, 15 Nov 2026</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">10 days</span>
+  <div class="text-[11px] text-gray-600 mt-0.5">Great for a family trip — peak season though, book early</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Winter Break</div>
+  <div class="text-xs text-gray-600 mt-0.5">Wed, 23 Dec 2026 – Mon, 4 Jan 2027</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">13 days</span>
+  <div class="text-[11px] text-gray-600 mt-1">Christmas + New Year window — very peak season</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">End of Academic Year + Summer 2027</div>
+  <div class="text-xs text-gray-600 mt-0.5">Fri, 26 Mar – Thu, 1 Apr 2027 (school reopens Fri 2 Apr)</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">~1 week</span>
+  <div class="text-[11px] text-gray-600 mt-1">Short window before next year begins</div>
+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="text-[11px] text-gray-500 mt-4">* Date subject to moon sighting / official confirmation</div>
+
+</div>
+
+<script>
+  ;(() => {
+    const legendButtons = Array.from(document.querySelectorAll('.leg-item[data-filter]'))
+    const calendarView = document.getElementById('calendar-view')
+    const listView = document.getElementById('list-view')
+    const viewCalendarBtn = document.getElementById('view-calendar')
+    const viewListBtn = document.getElementById('view-list')
+    const breaksContainer = document.getElementById('breaks-container')
+    const monthContainer = document.getElementById('months-container')
+    const listEventsRoot = document.getElementById('events-list')
+
+    const setLegendActiveStyles = (activeFilter) => {
+      for (const b of legendButtons) {
+        const isActive = b.dataset.filter === activeFilter
+        b.classList.toggle('bg-white', isActive)
+        b.classList.toggle('text-gray-900', isActive)
+        b.classList.toggle('shadow-sm', isActive)
+      }
+    }
+
+    const setView = (view) => {
+      const isCalendar = view === 'calendar'
+      if (calendarView) calendarView.classList.toggle('hidden', !isCalendar)
+      if (listView) listView.classList.toggle('hidden', isCalendar)
+
+      if (viewCalendarBtn) {
+        viewCalendarBtn.setAttribute('aria-pressed', isCalendar ? 'true' : 'false')
+        viewCalendarBtn.classList.toggle('bg-white', isCalendar)
+        viewCalendarBtn.classList.toggle('text-gray-900', isCalendar)
+        viewCalendarBtn.classList.toggle('shadow-sm', isCalendar)
+        viewCalendarBtn.classList.toggle('text-gray-600', !isCalendar)
+      }
+      if (viewListBtn) {
+        viewListBtn.setAttribute('aria-pressed', !isCalendar ? 'true' : 'false')
+        viewListBtn.classList.toggle('bg-white', !isCalendar)
+        viewListBtn.classList.toggle('text-gray-900', !isCalendar)
+        viewListBtn.classList.toggle('shadow-sm', !isCalendar)
+        viewListBtn.classList.toggle('text-gray-600', isCalendar)
+      }
+    }
+
+    const applyFilter = (kind) => {
+      const hasFilter = !!kind && kind !== 'all'
+      const matchesKind = (k) => !hasFilter || k === kind
+
+      // Break cards
+      if (breaksContainer) {
+        const breakCards = Array.from(breaksContainer.querySelectorAll('[data-kind]'))
+        for (const card of breakCards) {
+          const matches = matchesKind(card.dataset.kind)
+          card.classList.toggle('hidden', !matches)
+        }
+      }
+
+      // Calendar month cards
+      if (monthContainer) {
+        const monthSections = Array.from(monthContainer.querySelectorAll('.month-section'))
+        for (const section of monthSections) {
+          const chips = Array.from(section.querySelectorAll('[data-kind]'))
+          for (const chip of chips) {
+            const matches = matchesKind(chip.dataset.kind)
+            chip.classList.toggle('hidden', !matches)
+          }
+          const anyChipVisible = chips.some((c) => !c.classList.contains('hidden'))
+          const isEmptyMonth = chips.length === 0 || section.dataset.empty === 'true'
+          // Show empty months only when no filter is active (i.e. "All")
+          const showSection = isEmptyMonth ? !hasFilter : anyChipVisible
+          section.classList.toggle('hidden', !showSection)
+        }
+      }
+
+      // List view month groups
+      if (listEventsRoot) {
+        const listMonthGroups = Array.from(listEventsRoot.querySelectorAll('.month-section'))
+        for (const group of listMonthGroups) {
+          const chips = Array.from(group.querySelectorAll('[data-kind]'))
+          for (const chip of chips) {
+            const matches = matchesKind(chip.dataset.kind)
+            chip.classList.toggle('hidden', !matches)
+          }
+          const anyChipVisible = chips.some((c) => !c.classList.contains('hidden'))
+          group.classList.toggle('hidden', !anyChipVisible)
+        }
+      }
+    }
+
+    for (const btn of legendButtons) {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter
+
+        const current = legendButtons.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.filter
+        const next = current === filter ? 'all' : filter
+
+        for (const b of legendButtons) {
+          b.setAttribute('aria-pressed', b.dataset.filter === next ? 'true' : 'false')
+        }
+
+        setLegendActiveStyles(next)
+        applyFilter(next)
+      })
+    }
+
+    // Initial state: All selected => no filter applied
+    setLegendActiveStyles('all')
+    if (viewCalendarBtn) viewCalendarBtn.addEventListener('click', () => setView('calendar'))
+    if (viewListBtn) viewListBtn.addEventListener('click', () => setView('list'))
+    setView('calendar')
+    applyFilter('all')
+  })()
+</script>
+</body>
+</html>
