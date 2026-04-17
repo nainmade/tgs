@@ -20,11 +20,85 @@
 </script>
 <style>
   /* Unified hover for both tab groups */
-  .pill-tabs > button:hover {
+  .pill-tabs:not(.pill-tabs--category) > button:hover {
     background-color: rgb(229 231 235 / 0.6) !important; /* gray-200/60 */
   }
-  .pill-tabs > button[aria-pressed="true"]:hover {
+  .pill-tabs:not(.pill-tabs--category) > button[aria-pressed="true"]:hover {
     background-color: #fff !important;
+  }
+  /* Category tabs: hover tint matches dot color (lightest shade) */
+  .pill-tabs--category > button[data-filter="all"]:hover,
+  .pill-tabs--category > button[data-filter="event"]:hover {
+    background-color: rgb(249 250 251) !important; /* gray-50 */
+  }
+  .pill-tabs--category > button[data-filter="break"]:hover {
+    background-color: rgb(238 242 255) !important; /* indigo-50 */
+  }
+  .pill-tabs--category > button[data-filter="holiday"]:hover {
+    background-color: rgb(236 253 245) !important; /* emerald-50 */
+  }
+  .pill-tabs--category > button[data-filter="exam"]:hover {
+    background-color: rgb(255 251 235) !important; /* amber-50 */
+  }
+  /* Category tabs: active state uses the same tint */
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
+    background-color: rgb(249 250 251) !important; /* gray-50 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
+    background-color: rgb(238 242 255) !important; /* indigo-50 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
+    background-color: rgb(236 253 245) !important; /* emerald-50 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
+    background-color: rgb(255 251 235) !important; /* amber-50 */
+  }
+  /* Category tabs: 1px outline in matching 500 shade */
+  .pill-tabs--category > button {
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
+    border-color: rgb(229 231 235); /* gray-200 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
+    border-color: rgb(199 210 254); /* indigo-200 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
+    border-color: rgb(167 243 208); /* emerald-200 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
+    border-color: rgb(253 230 138); /* amber-200 */
+  }
+  /* Mobile: make category tabs swipeable (single row) */
+  @media (max-width: 639px) {
+    .pill-tabs--mobile-swipe {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Firefox */
+      scroll-snap-type: x proximity;
+    }
+    .pill-tabs--mobile-swipe::-webkit-scrollbar {
+      display: none; /* Safari/Chrome */
+    }
+    .pill-tabs--mobile-swipe > button {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+    }
+  }
+  /* Calendar grid month headings: darkest text */
+  #months-container > .month-section > div:first-child {
+    color: #000;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  /* Calendar grid chips: regular weight (override font-semibold) */
+  #months-container [data-kind] {
+    font-weight: 400;
   }
   /* Mobile: force calendar-only (no list view) */
   @media (max-width: 639px) {
@@ -34,15 +108,15 @@
   }
 </style>
 </head>
-<body class="font-sans bg-gray-100 text-gray-900">
+<body class="font-sans bg-gray-50 text-gray-900">
 <div class="max-w-5xl mx-auto px-4 py-8">
 
 <h1 class="text-xl font-semibold leading-tight">The Gera School — Holiday Planner</h1>
 <div class="text-sm text-gray-500 mb-6">Academic Year 2026–2027</div>
 
-<div class="mb-6 pb-4 border-b border-gray-200 flex items-center justify-between gap-3">
-<div class="pill-tabs inline-flex h-fit flex-wrap gap-1 p-1 rounded-2xl bg-gray-100 border border-gray-200 items-center" role="tablist" aria-label="Category filter">
-  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300 bg-white text-gray-900 shadow-sm" type="button" data-filter="all" aria-pressed="true" data-active="true">
+<div class="mb-6 flex items-center justify-between gap-3">
+<div class="pill-tabs pill-tabs--category pill-tabs--mobile-swipe inline-flex h-fit flex-nowrap sm:flex-wrap gap-1 p-1 rounded-2xl bg-gray-200 border border-gray-200 items-center overflow-x-auto sm:overflow-visible" role="tablist" aria-label="Category filter">
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300 bg-white text-gray-900" type="button" data-filter="all" aria-pressed="true" data-active="true">
     <span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span> All
   </button>
   <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="break" aria-pressed="false">
@@ -60,7 +134,7 @@
 </div>
 
   <div class="pill-tabs hidden sm:inline-flex h-fit gap-1 px-1 py-1 rounded-2xl bg-gray-100 border border-gray-200 items-center" role="tablist" aria-label="View switcher">
-    <button id="view-calendar" type="button" data-view="calendar" aria-pressed="true" aria-label="Calendar view" title="Calendar view" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-xl bg-white text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
+    <button id="view-calendar" type="button" data-view="calendar" aria-pressed="true" aria-label="Calendar view" title="Calendar view" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-xl bg-white text-gray-900 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
       <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M8 3v3M16 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         <path d="M4 8h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -77,16 +151,7 @@
 </div>
 
 <section id="calendar-view" aria-label="Calendar view" class="mb-6">
-  <div class="flex items-center gap-2 mb-3">
-    <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M8 3v3M16 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      <path d="M4 8h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      <path d="M6 5h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-    </svg>
-    <h2 class="text-sm font-bold text-gray-900">Calendar view</h2>
-  </div>
-
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0" id="months-container">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 rounded-2xl overflow-hidden border border-gray-200" id="months-container">
 <div class="month-section bg-white border border-gray-200 p-4 -m-px">
   <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">April 2026</div>
   <div class="flex flex-wrap gap-2">
@@ -191,7 +256,6 @@
 </div>
 </section>
 
-<hr class="my-6 border-gray-200">
 <section id="list-view" class="hidden" aria-label="List view">
   <div class="flex items-center gap-2 mb-3">
     <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -367,7 +431,6 @@
         const isActive = b.dataset.filter === activeFilter
         b.classList.toggle('bg-white', isActive)
         b.classList.toggle('text-gray-900', isActive)
-        b.classList.toggle('shadow-sm', isActive)
       }
     }
 
@@ -380,14 +443,12 @@
         viewCalendarBtn.setAttribute('aria-pressed', isCalendar ? 'true' : 'false')
         viewCalendarBtn.classList.toggle('bg-white', isCalendar)
         viewCalendarBtn.classList.toggle('text-gray-900', isCalendar)
-        viewCalendarBtn.classList.toggle('shadow-sm', isCalendar)
         viewCalendarBtn.classList.toggle('text-gray-600', !isCalendar)
       }
       if (viewListBtn) {
         viewListBtn.setAttribute('aria-pressed', !isCalendar ? 'true' : 'false')
         viewListBtn.classList.toggle('bg-white', !isCalendar)
         viewListBtn.classList.toggle('text-gray-900', !isCalendar)
-        viewListBtn.classList.toggle('shadow-sm', !isCalendar)
         viewListBtn.classList.toggle('text-gray-600', isCalendar)
       }
     }
