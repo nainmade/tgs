@@ -366,7 +366,7 @@ body[data-timeline="off"] .timeline { display: none; }
 }
 .timeline-row {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 2px;
   border-top: 1px solid var(--ink);
   border-bottom: 1px solid var(--ink);
@@ -406,6 +406,12 @@ body[data-timeline="off"] .timeline { display: none; }
   border: 1px solid var(--ink);
 }
 .tl-bar.event   { background: var(--ink-4); }
+
+@media (max-width: 640px) {
+  .timeline-row { gap: 1px; }
+  .tl-cell { padding: 8px 2px 10px; min-height: 56px; }
+  .tl-month { font-size: 9px; letter-spacing: 0.02em; }
+}
 
 /* =========================================================================
    Section headers
