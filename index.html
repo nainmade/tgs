@@ -837,7 +837,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
   <!-- Calendar view -->
   <section id="calendar-view" aria-label="Calendar view">
 
-    <div class="section-head">
+    <div class="section-head" id="breaks-head">
       <h2>Long breaks</h2>
       <div class="count" id="breaks-count"></div>
     </div>
@@ -1127,6 +1127,8 @@ html.dark .view-switch .track { border-color: var(--rule); }
     document.querySelectorAll('#breaks-container .break-card').forEach(card => {
       card.classList.toggle('hidden', !(all || kind === 'break'));
     });
+    const breaksHead = document.getElementById('breaks-head');
+    if (breaksHead) breaksHead.classList.toggle('hidden', !(all || kind === 'break'));
   }
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
