@@ -14,7 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
-<title>The Gera School · Holiday Planner 2026–27</title>
+<title>The Gera School · Holiday Plan 2026–27</title>
 <style>
 /* =========================================================================
    Paper Pencil Pixel - Colors & Type (inlined)
@@ -418,24 +418,29 @@ body[data-timeline="off"] .timeline { display: none; }
 .timeline-row {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 2px;
-  border-top: 1px solid var(--ink);
-  border-bottom: 1px solid var(--ink);
+  gap: 0;
+  border: 1px solid var(--rule);
+  border-right: none;
+  border-bottom: none;
 }
 .tl-cell {
   padding: 10px 6px 12px;
   border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
   position: relative;
   min-height: 64px;
 }
-.tl-cell:last-child { border-right: none; }
 .tl-month {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-3);
-  margin-bottom: 6px;
+  padding-bottom: 6px;
+  margin: 0 -6px 8px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-bottom: 1px solid var(--rule);
 }
 .tl-cell.is-current .tl-month { color: var(--ppp-red); }
 .tl-cell.is-current::before {
@@ -459,7 +464,6 @@ body[data-timeline="off"] .timeline { display: none; }
 .tl-bar.event   { background: var(--ink-4); }
 
 @media (max-width: 640px) {
-  .timeline-row { gap: 1px; }
   .tl-cell { padding: 8px 2px 10px; min-height: 56px; }
   .tl-month { font-size: 9px; letter-spacing: 0.02em; }
 }
@@ -841,12 +845,12 @@ html.dark .view-switch .track { border-color: var(--rule); }
       <div class="mast-left">
         <div>
           <div class="mast-eyebrow"><span>The Gera School - Parent Handbook</span></div>
-          <h1 class="mast-title">Holiday Planner</h1>
+          <h1 class="mast-title">Holiday Plan</h1>
         </div>
       </div>
       <div class="mast-meta">
         <div class="year">Academic Year 2026/27</div>
-        <div class="sub"><span>Apr 2026 → Mar 2027</span></div>
+        <div class="sub"><span>Apr 2026 → May 2027</span></div>
       </div>
     </header>
 
@@ -902,46 +906,53 @@ html.dark .view-switch .track { border-color: var(--rule); }
 
     <div class="breaks" id="breaks-container">
       <article class="break-card" data-kind="break">
-        <div class="break-index">01 / 06</div>
+        <div class="break-index">01 / 07</div>
         <div class="break-duration"><span class="num">40</span><span class="unit">days</span></div>
         <h3 class="break-title">Summer Vacation</h3>
         <div class="break-dates">Fri 1 May → Tue 9 Jun 2026</div>
         <div class="break-note">Biggest window of the year, ideal for long-haul travel.</div>
       </article>
       <article class="break-card" data-kind="break">
-        <div class="break-index">02 / 06</div>
+        <div class="break-index">02 / 07</div>
         <div class="break-duration"><span class="num">7</span><span class="unit">days</span></div>
         <h3 class="break-title">Ganesh Chaturthi</h3>
         <div class="break-dates">Mon 14 Sep → Sun 20 Sep 2026</div>
         <div class="break-note">A quick getaway, short, sweet, seasonal.</div>
       </article>
       <article class="break-card" data-kind="break">
-        <div class="break-index">03 / 06</div>
+        <div class="break-index">03 / 07</div>
         <div class="break-duration"><span class="num">7</span><span class="unit">days</span></div>
         <h3 class="break-title">Excursion Week</h3>
         <div class="break-dates">Sat 3 Oct → Fri 9 Oct 2026</div>
         <div class="break-note">School-organised, confirm whether your son's grade attends.</div>
       </article>
       <article class="break-card" data-kind="break">
-        <div class="break-index">04 / 06</div>
+        <div class="break-index">04 / 07</div>
         <div class="break-duration"><span class="num">10</span><span class="unit">days</span></div>
         <h3 class="break-title">Diwali Break</h3>
         <div class="break-dates">Fri 6 Nov → Sun 15 Nov 2026</div>
         <div class="break-note">Great for a family trip, peak season, book early.</div>
       </article>
       <article class="break-card" data-kind="break">
-        <div class="break-index">05 / 06</div>
+        <div class="break-index">05 / 07</div>
         <div class="break-duration"><span class="num">13</span><span class="unit">days</span></div>
         <h3 class="break-title">Winter Break</h3>
         <div class="break-dates">Wed 23 Dec 2026 → Mon 4 Jan 2027</div>
         <div class="break-note">Christmas plus New Year - very peak, prices high.</div>
       </article>
       <article class="break-card" data-kind="break">
-        <div class="break-index">06 / 06</div>
+        <div class="break-index">06 / 07</div>
         <div class="break-duration"><span class="num">7</span><span class="unit">days</span></div>
-        <h3 class="break-title">Year-End + Summer '27</h3>
+        <h3 class="break-title">Year-End Break</h3>
         <div class="break-dates">Fri 26 Mar → Thu 1 Apr 2027</div>
-        <div class="break-note">Short window before the next academic year begins.</div>
+        <div class="break-note">Short window between Term III and next academic year.</div>
+      </article>
+      <article class="break-card" data-kind="break">
+        <div class="break-index">07 / 07</div>
+        <div class="break-duration"><span class="num">40</span><span class="unit">days</span></div>
+        <h3 class="break-title">Summer Vacation '27</h3>
+        <div class="break-dates">From Sat 1 May 2027</div>
+        <div class="break-note">Next summer window begins, end date to be confirmed.</div>
       </article>
     </div>
 
@@ -1071,6 +1082,18 @@ html.dark .view-switch .track { border-color: var(--rule); }
       { kind: 'exam',    date: 'TBD',    title: 'Term III Exams · Grades 6–9' },
       { kind: 'holiday', date: 'Mon 22', title: 'Holi✱' },
       { kind: 'holiday', date: 'Fri 26', title: 'Good Friday' },
+      { kind: 'event',   date: '29–31',  title: 'Issue of books and uniform' },
+    ]},
+    { m: 'April',     y: 2027, events: [
+      { kind: 'event',   date: 'Thu 1',  title: 'Educational Roadmap – Orientation for all Grades' },
+      { kind: 'event',   date: 'Fri 2',  title: 'School opens for Term I' },
+      { kind: 'holiday', date: 'Wed 7',  title: 'Gudi Padwa' },
+      { kind: 'holiday', date: 'Wed 14', title: 'Dr Ambedkar Jayanti' },
+      { kind: 'holiday', date: 'Thu 15', title: 'Ram Navami' },
+      { kind: 'event',   date: 'Fri 23', title: 'Investiture Ceremony' },
+    ]},
+    { m: 'May',       y: 2027, events: [
+      { kind: 'break',   date: 'Sat 1',  title: 'School closes for Summer Vacations' },
     ]},
   ];
 
