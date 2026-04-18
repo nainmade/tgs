@@ -301,6 +301,18 @@ body[data-timeline="off"] .timeline { display: none; }
   gap: 2px;
   overflow-x: auto;
   scrollbar-width: none;
+  position: relative;
+}
+.filter-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background: var(--ppp-red);
+  transform: translateX(0);
+  transition: transform var(--dur-med) var(--ease-out), width var(--dur-med) var(--ease-out);
+  pointer-events: none;
 }
 .filters::-webkit-scrollbar { display: none; }
 .filter {
@@ -324,7 +336,6 @@ body[data-timeline="off"] .timeline { display: none; }
 .filter:hover { color: var(--ink); }
 .filter[aria-pressed="true"] {
   color: var(--ink);
-  border-bottom-color: var(--ppp-red);
 }
 .filter .swatch {
   width: 10px; height: 10px;
@@ -818,6 +829,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
         <button class="filter" type="button" data-filter="holiday" aria-pressed="false"><span class="swatch"></span>Public holidays</button>
         <button class="filter" type="button" data-filter="event"   aria-pressed="false"><span class="swatch"></span>School events</button>
         <button class="filter" type="button" data-filter="exam"    aria-pressed="false"><span class="swatch"></span>Exams</button>
+        <span class="filter-indicator" aria-hidden="true"></span>
       </div>
       <div class="tools">
         <div class="view-switch" id="view-switch" data-view="calendar" role="tablist" aria-label="View">
@@ -1147,10 +1159,28 @@ html.dark .view-switch .track { border-color: var(--rule); }
     const breaksHead = document.getElementById('breaks-head');
     if (breaksHead) breaksHead.classList.toggle('hidden', !(all || kind === 'break'));
   }
+  const filterIndicator = document.querySelector('.filter-indicator');
+  function moveFilterIndicator(btn) {
+    if (!filterIndicator || !btn) return;
+    const parent = btn.parentElement;
+    const x = btn.offsetLeft - parent.scrollLeft;
+    filterIndicator.style.width = btn.offsetWidth + 'px';
+    filterIndicator.style.transform = `translateX(${btn.offsetLeft}px)`;
+  }
+  const initialActive = document.querySelector('.filter[aria-pressed="true"]') || filterBtns[0];
+  requestAnimationFrame(() => moveFilterIndicator(initialActive));
+  window.addEventListener('resize', () => {
+    const active = document.querySelector('.filter[aria-pressed="true"]');
+    const prev = filterIndicator && filterIndicator.style.transition;
+    if (filterIndicator) filterIndicator.style.transition = 'none';
+    moveFilterIndicator(active);
+    requestAnimationFrame(() => { if (filterIndicator) filterIndicator.style.transition = prev || ''; });
+  });
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const k = btn.dataset.filter;
       filterBtns.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      moveFilterIndicator(btn);
       applyFilter(k);
     });
   });
