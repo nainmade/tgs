@@ -395,12 +395,12 @@ body[data-timeline="off"] .timeline { display: none; }
   background: var(--ppp-red);
 }
 .tl-bar {
-  height: 6px;
+  height: 4px;
   background: var(--ink);
   margin-bottom: 2px;
 }
 .tl-bar.break   { background: var(--ppp-red); }
-.tl-bar.holiday { background: transparent; border: 1px solid var(--ink); height: 4px; }
+.tl-bar.holiday { background: transparent; border: 1px solid var(--ink); }
 .tl-bar.exam    {
   background: repeating-linear-gradient(135deg, var(--ink) 0 2px, transparent 2px 4px);
   border: 1px solid var(--ink);
@@ -728,6 +728,50 @@ html.dark .tool { border-color: var(--rule); }
 .theme-switch input:checked ~ .track .knob { transform: translateX(34px); }
 html.dark .theme-switch .track { border-color: var(--rule); }
 
+/* =========================================================================
+   View switch (Calendar / List) — matches theme switch
+   ========================================================================= */
+.view-switch { display: inline-flex; align-items: center; }
+.view-switch .track {
+  position: relative;
+  box-sizing: border-box;
+  width: 68px; height: 34px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.view-switch:hover .track { border-color: var(--ink); }
+.view-switch .knob {
+  position: absolute;
+  top: -1px; left: -1px;
+  width: 34px; height: 34px;
+  background: var(--ink);
+  transition: transform 200ms var(--ease-out);
+}
+.view-switch[data-view="list"] .knob { transform: translateX(34px); }
+.view-switch .opt {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+  color: var(--ink-3);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.view-switch .opt svg { width: 16px; height: 16px; }
+.view-switch .opt[aria-pressed="true"] { color: var(--bone); }
+html.dark .view-switch .track { border-color: var(--rule); }
+
 /* Utility */
 .hidden { display: none !important; }
 </style>
@@ -759,12 +803,17 @@ html.dark .theme-switch .track { border-color: var(--rule); }
         <button class="filter" type="button" data-filter="exam"    aria-pressed="false"><span class="swatch"></span>Exams</button>
       </div>
       <div class="tools">
-        <button id="view-calendar" class="tool" type="button" aria-pressed="true"  aria-label="Calendar view" title="Calendar view">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M8 3v3M16 3v3M4 8h16M6 5h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button id="view-list" class="tool" type="button" aria-pressed="false" aria-label="List view" title="List view">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        </button>
+        <div class="view-switch" id="view-switch" data-view="calendar" role="tablist" aria-label="View">
+          <div class="track">
+            <span class="knob" aria-hidden="true"></span>
+            <button id="view-calendar" class="opt" type="button" aria-pressed="true" aria-label="Calendar view" title="Calendar view">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M8 3v3M16 3v3M4 8h16M6 5h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button id="view-list" class="opt" type="button" aria-pressed="false" aria-label="List view" title="List view">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
         <label class="theme-switch" title="Toggle light / dark" aria-label="Toggle light / dark">
           <input type="checkbox" id="theme-toggle">
           <span class="track">
@@ -1092,12 +1141,14 @@ html.dark .theme-switch .track { border-color: var(--rule); }
   const listView = document.getElementById('list-view');
   const calBtn   = document.getElementById('view-calendar');
   const listBtn  = document.getElementById('view-list');
+  const viewSwitch = document.getElementById('view-switch');
   function setView(v) {
     const cal = v === 'calendar';
     calView.classList.toggle('hidden', !cal);
     listView.classList.toggle('hidden', cal);
     calBtn.setAttribute('aria-pressed', cal ? 'true' : 'false');
     listBtn.setAttribute('aria-pressed', cal ? 'false' : 'true');
+    if (viewSwitch) viewSwitch.dataset.view = cal ? 'calendar' : 'list';
   }
   calBtn.addEventListener('click', () => setView('calendar'));
   listBtn.addEventListener('click', () => setView('list'));
