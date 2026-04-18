@@ -1106,8 +1106,17 @@ html.dark .view-switch .track { border-color: var(--rule); }
     });
     listEl.appendChild(row);
   });
-  document.getElementById('list-count').textContent =
-    DATA.reduce((n, m) => n + m.events.length, 0) + ' items';
+  function syncListCount(filterKind) {
+    const n =
+      filterKind === 'all'
+        ? DATA.reduce((acc, m) => acc + m.events.length, 0)
+        : DATA.reduce((acc, m) => acc + m.events.filter(e => e.kind === filterKind).length, 0);
+    document.getElementById('list-count').textContent =
+      `${n} ${n === 1 ? 'item' : 'items'}`;
+  }
+  const initialFilterKind =
+    document.querySelector('.filter[aria-pressed="true"]')?.dataset.filter || 'all';
+  syncListCount(initialFilterKind);
   document.getElementById('breaks-count').textContent = '6 windows · 84 days total';
 
   // ---------- Render: timeline strip ----------
@@ -1158,6 +1167,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
     });
     const breaksHead = document.getElementById('breaks-head');
     if (breaksHead) breaksHead.classList.toggle('hidden', !(all || kind === 'break'));
+    syncListCount(kind);
   }
   const filterIndicator = document.querySelector('.filter-indicator');
   function moveFilterIndicator(btn) {
