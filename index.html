@@ -125,7 +125,6 @@ body[data-sticky="on"] .masthead {
 }
 body[data-sticky="on"] .stickybar.is-stuck .masthead {
   padding-bottom: 10px;
-  border-bottom-color: var(--rule);
 }
 body[data-sticky="on"] .mast-eyebrow,
 body[data-sticky="on"] .mast-meta .sub {
@@ -237,13 +236,16 @@ body[data-timeline="off"] .timeline { display: none; }
   justify-content: space-between;
   gap: 24px;
   padding-bottom: 24px;
-  border-bottom: 2px solid var(--ink);
+  border-bottom-width: 0;
+  border-bottom-style: none;
+  border-bottom-color: transparent;
+  border-image: none;
 }
 .mast-left { display: flex; gap: 20px; align-items: flex-start; }
 .mast-eyebrow {
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ppp-red);
   margin-bottom: 8px;
@@ -268,7 +270,7 @@ body[data-timeline="off"] .timeline { display: none; }
 .mast-meta .year {
   font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ink);
 }
@@ -289,7 +291,7 @@ body[data-timeline="off"] .timeline { display: none; }
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 20px 0;
+  padding: 20px 0 0;
   border-bottom: 1px solid var(--rule);
   flex-wrap: wrap;
 }
@@ -363,7 +365,7 @@ body[data-timeline="off"] .timeline { display: none; }
    Year overview strip (visual timeline)
    ========================================================================= */
 .timeline {
-  margin: 32px 0 40px;
+  margin: 24px 0 40px;
 }
 .timeline-label {
   font-size: 11px;
@@ -798,7 +800,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
     <header class="masthead">
       <div class="mast-left">
         <div>
-          <div class="mast-eyebrow"><span>The Gera School — Parent Handbook</span></div>
+          <div class="mast-eyebrow"><span>The Gera School - Parent Handbook</span></div>
           <h1 class="mast-title">Holiday Planner</h1>
         </div>
       </div>
