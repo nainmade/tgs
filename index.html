@@ -371,6 +371,16 @@ body[data-timeline="off"] .timeline { display: none; }
 }
 
 .tools { display: inline-flex; gap: 4px; align-items: center; }
+@media (max-width: 980px) {
+  .tools {
+    flex-basis: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 0;
+    align-items: center;
+  }
+}
 .tool {
   width: 34px; height: 34px;
   display: inline-flex;
