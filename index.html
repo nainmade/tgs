@@ -918,7 +918,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
 
     <div class="section-head">
       <h2>Month by month</h2>
-      <div class="count">12 months · Apr '26 → Mar '27</div>
+      <div class="count" id="months-count"></div>
     </div>
 
     <div class="months" id="months-container">
@@ -1114,9 +1114,28 @@ html.dark .view-switch .track { border-color: var(--rule); }
     document.getElementById('list-count').textContent =
       `${n} ${n === 1 ? 'item' : 'items'}`;
   }
+  function syncMonthsCount(filterKind) {
+    const el = document.getElementById('months-count');
+    if (!el) return;
+    const spanMonths =
+      filterKind === 'all'
+        ? DATA
+        : DATA.filter(m => m.events.some(e => e.kind === filterKind));
+    const n = spanMonths.length;
+    const monthWord = n === 1 ? 'month' : 'months';
+    if (n === 0) {
+      el.textContent = '0 months · —';
+      return;
+    }
+    const fmt = mo => `${mo.m.slice(0, 3)} '${String(mo.y).slice(-2)}`;
+    const a = fmt(spanMonths[0]);
+    const b = fmt(spanMonths[n - 1]);
+    el.textContent = `${n} ${monthWord} · ${a === b ? a : `${a} → ${b}`}`;
+  }
   const initialFilterKind =
     document.querySelector('.filter[aria-pressed="true"]')?.dataset.filter || 'all';
   syncListCount(initialFilterKind);
+  syncMonthsCount(initialFilterKind);
   document.getElementById('breaks-count').textContent = '6 windows · 84 days total';
 
   // ---------- Render: timeline strip ----------
@@ -1168,6 +1187,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
     const breaksHead = document.getElementById('breaks-head');
     if (breaksHead) breaksHead.classList.toggle('hidden', !(all || kind === 'break'));
     syncListCount(kind);
+    syncMonthsCount(kind);
   }
   const filterIndicator = document.querySelector('.filter-indicator');
   function moveFilterIndicator(btn) {
