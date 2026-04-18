@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en" data-default-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gera School - Holiday Planner 2026–27</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          gray: {
+            25: '#FCFCFD',
+          },
+        },
+      },
+    },
+  }
+</script>
+<style>
+  body.font-sans {
+    background: unset;
+    background-color: rgba(243, 244, 246, 1);
+  }
+
+  /* Unified hover for both tab groups */
+  .pill-tabs:not(.pill-tabs--category) > button:hover {
+    background-color: rgb(229 231 235 / 0.6) !important; /* gray-200/60 */
+  }
+  .pill-tabs:not(.pill-tabs--category) > button[aria-pressed="true"]:hover {
+    background-color: #fff !important;
+  }
+  /* Category tabs: hover tint matches dot color (lightest shade) */
+  .pill-tabs--category > button[data-filter="all"]:hover,
+  .pill-tabs--category > button[data-filter="event"]:hover {
+    background-color: rgb(249 250 251) !important; /* gray-50 */
+  }
+  .pill-tabs--category > button[data-filter="break"]:hover {
+    background-color: rgb(238 242 255) !important; /* indigo-50 */
+  }
+  .pill-tabs--category > button[data-filter="holiday"]:hover {
+    background-color: rgb(236 253 245) !important; /* emerald-50 */
+  }
+  .pill-tabs--category > button[data-filter="exam"]:hover {
+    background-color: rgb(255 251 235) !important; /* amber-50 */
+  }
+  /* Category tabs: active state uses the same tint */
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
+    background-color: rgb(249 250 251) !important; /* gray-50 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
+    background-color: rgb(238 242 255) !important; /* indigo-50 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
+    background-color: rgb(236 253 245) !important; /* emerald-50 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
+    background-color: rgb(255 251 235) !important; /* amber-50 */
+  }
+  /* Category tabs: 1px outline in matching 500 shade */
+  .pill-tabs--category > button {
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
+    border-color: rgb(229 231 235); /* gray-200 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
+    border-color: rgb(199 210 254); /* indigo-200 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
+    border-color: rgb(167 243 208); /* emerald-200 */
+  }
+  .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
+    border-color: rgb(253 230 138); /* amber-200 */
+  }
+  /* Mobile: make category tabs swipeable (single row) */
+  @media (max-width: 639px) {
+    .pill-tabs--mobile-swipe {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Firefox */
+      scroll-snap-type: x proximity;
+    }
+    .pill-tabs--mobile-swipe::-webkit-scrollbar {
+      display: none; /* Safari/Chrome */
+    }
+    .pill-tabs--mobile-swipe > button {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+    }
+  }
+  /* Calendar grid month headings: darkest text */
+  #months-container > .month-section > div:first-child {
+    color: #000;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  /* Calendar grid chips: regular weight (override font-semibold) */
+  #months-container [data-kind] {
+    font-weight: 400;
+  }
+  /* Chip colors */
+  #months-container [data-kind="event"],
+  #events-list [data-kind="event"] {
+    color: rgb(31 41 55) !important; /* gray-800 */
+  }
+  #months-container [data-kind="holiday"],
+  #events-list [data-kind="holiday"] {
+    border-color: rgb(52 211 153) !important; /* emerald-400 */
+  }
+  /* Chips: remove background for calendar + list (except long breaks + exams) */
+  #months-container [data-kind]:not([data-kind="break"]):not([data-kind="exam"]),
+  #events-list [data-kind]:not([data-kind="break"]):not([data-kind="exam"]) {
+    background-color: transparent !important;
+  }
+  /* Current month highlights */
+  #months-container > .month-section.is-current-month > div:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  #months-container > .month-section.is-current-month > div:first-child::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background-color: rgb(99 102 241); /* indigo-500 */
+  }
+  #events-list .month-section.is-current-month {
+    background-color: rgb(238 242 255 / 0.25); /* indigo-50 @ 25% */
+    border-radius: 12px;
+    border: 1px solid rgb(199 210 254); /* indigo-200 */
+    padding: 10px 10px;
+  }
+  /* Mobile: force calendar-only (no list view) */
+  @media (max-width: 639px) {
+    #list-view {
+      display: none !important;
+    }
+  }
+
+  /* ------------------------------ */
+  /* Dark mode overrides (same theme) */
+  /* ------------------------------ */
+  html.dark body {
+    background-color: rgb(3 7 18) !important;   /* gray-950 */
+    color: rgb(243 244 246) !important;         /* gray-100 */
+  }
+  html.dark h1 { color: rgb(249 250 251) !important; } /* gray-50 */
+  html.dark .text-gray-500 { color: rgb(156 163 175) !important; } /* gray-400 */
+  html.dark .text-gray-600 { color: rgb(209 213 219) !important; } /* gray-300 */
+
+  /* Pill groups */
+  html.dark .pill-tabs {
+    background-color: rgb(17 24 39 / 0.7) !important; /* gray-900/70 */
+    border-color: rgb(31 41 55) !important;           /* gray-800 */
+  }
+  html.dark .pill-tabs:not(.pill-tabs--category) > button:hover {
+    background-color: rgb(55 65 81 / 0.6) !important; /* gray-700/60 */
+  }
+  html.dark .pill-tabs:not(.pill-tabs--category) > button[aria-pressed="true"]:hover {
+    background-color: rgb(17 24 39) !important; /* gray-900 */
+  }
+
+  /* Category tabs: hover tint matches dot color (darkest shade) */
+  html.dark .pill-tabs--category > button[data-filter="all"]:hover,
+  html.dark .pill-tabs--category > button[data-filter="event"]:hover {
+    background-color: rgb(31 41 55) !important; /* gray-800 */
+  }
+  html.dark .pill-tabs--category > button[data-filter="break"]:hover {
+    background-color: rgb(30 27 75) !important; /* indigo-950 */
+  }
+  html.dark .pill-tabs--category > button[data-filter="holiday"]:hover {
+    background-color: rgb(6 78 59) !important; /* emerald-900 */
+  }
+  html.dark .pill-tabs--category > button[data-filter="exam"]:hover {
+    background-color: rgb(120 53 15) !important; /* amber-900 */
+  }
+
+  /* Category tabs: active state uses the same tint */
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
+    background-color: rgb(31 41 55) !important; /* gray-800 */
+  }
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
+    background-color: rgb(30 27 75) !important; /* indigo-950 */
+  }
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
+    background-color: rgb(6 78 59) !important; /* emerald-900 */
+  }
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
+    background-color: rgb(120 53 15) !important; /* amber-900 */
+  }
+
+  /* Category tabs: outline in matching 500 shade */
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
+    border-color: rgb(75 85 99) !important; /* gray-600 */
+  }
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
+    border-color: rgb(99 102 241) !important; /* indigo-500 */
+  }
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
+    border-color: rgb(16 185 129) !important; /* emerald-500 */
+  }
+  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
+    border-color: rgb(245 158 11) !important; /* amber-500 */
+  }
+
+  /* Button text + active backgrounds inside tabs */
+  html.dark .pill-tabs--category > button.leg-item { color: rgb(209 213 219) !important; } /* gray-300 */
+  html.dark .pill-tabs--category > button.leg-item.bg-white { background-color: rgb(17 24 39) !important; }
+  html.dark .pill-tabs--category > button.leg-item.text-gray-900 { color: rgb(249 250 251) !important; }
+
+  /* View switcher buttons */
+  html.dark #view-calendar.bg-white,
+  html.dark #view-list.bg-white {
+    background-color: rgb(55 65 81) !important; /* gray-700 */
+    color: rgb(249 250 251) !important;
+  }
+  html.dark #view-calendar.text-gray-900,
+  html.dark #view-list.text-gray-900 {
+    color: rgb(249 250 251) !important;
+  }
+
+  /* Theme toggle buttons (selected bg) */
+  html.dark #theme-light.bg-white,
+  html.dark #theme-dark.bg-white {
+    background-color: rgb(55 65 81) !important; /* gray-700 */
+    color: rgb(249 250 251) !important;
+  }
+  html.dark #theme-light.text-gray-900,
+  html.dark #theme-dark.text-gray-900 {
+    color: rgb(249 250 251) !important;
+  }
+
+  /* Calendar grid */
+  html.dark #months-container { border-color: rgb(31 41 55) !important; }
+  html.dark #months-container .month-section {
+    background-color: rgb(17 24 39) !important; /* gray-900 */
+    border-color: rgb(31 41 55) !important;     /* gray-800 */
+  }
+  html.dark #months-container > .month-section > div:first-child { color: rgb(243 244 246) !important; }
+  html.dark #months-container > .month-section.is-current-month > div:first-child::before { background-color: rgb(99 102 241) !important; }
+
+  /* Chips (calendar + list events only) */
+  html.dark #months-container [data-kind],
+  html.dark #events-list [data-kind] {
+    background-color: transparent !important;
+    color: rgb(229 231 235) !important;              /* gray-200 */
+    border-color: rgb(55 65 81) !important;          /* gray-700 */
+  }
+  html.dark #months-container [data-kind="break"],
+  html.dark #events-list [data-kind="break"] {
+    background-color: rgb(30 27 75 / 0.6) !important; /* indigo-950/60 */
+    color: rgb(199 210 254) !important;               /* indigo-200 */
+    border-color: rgb(55 48 163) !important;          /* indigo-800 */
+  }
+  html.dark #months-container [data-kind="holiday"],
+  html.dark #events-list [data-kind="holiday"] {
+    background-color: transparent !important;
+    color: rgb(167 243 208) !important;               /* emerald-200 */
+    border-color: rgb(6 95 70) !important;            /* emerald-800 */
+  }
+  html.dark #months-container [data-kind="exam"],
+  html.dark #events-list [data-kind="exam"] {
+    background-color: rgb(120 53 15 / 0.35) !important; /* amber-900/35 */
+    color: rgb(253 230 138) !important;                 /* amber-200 */
+    border-color: rgb(146 64 14) !important;            /* amber-800 */
+  }
+
+  /* List view container */
+  html.dark #list-view .bg-gray-25 {
+    background-color: rgb(17 24 39 / 0.7) !important;
+    border-color: rgb(31 41 55) !important;
+  }
+  html.dark #list-view .text-gray-900 { color: rgb(249 250 251) !important; }
+
+  /* Break cards */
+  html.dark #breaks-container > [data-kind] {
+    background-color: rgb(17 24 39) !important; /* gray-900 */
+    border-color: rgb(31 41 55) !important;     /* gray-800 */
+  }
+  html.dark #breaks-container .text-indigo-900 { color: rgb(199 210 254) !important; } /* indigo-200 */
+  html.dark #breaks-container .bg-gray-200 { background-color: rgb(31 41 55) !important; }
+  html.dark #breaks-container .text-gray-600 { color: rgb(229 231 235) !important; }
+</style>
+</head>
+<body class="font-sans bg-gray-100 text-gray-900">
+<div class="max-w-5xl mx-auto px-4 py-8 space-y-4">
+
+<h1 class="text-xl font-semibold leading-tight">The Gera School - Holiday Planner</h1>
+<div class="text-sm text-gray-500">Academic Year 2026–2027</div>
+
+<div class="flex items-start justify-between gap-3">
+<div class="pill-tabs pill-tabs--category pill-tabs--mobile-swipe inline-flex h-fit flex-nowrap gap-1 p-1 rounded-2xl border border-gray-200 items-center overflow-x-auto sm:overflow-visible self-center" role="tablist" aria-label="Category filter">
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300 bg-white text-gray-900" type="button" data-filter="all" aria-pressed="true" data-active="true">
+    <span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span> All
+  </button>
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="break" aria-pressed="false">
+    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span> Long breaks
+  </button>
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="holiday" aria-pressed="false">
+    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Public holidays
+  </button>
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="event" aria-pressed="false">
+    <span class="w-2.5 h-2.5 rounded-full bg-gray-500"></span> School events
+  </button>
+  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="exam" aria-pressed="false">
+    <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span> Exams
+  </button>
+</div>
+
+  <div class="flex items-center gap-2">
+    <div class="pill-tabs hidden sm:inline-flex h-fit gap-1 px-1 py-1 rounded-2xl border border-gray-200 items-center" role="tablist" aria-label="View switcher">
+      <button id="view-calendar" type="button" data-view="calendar" aria-pressed="true" aria-label="Calendar view" title="Calendar view" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-xl bg-white text-gray-900 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
+      <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8 3v3M16 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M4 8h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M6 5h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      </button>
+      <button id="view-list" type="button" data-view="list" aria-pressed="false" aria-label="List view" title="List view" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-lg text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
+      <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      </button>
+    </div>
+
+    <div class="pill-tabs inline-flex h-fit gap-1 px-1 py-1 rounded-2xl border border-gray-200 items-center" role="tablist" aria-label="Theme">
+      <button id="theme-light" type="button" aria-pressed="true" aria-label="Light mode" title="Light mode" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-xl bg-white text-gray-900 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
+        <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5 3.6 3.6M20.4 20.4 19 19M19 5l1.4-1.4M3.6 20.4 5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button id="theme-dark" type="button" aria-pressed="false" aria-label="Dark mode" title="Dark mode" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
+        <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<section id="calendar-view" aria-label="Calendar view">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 rounded-2xl overflow-hidden border border-gray-200" id="months-container">
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">April 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School opens - Mon 6 Apr</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dr Ambedkar Jayanti - Tue 14 Apr</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Investiture Ceremony - Thu 23 Apr</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">May 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Summer Vacation - 1 May–9 Jun</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">June 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens - Wed 10 Jun</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">July 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">IIMUN Gr 7–12 - 10–12 Jul</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term I Exams Gr 6–12</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">August 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Independence Day - Sat 15 Aug</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-e-Milad* - Tue 25 Aug</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">September 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Gr 6–12 - Fri 11 Sep</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Ganesh Chaturthi Break - 14–20 Sep</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 10 Mock Prelims</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">October 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Gandhi Jayanti - Fri 2 Oct</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Excursion Week - 3–9 Oct</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dussehra - Tue 20 Oct</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">November 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Diwali Break - 6–15 Nov</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Assessment Week Gr 6–12</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">December 2026</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">St Francis Xavier Feast - Thu 3 Dec</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Sports Day</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Winter Fete</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Goa Liberation Day - Sat 19 Dec</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Winter Break - 23 Dec–4 Jan</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">January 2027</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens - Tue 5 Jan</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Republic Day - Tue 26 Jan</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">February 2027</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Nursery–Gr 5</span>
+  </div>
+</div>
+
+<div class="month-section bg-white border border-gray-200 p-4 -m-px">
+  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">March 2027</div>
+  <div class="flex flex-wrap gap-2">
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-ul-Fitr* - Wed 10 Mar</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 5 & 8 Checkpoint Exams</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term III Exams Gr 6–9</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Holi* - Mon 22 Mar</span>
+    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Good Friday - Fri 26 Mar</span>
+  </div>
+</div>
+</div>
+</section>
+
+<section id="list-view" class="hidden" aria-label="List view">
+  <div class="bg-gray-25 border border-gray-200 rounded-2xl shadow-sm p-4 sm:p-5 space-y-6">
+    <div id="events-list">
+      <div class="text-xs font-bold text-gray-900 mb-2">All events</div>
+      <div class="space-y-4">
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">April 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School opens - Mon 6 Apr</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dr Ambedkar Jayanti - Tue 14 Apr</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Investiture Ceremony - Thu 23 Apr</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">May 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Summer Vacation - 1 May–9 Jun</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">June 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens - Wed 10 Jun</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">July 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">IIMUN Gr 7–12 - 10–12 Jul</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term I Exams Gr 6–12</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">August 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Independence Day - Sat 15 Aug</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-e-Milad* - Tue 25 Aug</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">September 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Gr 6–12 - Fri 11 Sep</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Ganesh Chaturthi Break - 14–20 Sep</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 10 Mock Prelims</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">October 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Gandhi Jayanti - Fri 2 Oct</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Excursion Week - 3–9 Oct</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dussehra - Tue 20 Oct</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">November 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Diwali Break - 6–15 Nov</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Assessment Week Gr 6–12</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">December 2026</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">St Francis Xavier Feast - Thu 3 Dec</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Sports Day</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Winter Fete</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Goa Liberation Day - Sat 19 Dec</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Winter Break - 23 Dec–4 Jan</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">January 2027</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens - Tue 5 Jan</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Republic Day - Tue 26 Jan</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">February 2027</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Nursery–Gr 5</span>
+          </div>
+        </div>
+        <div class="month-section">
+          <div class="text-xs font-bold text-gray-900 mb-2">March 2027</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-ul-Fitr* - Wed 10 Mar</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 5 & 8 Checkpoint Exams</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term III Exams Gr 6–9</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Holi* - Mon 22 Mar</span>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Good Friday - Fri 26 Mar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-bold text-gray-900 mb-2">Long breaks</div>
+      <div id="breaks-container" class="space-y-3">
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Summer Vacation</div>
+  <div class="text-xs text-gray-600 mt-0.5">Fri, 1 May – Tue, 9 Jun 2026</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">~40 days</span>
+  <div class="text-[11px] text-gray-600 mt-1">Biggest window of the year - good for long-haul travel</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Ganesh Chaturthi Break</div>
+  <div class="text-xs text-gray-600 mt-0.5">Mon, 14 Sep – Sun, 20 Sep 2026</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">7 days</span>
+  <div class="text-[11px] text-gray-600 mt-1">Good for a quick getaway</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Whole School Excursion Week</div>
+  <div class="text-xs text-gray-600 mt-0.5">Sat, 3 Oct – Fri, 9 Oct 2026</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">7 days</span>
+  <div class="text-[11px] text-gray-600 mt-1">School-organised - check if your son needs to attend</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Diwali Break</div>
+  <div class="text-xs text-gray-600 mt-0.5">Fri, 6 Nov – Sun, 15 Nov 2026</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">10 days</span>
+  <div class="text-[11px] text-gray-600 mt-0.5">Great for a family trip - peak season though, book early</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">Winter Break</div>
+  <div class="text-xs text-gray-600 mt-0.5">Wed, 23 Dec 2026 – Mon, 4 Jan 2027</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">13 days</span>
+  <div class="text-[11px] text-gray-600 mt-1">Christmas + New Year window - very peak season</div>
+</div>
+
+<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
+  <div class="text-sm font-bold text-indigo-900">End of Academic Year + Summer 2027</div>
+  <div class="text-xs text-gray-600 mt-0.5">Fri, 26 Mar – Thu, 1 Apr 2027 (school reopens Fri 2 Apr)</div>
+  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">~1 week</span>
+  <div class="text-[11px] text-gray-600 mt-1">Short window before next year begins</div>
+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="text-[11px] text-gray-500">* Date subject to moon sighting / official confirmation</div>
+
+</div>
+
+<script>
+  ;(() => {
+    const THEME_KEY = 'theme'
+    const themeLightBtn = document.getElementById('theme-light')
+    const themeDarkBtn = document.getElementById('theme-dark')
+
+    const getInitialTheme = () => {
+      try {
+        const stored = localStorage.getItem(THEME_KEY)
+        if (stored === 'light' || stored === 'dark') return stored
+      } catch {}
+
+      const defaultTheme = document.documentElement.getAttribute('data-default-theme')
+      if (defaultTheme === 'light' || defaultTheme === 'dark') return defaultTheme
+
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    }
+
+    const applyTheme = (theme) => {
+      const isDark = theme === 'dark'
+      document.documentElement.classList.toggle('dark', isDark)
+      if (themeLightBtn && themeDarkBtn) {
+        themeLightBtn.setAttribute('aria-pressed', !isDark ? 'true' : 'false')
+        themeDarkBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false')
+
+        themeLightBtn.classList.toggle('bg-white', !isDark)
+        themeLightBtn.classList.toggle('text-gray-900', !isDark)
+        themeLightBtn.classList.toggle('text-gray-600', isDark)
+
+        themeDarkBtn.classList.toggle('bg-white', isDark)
+        themeDarkBtn.classList.toggle('text-gray-900', isDark)
+        themeDarkBtn.classList.toggle('text-gray-600', !isDark)
+      }
+    }
+
+    const setTheme = (theme) => {
+      applyTheme(theme)
+      try {
+        localStorage.setItem(THEME_KEY, theme)
+      } catch {}
+    }
+
+    applyTheme(getInitialTheme())
+
+    const legendButtons = Array.from(document.querySelectorAll('.leg-item[data-filter]'))
+    const calendarView = document.getElementById('calendar-view')
+    const listView = document.getElementById('list-view')
+    const viewCalendarBtn = document.getElementById('view-calendar')
+    const viewListBtn = document.getElementById('view-list')
+    const breaksContainer = document.getElementById('breaks-container')
+    const monthContainer = document.getElementById('months-container')
+    const listEventsRoot = document.getElementById('events-list')
+
+    const setLegendActiveStyles = (activeFilter) => {
+      for (const b of legendButtons) {
+        const isActive = b.dataset.filter === activeFilter
+        b.classList.toggle('bg-white', isActive)
+        b.classList.toggle('text-gray-900', isActive)
+      }
+    }
+
+    const setView = (view) => {
+      const isCalendar = view === 'calendar'
+      if (calendarView) calendarView.classList.toggle('hidden', !isCalendar)
+      if (listView) listView.classList.toggle('hidden', isCalendar)
+
+      if (viewCalendarBtn) {
+        viewCalendarBtn.setAttribute('aria-pressed', isCalendar ? 'true' : 'false')
+        viewCalendarBtn.classList.toggle('bg-white', isCalendar)
+        viewCalendarBtn.classList.toggle('text-gray-900', isCalendar)
+        viewCalendarBtn.classList.toggle('text-gray-600', !isCalendar)
+      }
+      if (viewListBtn) {
+        viewListBtn.setAttribute('aria-pressed', !isCalendar ? 'true' : 'false')
+        viewListBtn.classList.toggle('bg-white', !isCalendar)
+        viewListBtn.classList.toggle('text-gray-900', !isCalendar)
+        viewListBtn.classList.toggle('text-gray-600', isCalendar)
+      }
+    }
+
+    const applyFilter = (kind) => {
+      const hasFilter = !!kind && kind !== 'all'
+      const matchesKind = (k) => !hasFilter || k === kind
+
+      // Break cards
+      if (breaksContainer) {
+        const breakCards = Array.from(breaksContainer.querySelectorAll('[data-kind]'))
+        for (const card of breakCards) {
+          const matches = matchesKind(card.dataset.kind)
+          card.classList.toggle('hidden', !matches)
+        }
+      }
+
+      // Calendar month cards
+      if (monthContainer) {
+        const monthSections = Array.from(monthContainer.querySelectorAll('.month-section'))
+        for (const section of monthSections) {
+          const chips = Array.from(section.querySelectorAll('[data-kind]'))
+          for (const chip of chips) {
+            const matches = matchesKind(chip.dataset.kind)
+            chip.classList.toggle('hidden', !matches)
+          }
+          const anyChipVisible = chips.some((c) => !c.classList.contains('hidden'))
+          const isEmptyMonth = chips.length === 0 || section.dataset.empty === 'true'
+          // Show empty months only when no filter is active (i.e. "All")
+          const showSection = isEmptyMonth ? !hasFilter : anyChipVisible
+          section.classList.toggle('hidden', !showSection)
+        }
+      }
+
+      // List view month groups
+      if (listEventsRoot) {
+        const listMonthGroups = Array.from(listEventsRoot.querySelectorAll('.month-section'))
+        for (const group of listMonthGroups) {
+          const chips = Array.from(group.querySelectorAll('[data-kind]'))
+          for (const chip of chips) {
+            const matches = matchesKind(chip.dataset.kind)
+            chip.classList.toggle('hidden', !matches)
+          }
+          const anyChipVisible = chips.some((c) => !c.classList.contains('hidden'))
+          group.classList.toggle('hidden', !anyChipVisible)
+        }
+      }
+    }
+
+    const highlightCurrentMonth = () => {
+      const now = new Date()
+      const currentLabel = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(now)
+
+      // Calendar grid month cards
+      if (monthContainer) {
+        const monthSections = Array.from(monthContainer.querySelectorAll('.month-section'))
+        for (const section of monthSections) {
+          const titleEl = section.firstElementChild
+          const label = titleEl?.textContent?.trim() || ''
+          section.classList.toggle('is-current-month', label === currentLabel)
+        }
+      }
+
+      // List view month groups (within "All events")
+      if (listEventsRoot) {
+        const listMonthGroups = Array.from(listEventsRoot.querySelectorAll('.month-section'))
+        for (const group of listMonthGroups) {
+          const titleEl = group.firstElementChild
+          const label = titleEl?.textContent?.trim() || ''
+          group.classList.toggle('is-current-month', label === currentLabel)
+        }
+      }
+    }
+
+    for (const btn of legendButtons) {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter
+
+        const current = legendButtons.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.filter
+        const next = current === filter ? 'all' : filter
+
+        for (const b of legendButtons) {
+          b.setAttribute('aria-pressed', b.dataset.filter === next ? 'true' : 'false')
+        }
+
+        setLegendActiveStyles(next)
+        applyFilter(next)
+      })
+    }
+
+    if (themeLightBtn) themeLightBtn.addEventListener('click', () => setTheme('light'))
+    if (themeDarkBtn) themeDarkBtn.addEventListener('click', () => setTheme('dark'))
+
+    // Initial state: All selected => no filter applied
+    setLegendActiveStyles('all')
+    if (viewCalendarBtn) viewCalendarBtn.addEventListener('click', () => setView('calendar'))
+    if (viewListBtn) viewListBtn.addEventListener('click', () => setView('list'))
+    setView('calendar')
+    applyFilter('all')
+    highlightCurrentMonth()
+  })()
+</script>
+</body>
+</html>

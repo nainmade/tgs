@@ -3,788 +3,1193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Gera School - Holiday Planner 2026–27</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    darkMode: 'class',
-    theme: {
-      extend: {
-        colors: {
-          gray: {
-            25: '#FCFCFD',
-          },
-        },
-      },
-    },
-  }
-</script>
+<title>The Gera School — Holiday Planner 2026–27</title>
 <style>
-  body.font-sans {
-    background: unset;
-    background-color: rgba(243, 244, 246, 1);
-  }
+/* =========================================================================
+   Paper Pencil Pixel — Colors & Type (inlined)
+   ========================================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
-  /* Unified hover for both tab groups */
-  .pill-tabs:not(.pill-tabs--category) > button:hover {
-    background-color: rgb(229 231 235 / 0.6) !important; /* gray-200/60 */
-  }
-  .pill-tabs:not(.pill-tabs--category) > button[aria-pressed="true"]:hover {
-    background-color: #fff !important;
-  }
-  /* Category tabs: hover tint matches dot color (lightest shade) */
-  .pill-tabs--category > button[data-filter="all"]:hover,
-  .pill-tabs--category > button[data-filter="event"]:hover {
-    background-color: rgb(249 250 251) !important; /* gray-50 */
-  }
-  .pill-tabs--category > button[data-filter="break"]:hover {
-    background-color: rgb(238 242 255) !important; /* indigo-50 */
-  }
-  .pill-tabs--category > button[data-filter="holiday"]:hover {
-    background-color: rgb(236 253 245) !important; /* emerald-50 */
-  }
-  .pill-tabs--category > button[data-filter="exam"]:hover {
-    background-color: rgb(255 251 235) !important; /* amber-50 */
-  }
-  /* Category tabs: active state uses the same tint */
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
-    background-color: rgb(249 250 251) !important; /* gray-50 */
-  }
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
-    background-color: rgb(238 242 255) !important; /* indigo-50 */
-  }
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
-    background-color: rgb(236 253 245) !important; /* emerald-50 */
-  }
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
-    background-color: rgb(255 251 235) !important; /* amber-50 */
-  }
-  /* Category tabs: 1px outline in matching 500 shade */
-  .pill-tabs--category > button {
-    border-width: 1px;
-    border-style: solid;
-    border-color: transparent;
-  }
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
-    border-color: rgb(229 231 235); /* gray-200 */
-  }
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
-    border-color: rgb(199 210 254); /* indigo-200 */
-  }
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
-    border-color: rgb(167 243 208); /* emerald-200 */
-  }
-  .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
-    border-color: rgb(253 230 138); /* amber-200 */
-  }
-  /* Mobile: make category tabs swipeable (single row) */
-  @media (max-width: 639px) {
-    .pill-tabs--mobile-swipe {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none; /* Firefox */
-      scroll-snap-type: x proximity;
-    }
-    .pill-tabs--mobile-swipe::-webkit-scrollbar {
-      display: none; /* Safari/Chrome */
-    }
-    .pill-tabs--mobile-swipe > button {
-      flex: 0 0 auto;
-      scroll-snap-align: start;
-    }
-  }
-  /* Calendar grid month headings: darkest text */
-  #months-container > .month-section > div:first-child {
-    color: #000;
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.04em;
-  }
-  /* Calendar grid chips: regular weight (override font-semibold) */
-  #months-container [data-kind] {
-    font-weight: 400;
-  }
-  /* Chip colors */
-  #months-container [data-kind="event"],
-  #events-list [data-kind="event"] {
-    color: rgb(31 41 55) !important; /* gray-800 */
-  }
-  #months-container [data-kind="holiday"],
-  #events-list [data-kind="holiday"] {
-    border-color: rgb(52 211 153) !important; /* emerald-400 */
-  }
-  /* Chips: remove background for calendar + list (except long breaks + exams) */
-  #months-container [data-kind]:not([data-kind="break"]):not([data-kind="exam"]),
-  #events-list [data-kind]:not([data-kind="break"]):not([data-kind="exam"]) {
-    background-color: transparent !important;
-  }
-  /* Current month highlights */
-  #months-container > .month-section.is-current-month > div:first-child {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  #months-container > .month-section.is-current-month > div:first-child::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-radius: 9999px;
-    background-color: rgb(99 102 241); /* indigo-500 */
-  }
-  #events-list .month-section.is-current-month {
-    background-color: rgb(238 242 255 / 0.25); /* indigo-50 @ 25% */
-    border-radius: 12px;
-    border: 1px solid rgb(199 210 254); /* indigo-200 */
-    padding: 10px 10px;
-  }
-  /* Mobile: force calendar-only (no list view) */
-  @media (max-width: 639px) {
-    #list-view {
-      display: none !important;
-    }
-  }
+:root {
+  --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: var(--font-sans);
 
-  /* ------------------------------ */
-  /* Dark mode overrides (same theme) */
-  /* ------------------------------ */
-  html.dark body {
-    background-color: rgb(3 7 18) !important;   /* gray-950 */
-    color: rgb(243 244 246) !important;         /* gray-100 */
-  }
-  html.dark h1 { color: rgb(249 250 251) !important; } /* gray-50 */
-  html.dark .text-gray-500 { color: rgb(156 163 175) !important; } /* gray-400 */
-  html.dark .text-gray-600 { color: rgb(209 213 219) !important; } /* gray-300 */
+  /* Brand */
+  --ppp-red:         #DA4B26;
+  --ppp-red-deep:    #B23A1B;
+  --ppp-red-soft:    #F7E4DE;
 
-  /* Pill groups */
-  html.dark .pill-tabs {
-    background-color: rgb(17 24 39 / 0.7) !important; /* gray-900/70 */
-    border-color: rgb(31 41 55) !important;           /* gray-800 */
-  }
-  html.dark .pill-tabs:not(.pill-tabs--category) > button:hover {
-    background-color: rgb(55 65 81 / 0.6) !important; /* gray-700/60 */
-  }
-  html.dark .pill-tabs:not(.pill-tabs--category) > button[aria-pressed="true"]:hover {
-    background-color: rgb(17 24 39) !important; /* gray-900 */
-  }
+  /* Neutrals */
+  --ink:             #0F0F0F;
+  --ink-2:           #2B2B2B;
+  --ink-3:           #6B6B6B;
+  --ink-4:           #9A9A9A;
+  --rule:            #E5E3DE;
+  --paper:           #F4F1EC;
+  --paper-2:         #EDEAE4;
+  --bone:            #FAF8F4;
+  --white:           #FFFFFF;
 
-  /* Category tabs: hover tint matches dot color (darkest shade) */
-  html.dark .pill-tabs--category > button[data-filter="all"]:hover,
-  html.dark .pill-tabs--category > button[data-filter="event"]:hover {
-    background-color: rgb(31 41 55) !important; /* gray-800 */
-  }
-  html.dark .pill-tabs--category > button[data-filter="break"]:hover {
-    background-color: rgb(30 27 75) !important; /* indigo-950 */
-  }
-  html.dark .pill-tabs--category > button[data-filter="holiday"]:hover {
-    background-color: rgb(6 78 59) !important; /* emerald-900 */
-  }
-  html.dark .pill-tabs--category > button[data-filter="exam"]:hover {
-    background-color: rgb(120 53 15) !important; /* amber-900 */
-  }
+  /* Semantic */
+  --bg:              var(--paper);
+  --bg-alt:          var(--paper-2);
+  --bg-surface:      var(--bone);
+  --fg:              var(--ink);
+  --fg-muted:        var(--ink-3);
+  --fg-subtle:       var(--ink-4);
+  --accent:          var(--ppp-red);
+  --accent-hover:    var(--ppp-red-deep);
+  --border:          var(--rule);
+  --border-strong:   var(--ink);
 
-  /* Category tabs: active state uses the same tint */
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
-    background-color: rgb(31 41 55) !important; /* gray-800 */
-  }
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
-    background-color: rgb(30 27 75) !important; /* indigo-950 */
-  }
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
-    background-color: rgb(6 78 59) !important; /* emerald-900 */
-  }
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
-    background-color: rgb(120 53 15) !important; /* amber-900 */
-  }
+  /* Type scale */
+  --fs-xs:    12px;
+  --fs-sm:    14px;
+  --fs-base:  18px;
+  --fs-md:    21px;
+  --fs-lg:    28px;
+  --fs-xl:    40px;
+  --fs-2xl:   56px;
 
-  /* Category tabs: outline in matching 500 shade */
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="all"],
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="event"] {
-    border-color: rgb(75 85 99) !important; /* gray-600 */
-  }
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="break"] {
-    border-color: rgb(99 102 241) !important; /* indigo-500 */
-  }
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="holiday"] {
-    border-color: rgb(16 185 129) !important; /* emerald-500 */
-  }
-  html.dark .pill-tabs--category > button[aria-pressed="true"][data-filter="exam"] {
-    border-color: rgb(245 158 11) !important; /* amber-500 */
-  }
+  /* Motion */
+  --ease-out:  cubic-bezier(.2,.7,.2,1);
+  --ease-in:   cubic-bezier(.5,0,.8,.3);
+  --dur-fast:  140ms;
+  --dur-med:   260ms;
 
-  /* Button text + active backgrounds inside tabs */
-  html.dark .pill-tabs--category > button.leg-item { color: rgb(209 213 219) !important; } /* gray-300 */
-  html.dark .pill-tabs--category > button.leg-item.bg-white { background-color: rgb(17 24 39) !important; }
-  html.dark .pill-tabs--category > button.leg-item.text-gray-900 { color: rgb(249 250 251) !important; }
+  /* Shadows */
+  --shadow-soft: 0 1px 2px rgba(15,15,15,.04), 0 8px 24px rgba(15,15,15,.06);
+  --shadow-lift: 0 2px 4px rgba(15,15,15,.06), 0 16px 48px rgba(15,15,15,.12);
+}
 
-  /* View switcher buttons */
-  html.dark #view-calendar.bg-white,
-  html.dark #view-list.bg-white {
-    background-color: rgb(55 65 81) !important; /* gray-700 */
-    color: rgb(249 250 251) !important;
-  }
-  html.dark #view-calendar.text-gray-900,
-  html.dark #view-list.text-gray-900 {
-    color: rgb(249 250 251) !important;
-  }
+/* =========================================================================
+   Base
+   ========================================================================= */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
 
-  /* Theme toggle buttons (selected bg) */
-  html.dark #theme-light.bg-white,
-  html.dark #theme-dark.bg-white {
-    background-color: rgb(55 65 81) !important; /* gray-700 */
-    color: rgb(249 250 251) !important;
-  }
-  html.dark #theme-light.text-gray-900,
-  html.dark #theme-dark.text-gray-900 {
-    color: rgb(249 250 251) !important;
-  }
+/* =========================================================================
+   Layout shell
+   ========================================================================= */
+.shell {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+}
+@media (max-width: 640px) {
+  .shell { padding: 24px 20px 48px; }
+}
 
-  /* Calendar grid */
-  html.dark #months-container { border-color: rgb(31 41 55) !important; }
-  html.dark #months-container .month-section {
-    background-color: rgb(17 24 39) !important; /* gray-900 */
-    border-color: rgb(31 41 55) !important;     /* gray-800 */
-  }
-  html.dark #months-container > .month-section > div:first-child { color: rgb(243 244 246) !important; }
-  html.dark #months-container > .month-section.is-current-month > div:first-child::before { background-color: rgb(99 102 241) !important; }
+/* =========================================================================
+   Sticky header unit (masthead + toolbar)
+   ========================================================================= */
+.stickybar {
+  background: var(--paper);
+  z-index: 40;
+  will-change: transform;
+}
+body[data-sticky="on"] .stickybar {
+  position: sticky;
+  top: 0;
+  margin: -48px -40px 0;
+  padding: 16px 40px 0;
+  border-bottom: 1px solid transparent;
+  contain: layout paint;
+}
+@media (max-width: 640px) {
+  body[data-sticky="on"] .stickybar { margin: -24px -20px 0; padding: 12px 20px 0; }
+}
+body[data-sticky="on"] .stickybar.is-stuck {
+  border-bottom-color: var(--ink);
+}
+body[data-sticky="on"] .masthead {
+  transition: padding-bottom 180ms var(--ease-out);
+}
+body[data-sticky="on"] .stickybar.is-stuck .masthead {
+  padding-bottom: 10px;
+  border-bottom-color: var(--rule);
+}
+body[data-sticky="on"] .mast-eyebrow,
+body[data-sticky="on"] .mast-meta .sub {
+  display: grid;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+  transition: grid-template-rows 180ms var(--ease-out), opacity 140ms var(--ease-out), margin 180ms var(--ease-out);
+}
+body[data-sticky="on"] .mast-eyebrow > *,
+body[data-sticky="on"] .mast-meta .sub > * { min-height: 0; }
+body[data-sticky="on"] .stickybar.is-stuck .mast-eyebrow,
+body[data-sticky="on"] .stickybar.is-stuck .mast-meta .sub {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin: 0;
+}
 
-  /* Chips (calendar + list events only) */
-  html.dark #months-container [data-kind],
-  html.dark #events-list [data-kind] {
-    background-color: transparent !important;
-    color: rgb(229 231 235) !important;              /* gray-200 */
-    border-color: rgb(55 65 81) !important;          /* gray-700 */
-  }
-  html.dark #months-container [data-kind="break"],
-  html.dark #events-list [data-kind="break"] {
-    background-color: rgb(30 27 75 / 0.6) !important; /* indigo-950/60 */
-    color: rgb(199 210 254) !important;               /* indigo-200 */
-    border-color: rgb(55 48 163) !important;          /* indigo-800 */
-  }
-  html.dark #months-container [data-kind="holiday"],
-  html.dark #events-list [data-kind="holiday"] {
-    background-color: transparent !important;
-    color: rgb(167 243 208) !important;               /* emerald-200 */
-    border-color: rgb(6 95 70) !important;            /* emerald-800 */
-  }
-  html.dark #months-container [data-kind="exam"],
-  html.dark #events-list [data-kind="exam"] {
-    background-color: rgb(120 53 15 / 0.35) !important; /* amber-900/35 */
-    color: rgb(253 230 138) !important;                 /* amber-200 */
-    border-color: rgb(146 64 14) !important;            /* amber-800 */
-  }
+/* =========================================================================
+   Tweaks panel
+   ========================================================================= */
+#tweaks {
+  position: fixed;
+  right: 20px; bottom: 20px;
+  width: 280px;
+  background: var(--white);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-lift);
+  z-index: 60;
+  font-family: var(--font-sans);
+  display: none;
+}
+#tweaks[data-open="true"] { display: block; }
+#tweaks .tw-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--ink);
+  color: var(--bone);
+}
+#tweaks .tw-head h3 { margin: 0; font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+#tweaks .tw-head button {
+  background: transparent; border: none; color: var(--bone); cursor: pointer;
+  font-size: 18px; line-height: 1; padding: 0 2px;
+}
+#tweaks .tw-body { padding: 14px; display: flex; flex-direction: column; gap: 14px; }
+#tweaks label.row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  font-size: 12px; font-weight: 600; color: var(--ink);
+}
+#tweaks .switch {
+  width: 34px; height: 18px; background: var(--ink-4); border-radius: 999px; position: relative;
+  cursor: pointer; transition: background var(--dur-fast) var(--ease-out); flex: 0 0 auto;
+}
+#tweaks .switch::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px;
+  background: var(--white); border-radius: 999px;
+  transition: left var(--dur-fast) var(--ease-out);
+}
+#tweaks input[type="checkbox"] { display: none; }
+#tweaks input[type="checkbox"]:checked + .switch { background: var(--ppp-red); }
+#tweaks input[type="checkbox"]:checked + .switch::after { left: 18px; }
 
-  /* List view container */
-  html.dark #list-view .bg-gray-25 {
-    background-color: rgb(17 24 39 / 0.7) !important;
-    border-color: rgb(31 41 55) !important;
-  }
-  html.dark #list-view .text-gray-900 { color: rgb(249 250 251) !important; }
+#tweaks .segs { display: flex; gap: 0; border: 1px solid var(--ink); }
+#tweaks .segs button {
+  flex: 1; padding: 6px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; background: transparent; border: none; cursor: pointer;
+  color: var(--ink-3); border-right: 1px solid var(--rule);
+}
+#tweaks .segs button:last-child { border-right: none; }
+#tweaks .segs button[aria-pressed="true"] { background: var(--ink); color: var(--bone); }
 
-  /* Break cards */
-  html.dark #breaks-container > [data-kind] {
-    background-color: rgb(17 24 39) !important; /* gray-900 */
-    border-color: rgb(31 41 55) !important;     /* gray-800 */
-  }
-  html.dark #breaks-container .text-indigo-900 { color: rgb(199 210 254) !important; } /* indigo-200 */
-  html.dark #breaks-container .bg-gray-200 { background-color: rgb(31 41 55) !important; }
-  html.dark #breaks-container .text-gray-600 { color: rgb(229 231 235) !important; }
+#tweaks .swatches { display: flex; gap: 6px; }
+#tweaks .swatches button {
+  width: 24px; height: 24px; border: 1px solid var(--ink); cursor: pointer; padding: 0;
+  background: var(--c);
+}
+#tweaks .swatches button[aria-pressed="true"] { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+#tweaks-fab {
+  position: fixed; right: 20px; bottom: 20px; z-index: 55;
+  width: 44px; height: 44px; border-radius: 999px;
+  background: var(--ink); color: var(--bone);
+  border: none; cursor: pointer;
+  display: none; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-soft);
+}
+body[data-tweaks="on"] #tweaks-fab { display: inline-flex; }
+#tweaks-fab svg { width: 20px; height: 20px; }
+
+/* Compact mode */
+body[data-compact="on"] .break-card { min-height: 0; padding: 20px; gap: 10px; }
+body[data-compact="on"] .break-duration .num { font-size: 40px; }
+body[data-compact="on"] .break-title { font-size: 18px; }
+body[data-compact="on"] .month { padding: 14px 16px 16px; min-height: 0; }
+body[data-compact="on"] .month-head { margin-bottom: 12px; padding-bottom: 8px; }
+body[data-compact="on"] .month-name { font-size: 18px; }
+body[data-compact="on"] .events { gap: 6px; }
+body[data-compact="on"] .section-head { margin: 36px 0 14px; }
+
+/* Hide timeline toggle */
+body[data-timeline="off"] .timeline { display: none; }
+
+/* =========================================================================
+   Masthead
+   ========================================================================= */
+.masthead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--ink);
+}
+.mast-left { display: flex; gap: 20px; align-items: flex-start; }
+.mast-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ppp-red);
+  margin-bottom: 8px;
+}
+.mast-title {
+  font-size: clamp(34px, 5.2vw, 64px);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin: 0;
+  max-width: 14ch;
+}
+.mast-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  text-align: right;
+  padding-top: 4px;
+}
+.mast-meta .year {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.mast-meta .sub {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+@media (max-width: 640px) {
+  .masthead { flex-direction: column; }
+  .mast-meta { align-items: flex-start; text-align: left; }
+}
+
+/* =========================================================================
+   Toolbar
+   ========================================================================= */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+.filters {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.filters::-webkit-scrollbar { display: none; }
+.filter {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink-3);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  white-space: nowrap;
+}
+.filter:hover { color: var(--ink); }
+.filter[aria-pressed="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--ppp-red);
+}
+.filter .swatch {
+  width: 10px; height: 10px;
+  display: inline-block;
+  border: 1px solid var(--ink);
+}
+.filter[data-filter="all"]     .swatch { background: var(--ink); border-color: var(--ink); }
+.filter[data-filter="break"]   .swatch { background: var(--ppp-red); border-color: var(--ppp-red); }
+.filter[data-filter="holiday"] .swatch { background: var(--bone); border-color: var(--ink); }
+.filter[data-filter="event"]   .swatch { background: var(--ink-4); border-color: var(--ink-4); }
+.filter[data-filter="exam"]    .swatch {
+  background: repeating-linear-gradient(135deg, var(--ink) 0 2px, transparent 2px 4px), var(--bone);
+  border-color: var(--ink);
+}
+
+.tools { display: inline-flex; gap: 4px; align-items: center; }
+.tool {
+  width: 34px; height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  cursor: pointer;
+  color: var(--ink-3);
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.tool:hover { color: var(--ink); border-color: var(--ink); }
+.tool[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--ink);
+}
+.tool svg { width: 16px; height: 16px; }
+
+/* =========================================================================
+   Year overview strip (visual timeline)
+   ========================================================================= */
+.timeline {
+  margin: 32px 0 40px;
+}
+.timeline-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+}
+.timeline-row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.tl-cell {
+  padding: 10px 6px 12px;
+  border-right: 1px solid var(--rule);
+  position: relative;
+  min-height: 64px;
+}
+.tl-cell:last-child { border-right: none; }
+.tl-month {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+.tl-cell.is-current .tl-month { color: var(--ppp-red); }
+.tl-cell.is-current::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 0; right: 0;
+  height: 3px;
+  background: var(--ppp-red);
+}
+.tl-bar {
+  height: 6px;
+  background: var(--ink);
+  margin-bottom: 2px;
+}
+.tl-bar.break   { background: var(--ppp-red); }
+.tl-bar.holiday { background: transparent; border: 1px solid var(--ink); height: 4px; }
+.tl-bar.exam    {
+  background: repeating-linear-gradient(135deg, var(--ink) 0 2px, transparent 2px 4px);
+  border: 1px solid var(--ink);
+}
+.tl-bar.event   { background: var(--ink-4); }
+
+/* =========================================================================
+   Section headers
+   ========================================================================= */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 56px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ink);
+}
+.section-head h2 {
+  margin: 0;
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+}
+.section-head .count {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+/* =========================================================================
+   Calendar grid (month cards)
+   ========================================================================= */
+.months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-left: 1px solid var(--rule);
+  border-top: 1px solid var(--rule);
+}
+@media (max-width: 980px) { .months { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .months { grid-template-columns: 1fr; } }
+
+.month {
+  background: var(--bone);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 22px 24px;
+  min-height: 180px;
+  position: relative;
+}
+.month.is-current {
+  background: var(--white);
+}
+.month.is-current::before {
+  content: 'NOW';
+  position: absolute;
+  top: 16px; right: 18px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--ppp-red);
+}
+.month-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.month-name {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+.month-year {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+.month-empty {
+  font-size: 13px;
+  color: var(--ink-4);
+  font-style: italic;
+}
+
+/* =========================================================================
+   Event rows
+   ========================================================================= */
+.events { display: flex; flex-direction: column; gap: 10px; }
+.ev {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 14px;
+  align-items: baseline;
+  padding: 4px 0;
+}
+.ev-date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  text-align: right;
+  padding-right: 10px;
+  border-right: 1px solid var(--rule);
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-top: 3px;
+}
+.ev-body { min-width: 0; }
+.ev-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.ev-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-top: 4px;
+}
+.ev-kind .swatch { width: 8px; height: 8px; display: inline-block; border: 1px solid var(--ink); }
+.ev[data-kind="break"]   .ev-title { color: var(--ppp-red); font-weight: 600; }
+.ev[data-kind="break"]   .ev-kind .swatch { background: var(--ppp-red); border-color: var(--ppp-red); }
+.ev[data-kind="holiday"] .ev-kind .swatch { background: var(--bone); }
+.ev[data-kind="event"]   .ev-kind .swatch { background: var(--ink-4); border-color: var(--ink-4); }
+.ev[data-kind="exam"]    .ev-title { font-weight: 600; }
+.ev[data-kind="exam"]    .ev-kind .swatch {
+  background: repeating-linear-gradient(135deg, var(--ink) 0 2px, transparent 2px 4px);
+}
+
+/* =========================================================================
+   Breaks section (featured)
+   ========================================================================= */
+.breaks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 2px solid var(--ink);
+  border-left: 1px solid var(--rule);
+}
+@media (max-width: 980px) { .breaks { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .breaks { grid-template-columns: 1fr; } }
+
+.break-card {
+  background: var(--bone);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 28px 24px 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 220px;
+}
+.break-card:nth-child(3n+2) { background: var(--paper-2); }
+.break-index {
+  position: absolute;
+  top: 16px; right: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  letter-spacing: 0.06em;
+}
+.break-duration {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-sans);
+}
+.break-duration .num {
+  font-size: 56px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--ppp-red);
+  font-variant-numeric: tabular-nums;
+}
+.break-duration .unit {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.break-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.05;
+  max-width: 16ch;
+  margin: 0;
+}
+.break-dates {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+.break-note {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.4;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  gap: 8px;
+}
+.break-note::before {
+  content: '→';
+  color: var(--ppp-red);
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+/* =========================================================================
+   List view
+   ========================================================================= */
+.list-view {
+  border-top: 1px solid var(--ink);
+}
+.list-month {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 24px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.list-month.is-current { background: var(--white); padding-left: 16px; margin-left: -16px; border-left: 3px solid var(--ppp-red); }
+.list-month-label {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  padding-top: 6px;
+}
+.list-month-label .yr {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+.list-events { display: flex; flex-direction: column; }
+.list-events .ev { padding: 8px 0; border-bottom: 1px dotted var(--rule); }
+.list-events .ev:last-child { border-bottom: none; }
+@media (max-width: 640px) {
+  .list-month { grid-template-columns: 1fr; gap: 8px; }
+}
+
+/* =========================================================================
+   Footnote
+   ========================================================================= */
+.footnote {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.footnote .star { color: var(--ppp-red); font-weight: 700; }
+
+/* =========================================================================
+   Dark theme
+   ========================================================================= */
+html.dark body { background: #141310; color: #EDEAE4; }
+html.dark {
+  --paper: #141310; --paper-2: #1B1916; --bone: #1F1D19; --white: #25221D;
+  --rule: #2E2B26; --ink: #F4F1EC; --ink-2: #D7D3CC; --ink-3: #9A958C; --ink-4: #5F5B54;
+}
+html.dark .month.is-current { background: #2A2620; }
+html.dark .tool { border-color: var(--rule); }
+
+/* =========================================================================
+   Theme switch
+   ========================================================================= */
+.theme-switch { display: inline-flex; align-items: center; cursor: pointer; }
+.theme-switch input { display: none; }
+.theme-switch .track {
+  position: relative;
+  box-sizing: border-box;
+  width: 68px; height: 34px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  display: inline-flex; align-items: center; justify-content: space-between;
+  padding: 0 9px;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.theme-switch:hover .track { border-color: var(--ink); }
+.theme-switch .ico { width: 16px; height: 16px; color: var(--ink-3); z-index: 1; position: relative; transition: color var(--dur-fast) var(--ease-out); }
+.theme-switch input:not(:checked) ~ .track .sun { color: var(--bone); }
+.theme-switch input:checked ~ .track .moon { color: var(--bone); }
+.theme-switch .knob {
+  position: absolute;
+  top: -1px; left: -1px;
+  width: 34px; height: 34px;
+  background: var(--ink);
+  transition: transform 200ms var(--ease-out);
+}
+.theme-switch input:checked ~ .track .knob { transform: translateX(34px); }
+html.dark .theme-switch .track { border-color: var(--rule); }
+
+/* Utility */
+.hidden { display: none !important; }
 </style>
 </head>
-<body class="font-sans bg-gray-100 text-gray-900">
-<div class="max-w-5xl mx-auto px-4 py-8 space-y-4">
+<body>
+<div class="shell">
 
-<h1 class="text-xl font-semibold leading-tight">The Gera School - Holiday Planner</h1>
-<div class="text-sm text-gray-500">Academic Year 2026–2027</div>
+  <div class="stickybar" id="stickybar">
+    <header class="masthead">
+      <div class="mast-left">
+        <div>
+          <div class="mast-eyebrow"><span>The Gera School — Parent Handbook</span></div>
+          <h1 class="mast-title">Holiday Planner</h1>
+        </div>
+      </div>
+      <div class="mast-meta">
+        <div class="year">Academic Year 2026 / 27</div>
+        <div class="sub"><span>Apr 2026 → Mar 2027 · 12 months at a glance</span></div>
+      </div>
+    </header>
 
-<div class="flex items-start justify-between gap-3">
-<div class="pill-tabs pill-tabs--category pill-tabs--mobile-swipe inline-flex h-fit flex-nowrap gap-1 p-1 rounded-2xl border border-gray-200 items-center overflow-x-auto sm:overflow-visible self-center" role="tablist" aria-label="Category filter">
-  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300 bg-white text-gray-900" type="button" data-filter="all" aria-pressed="true" data-active="true">
-    <span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span> All
-  </button>
-  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="break" aria-pressed="false">
-    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span> Long breaks
-  </button>
-  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="holiday" aria-pressed="false">
-    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Public holidays
-  </button>
-  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="event" aria-pressed="false">
-    <span class="w-2.5 h-2.5 rounded-full bg-gray-500"></span> School events
-  </button>
-  <button class="leg-item inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300" type="button" data-filter="exam" aria-pressed="false">
-    <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span> Exams
-  </button>
-</div>
-
-  <div class="flex items-center gap-2">
-    <div class="pill-tabs hidden sm:inline-flex h-fit gap-1 px-1 py-1 rounded-2xl border border-gray-200 items-center" role="tablist" aria-label="View switcher">
-      <button id="view-calendar" type="button" data-view="calendar" aria-pressed="true" aria-label="Calendar view" title="Calendar view" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-xl bg-white text-gray-900 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
-      <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M8 3v3M16 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        <path d="M4 8h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        <path d="M6 5h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-      </svg>
-      </button>
-      <button id="view-list" type="button" data-view="list" aria-pressed="false" aria-label="List view" title="List view" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-lg text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
-      <svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        <path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-      </svg>
-      </button>
+    <!-- Toolbar -->
+    <div class="toolbar" id="toolbar">
+      <div class="filters" role="tablist" aria-label="Category filter">
+        <button class="filter" type="button" data-filter="all"     aria-pressed="true" ><span class="swatch"></span>All</button>
+        <button class="filter" type="button" data-filter="break"   aria-pressed="false"><span class="swatch"></span>Long breaks</button>
+        <button class="filter" type="button" data-filter="holiday" aria-pressed="false"><span class="swatch"></span>Public holidays</button>
+        <button class="filter" type="button" data-filter="event"   aria-pressed="false"><span class="swatch"></span>School events</button>
+        <button class="filter" type="button" data-filter="exam"    aria-pressed="false"><span class="swatch"></span>Exams</button>
+      </div>
+      <div class="tools">
+        <button id="view-calendar" class="tool" type="button" aria-pressed="true"  aria-label="Calendar view" title="Calendar view">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 3v3M16 3v3M4 8h16M6 5h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="view-list" class="tool" type="button" aria-pressed="false" aria-label="List view" title="List view">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <label class="theme-switch" title="Toggle light / dark" aria-label="Toggle light / dark">
+          <input type="checkbox" id="theme-toggle">
+          <span class="track">
+            <svg class="ico sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg class="ico moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <span class="knob"></span>
+          </span>
+        </label>
+      </div>
     </div>
+  </div><!-- /stickybar -->
 
-    <div class="pill-tabs inline-flex h-fit gap-1 px-1 py-1 rounded-2xl border border-gray-200 items-center" role="tablist" aria-label="Theme">
-      <button id="theme-light" type="button" aria-pressed="true" aria-label="Light mode" title="Light mode" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-xl bg-white text-gray-900 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
-        <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" stroke="currentColor" stroke-width="2"/>
-          <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5 3.6 3.6M20.4 20.4 19 19M19 5l1.4-1.4M3.6 20.4 5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <button id="theme-dark" type="button" aria-pressed="false" aria-label="Dark mode" title="Dark mode" class="inline-flex h-full items-center justify-center px-2.5 py-1 rounded-xl text-gray-600 hover:bg-gray-200/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
-        <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-        </svg>
-      </button>
+  <!-- Year-at-a-glance timeline -->
+  <div class="timeline" aria-hidden="true">
+    <div class="timeline-label">Year at a glance</div>
+    <div class="timeline-row" id="timeline-row">
+      <!-- filled by JS -->
     </div>
   </div>
-</div>
 
-<section id="calendar-view" aria-label="Calendar view">
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 rounded-2xl overflow-hidden border border-gray-200" id="months-container">
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">April 2026</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School opens - Mon 6 Apr</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dr Ambedkar Jayanti - Tue 14 Apr</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Investiture Ceremony - Thu 23 Apr</span>
-  </div>
-</div>
+  <!-- Calendar view -->
+  <section id="calendar-view" aria-label="Calendar view">
 
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">May 2026</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Summer Vacation - 1 May–9 Jun</span>
-  </div>
-</div>
+    <div class="section-head">
+      <h2>Long breaks</h2>
+      <div class="count" id="breaks-count"></div>
+    </div>
 
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">June 2026</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens - Wed 10 Jun</span>
-  </div>
-</div>
+    <div class="breaks" id="breaks-container">
+      <article class="break-card" data-kind="break">
+        <div class="break-index">01 / 06</div>
+        <div class="break-duration"><span class="num">40</span><span class="unit">days</span></div>
+        <h3 class="break-title">Summer Vacation</h3>
+        <div class="break-dates">Fri 1 May → Tue 9 Jun 2026</div>
+        <div class="break-note">Biggest window of the year — ideal for long-haul travel.</div>
+      </article>
+      <article class="break-card" data-kind="break">
+        <div class="break-index">02 / 06</div>
+        <div class="break-duration"><span class="num">7</span><span class="unit">days</span></div>
+        <h3 class="break-title">Ganesh Chaturthi</h3>
+        <div class="break-dates">Mon 14 Sep → Sun 20 Sep 2026</div>
+        <div class="break-note">A quick getaway — short, sweet, seasonal.</div>
+      </article>
+      <article class="break-card" data-kind="break">
+        <div class="break-index">03 / 06</div>
+        <div class="break-duration"><span class="num">7</span><span class="unit">days</span></div>
+        <h3 class="break-title">Excursion Week</h3>
+        <div class="break-dates">Sat 3 Oct → Fri 9 Oct 2026</div>
+        <div class="break-note">School-organised — confirm whether your son's grade attends.</div>
+      </article>
+      <article class="break-card" data-kind="break">
+        <div class="break-index">04 / 06</div>
+        <div class="break-duration"><span class="num">10</span><span class="unit">days</span></div>
+        <h3 class="break-title">Diwali Break</h3>
+        <div class="break-dates">Fri 6 Nov → Sun 15 Nov 2026</div>
+        <div class="break-note">Great for a family trip — peak season, book early.</div>
+      </article>
+      <article class="break-card" data-kind="break">
+        <div class="break-index">05 / 06</div>
+        <div class="break-duration"><span class="num">13</span><span class="unit">days</span></div>
+        <h3 class="break-title">Winter Break</h3>
+        <div class="break-dates">Wed 23 Dec 2026 → Mon 4 Jan 2027</div>
+        <div class="break-note">Christmas plus New Year — very peak, prices high.</div>
+      </article>
+      <article class="break-card" data-kind="break">
+        <div class="break-index">06 / 06</div>
+        <div class="break-duration"><span class="num">7</span><span class="unit">days</span></div>
+        <h3 class="break-title">Year-End + Summer '27</h3>
+        <div class="break-dates">Fri 26 Mar → Thu 1 Apr 2027</div>
+        <div class="break-note">Short window before the next academic year begins.</div>
+      </article>
+    </div>
 
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">July 2026</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">IIMUN Gr 7–12 - 10–12 Jul</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term I Exams Gr 6–12</span>
-  </div>
-</div>
+    <div class="section-head">
+      <h2>Month by month</h2>
+      <div class="count">12 months · Apr '26 → Mar '27</div>
+    </div>
 
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">August 2026</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Independence Day - Sat 15 Aug</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-e-Milad* - Tue 25 Aug</span>
-  </div>
-</div>
+    <div class="months" id="months-container">
+      <!-- Filled by JS from DATA -->
+    </div>
+  </section>
 
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">September 2026</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Gr 6–12 - Fri 11 Sep</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Ganesh Chaturthi Break - 14–20 Sep</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 10 Mock Prelims</span>
-  </div>
-</div>
+  <!-- List view -->
+  <section id="list-view" class="hidden" aria-label="List view">
+    <div class="section-head">
+      <h2>Chronological list</h2>
+      <div class="count" id="list-count"></div>
+    </div>
+    <div class="list-view" id="list-container">
+      <!-- Filled by JS -->
+    </div>
+  </section>
 
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">October 2026</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Gandhi Jayanti - Fri 2 Oct</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Excursion Week - 3–9 Oct</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dussehra - Tue 20 Oct</span>
-  </div>
-</div>
+  <!-- Tweaks FAB -->
+  <button id="tweaks-fab" aria-label="Open tweaks" title="Tweaks">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" stroke="currentColor" stroke-width="1.6"/></svg>
+  </button>
 
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">November 2026</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Diwali Break - 6–15 Nov</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Assessment Week Gr 6–12</span>
-  </div>
-</div>
-
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">December 2026</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">St Francis Xavier Feast - Thu 3 Dec</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Sports Day</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Winter Fete</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Goa Liberation Day - Sat 19 Dec</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Winter Break - 23 Dec–4 Jan</span>
-  </div>
-</div>
-
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">January 2027</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens - Tue 5 Jan</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Republic Day - Tue 26 Jan</span>
-  </div>
-</div>
-
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">February 2027</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Nursery–Gr 5</span>
-  </div>
-</div>
-
-<div class="month-section bg-white border border-gray-200 p-4 -m-px">
-  <div class="text-[11px] font-semibold tracking-[0.08em] uppercase text-gray-500 mb-3">March 2027</div>
-  <div class="flex flex-wrap gap-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-ul-Fitr* - Wed 10 Mar</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 5 & 8 Checkpoint Exams</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term III Exams Gr 6–9</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Holi* - Mon 22 Mar</span>
-    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Good Friday - Fri 26 Mar</span>
-  </div>
-</div>
-</div>
-</section>
-
-<section id="list-view" class="hidden" aria-label="List view">
-  <div class="bg-gray-25 border border-gray-200 rounded-2xl shadow-sm p-4 sm:p-5 space-y-6">
-    <div id="events-list">
-      <div class="text-xs font-bold text-gray-900 mb-2">All events</div>
-      <div class="space-y-4">
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">April 2026</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School opens - Mon 6 Apr</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dr Ambedkar Jayanti - Tue 14 Apr</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Investiture Ceremony - Thu 23 Apr</span>
-          </div>
+  <!-- Tweaks panel -->
+  <div id="tweaks" data-open="false" role="dialog" aria-label="Tweaks">
+    <div class="tw-head">
+      <h3>Tweaks</h3>
+      <button id="tw-close" aria-label="Close">×</button>
+    </div>
+    <div class="tw-body">
+      <label class="row">Sticky header
+        <input type="checkbox" id="tw-sticky"><span class="switch"></span>
+      </label>
+      <label class="row">Compact layout
+        <input type="checkbox" id="tw-compact"><span class="switch"></span>
+      </label>
+      <label class="row">Year-at-a-glance strip
+        <input type="checkbox" id="tw-timeline"><span class="switch"></span>
+      </label>
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px">Accent</div>
+        <div class="swatches" id="tw-accent">
+          <button data-color="#DA4B26" style="--c:#DA4B26" aria-pressed="true"  title="Brand red"></button>
+          <button data-color="#0F0F0F" style="--c:#0F0F0F" aria-pressed="false" title="Ink"></button>
+          <button data-color="#2E7D4F" style="--c:#2E7D4F" aria-pressed="false" title="Green"></button>
+          <button data-color="#1F4ED8" style="--c:#1F4ED8" aria-pressed="false" title="Blue"></button>
+          <button data-color="#C68A1E" style="--c:#C68A1E" aria-pressed="false" title="Amber"></button>
         </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">May 2026</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Summer Vacation - 1 May–9 Jun</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">June 2026</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens - Wed 10 Jun</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">July 2026</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">IIMUN Gr 7–12 - 10–12 Jul</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term I Exams Gr 6–12</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">August 2026</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Independence Day - Sat 15 Aug</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-e-Milad* - Tue 25 Aug</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">September 2026</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Gr 6–12 - Fri 11 Sep</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Ganesh Chaturthi Break - 14–20 Sep</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 10 Mock Prelims</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">October 2026</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Gandhi Jayanti - Fri 2 Oct</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Excursion Week - 3–9 Oct</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Dussehra - Tue 20 Oct</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">November 2026</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Diwali Break - 6–15 Nov</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Assessment Week Gr 6–12</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">December 2026</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">St Francis Xavier Feast - Thu 3 Dec</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Sports Day</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Winter Fete</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Goa Liberation Day - Sat 19 Dec</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-indigo-50 text-indigo-800 border-indigo-200" data-kind="break">Winter Break - 23 Dec–4 Jan</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">January 2027</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">School reopens - Tue 5 Jan</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Republic Day - Tue 26 Jan</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">February 2027</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-gray-100 text-gray-700 border-gray-200" data-kind="event">Annual Day Nursery–Gr 5</span>
-          </div>
-        </div>
-        <div class="month-section">
-          <div class="text-xs font-bold text-gray-900 mb-2">March 2027</div>
-          <div class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Id-ul-Fitr* - Wed 10 Mar</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Gr 5 & 8 Checkpoint Exams</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200" data-kind="exam">Term III Exams Gr 6–9</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Holi* - Mon 22 Mar</span>
-            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200" data-kind="holiday">Good Friday - Fri 26 Mar</span>
-          </div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px">Density</div>
+        <div class="segs" id="tw-density">
+          <button data-v="comfortable" aria-pressed="true">Comfortable</button>
+          <button data-v="compact"     aria-pressed="false">Compact</button>
         </div>
       </div>
     </div>
-
-    <div>
-      <div class="text-xs font-bold text-gray-900 mb-2">Long breaks</div>
-      <div id="breaks-container" class="space-y-3">
-<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
-  <div class="text-sm font-bold text-indigo-900">Summer Vacation</div>
-  <div class="text-xs text-gray-600 mt-0.5">Fri, 1 May – Tue, 9 Jun 2026</div>
-  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">~40 days</span>
-  <div class="text-[11px] text-gray-600 mt-1">Biggest window of the year - good for long-haul travel</div>
-</div>
-
-<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
-  <div class="text-sm font-bold text-indigo-900">Ganesh Chaturthi Break</div>
-  <div class="text-xs text-gray-600 mt-0.5">Mon, 14 Sep – Sun, 20 Sep 2026</div>
-  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">7 days</span>
-  <div class="text-[11px] text-gray-600 mt-1">Good for a quick getaway</div>
-</div>
-
-<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
-  <div class="text-sm font-bold text-indigo-900">Whole School Excursion Week</div>
-  <div class="text-xs text-gray-600 mt-0.5">Sat, 3 Oct – Fri, 9 Oct 2026</div>
-  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">7 days</span>
-  <div class="text-[11px] text-gray-600 mt-1">School-organised - check if your son needs to attend</div>
-</div>
-
-<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
-  <div class="text-sm font-bold text-indigo-900">Diwali Break</div>
-  <div class="text-xs text-gray-600 mt-0.5">Fri, 6 Nov – Sun, 15 Nov 2026</div>
-  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">10 days</span>
-  <div class="text-[11px] text-gray-600 mt-0.5">Great for a family trip - peak season though, book early</div>
-</div>
-
-<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
-  <div class="text-sm font-bold text-indigo-900">Winter Break</div>
-  <div class="text-xs text-gray-600 mt-0.5">Wed, 23 Dec 2026 – Mon, 4 Jan 2027</div>
-  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">13 days</span>
-  <div class="text-[11px] text-gray-600 mt-1">Christmas + New Year window - very peak season</div>
-</div>
-
-<div class="relative bg-white border border-gray-50 rounded-xl p-4 shadow-sm" data-kind="break">
-  <div class="text-sm font-bold text-indigo-900">End of Academic Year + Summer 2027</div>
-  <div class="text-xs text-gray-600 mt-0.5">Fri, 26 Mar – Thu, 1 Apr 2027 (school reopens Fri 2 Apr)</div>
-  <span class="absolute top-2 right-3 text-[11px] font-bold bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">~1 week</span>
-  <div class="text-[11px] text-gray-600 mt-1">Short window before next year begins</div>
-</div>
-      </div>
-    </div>
   </div>
-</section>
 
-<div class="text-[11px] text-gray-500">* Date subject to moon sighting / official confirmation</div>
-
+  <div class="footnote">
+    <div><span class="star">✱</span> Date subject to moon sighting or official confirmation.</div>
+    <div>The Gera School · thegeraschool.com</div>
+  </div>
 </div>
 
 <script>
-  ;(() => {
-    const THEME_KEY = 'theme'
-    const themeLightBtn = document.getElementById('theme-light')
-    const themeDarkBtn = document.getElementById('theme-dark')
+  // ---------- Data ----------
+  const DATA = [
+    { m: 'April',     y: 2026, events: [
+      { kind: 'event',   date: 'Mon 6',  title: 'School opens' },
+      { kind: 'holiday', date: 'Tue 14', title: 'Dr Ambedkar Jayanti' },
+      { kind: 'event',   date: 'Thu 23', title: 'Investiture Ceremony' },
+    ]},
+    { m: 'May',       y: 2026, events: [
+      { kind: 'break',   date: '1–31',   title: 'Summer Vacation (1 May – 9 Jun)' },
+    ]},
+    { m: 'June',      y: 2026, events: [
+      { kind: 'break',   date: '1–9',    title: 'Summer Vacation ends' },
+      { kind: 'event',   date: 'Wed 10', title: 'School reopens' },
+    ]},
+    { m: 'July',      y: 2026, events: [
+      { kind: 'event',   date: '10–12',  title: 'IIMUN · Grades 7–12' },
+      { kind: 'exam',    date: 'TBD',    title: 'Term I Exams · Grades 6–12' },
+    ]},
+    { m: 'August',    y: 2026, events: [
+      { kind: 'holiday', date: 'Sat 15', title: 'Independence Day' },
+      { kind: 'holiday', date: 'Tue 25', title: 'Id-e-Milad✱' },
+    ]},
+    { m: 'September', y: 2026, events: [
+      { kind: 'event',   date: 'Fri 11', title: 'Annual Day · Grades 6–12' },
+      { kind: 'break',   date: '14–20',  title: 'Ganesh Chaturthi Break' },
+      { kind: 'exam',    date: 'TBD',    title: 'Grade 10 Mock Prelims' },
+    ]},
+    { m: 'October',   y: 2026, events: [
+      { kind: 'holiday', date: 'Fri 2',  title: 'Gandhi Jayanti' },
+      { kind: 'break',   date: '3–9',    title: 'Whole-School Excursion Week' },
+      { kind: 'holiday', date: 'Tue 20', title: 'Dussehra' },
+    ]},
+    { m: 'November',  y: 2026, events: [
+      { kind: 'break',   date: '6–15',   title: 'Diwali Break' },
+      { kind: 'exam',    date: 'TBD',    title: 'Assessment Week · Grades 6–12' },
+    ]},
+    { m: 'December',  y: 2026, events: [
+      { kind: 'holiday', date: 'Thu 3',  title: 'St Francis Xavier Feast' },
+      { kind: 'event',   date: 'TBD',    title: 'Sports Day' },
+      { kind: 'event',   date: 'TBD',    title: 'Winter Fete' },
+      { kind: 'holiday', date: 'Sat 19', title: 'Goa Liberation Day' },
+      { kind: 'break',   date: '23–31',  title: 'Winter Break (to 4 Jan)' },
+    ]},
+    { m: 'January',   y: 2027, events: [
+      { kind: 'break',   date: '1–4',    title: 'Winter Break' },
+      { kind: 'event',   date: 'Tue 5',  title: 'School reopens' },
+      { kind: 'holiday', date: 'Tue 26', title: 'Republic Day' },
+    ]},
+    { m: 'February',  y: 2027, events: [
+      { kind: 'event',   date: 'TBD',    title: 'Annual Day · Nursery – Grade 5' },
+    ]},
+    { m: 'March',     y: 2027, events: [
+      { kind: 'holiday', date: 'Wed 10', title: 'Id-ul-Fitr✱' },
+      { kind: 'exam',    date: 'TBD',    title: 'Grade 5 & 8 Checkpoint Exams' },
+      { kind: 'exam',    date: 'TBD',    title: 'Term III Exams · Grades 6–9' },
+      { kind: 'holiday', date: 'Mon 22', title: 'Holi✱' },
+      { kind: 'holiday', date: 'Fri 26', title: 'Good Friday' },
+    ]},
+  ];
 
-    const getInitialTheme = () => {
-      try {
-        const stored = localStorage.getItem(THEME_KEY)
-        if (stored === 'light' || stored === 'dark') return stored
-      } catch {}
+  const KIND_LABEL = { break: 'Long break', holiday: 'Public holiday', event: 'School event', exam: 'Exam' };
 
-      const defaultTheme = document.documentElement.getAttribute('data-default-theme')
-      if (defaultTheme === 'light' || defaultTheme === 'dark') return defaultTheme
+  // ---------- Render: months ----------
+  const monthsEl = document.getElementById('months-container');
+  DATA.forEach(month => {
+    const section = document.createElement('article');
+    section.className = 'month month-section';
+    section.dataset.label = `${month.m} ${month.y}`;
 
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    const head = document.createElement('div');
+    head.className = 'month-head';
+    head.innerHTML = `<div class="month-name">${month.m}</div><div class="month-year">'${String(month.y).slice(-2)}</div>`;
+    section.appendChild(head);
+
+    const events = document.createElement('div');
+    events.className = 'events';
+    if (month.events.length === 0) {
+      events.innerHTML = `<div class="month-empty">No scheduled items</div>`;
+    } else {
+      month.events.forEach(e => {
+        const row = document.createElement('div');
+        row.className = 'ev';
+        row.dataset.kind = e.kind;
+        row.innerHTML = `
+          <div class="ev-date">${e.date}</div>
+          <div class="ev-body">
+            <div class="ev-title">${e.title}</div>
+            <div class="ev-kind"><span class="swatch"></span>${KIND_LABEL[e.kind]}</div>
+          </div>`;
+        events.appendChild(row);
+      });
     }
+    section.appendChild(events);
+    monthsEl.appendChild(section);
+  });
 
-    const applyTheme = (theme) => {
-      const isDark = theme === 'dark'
-      document.documentElement.classList.toggle('dark', isDark)
-      if (themeLightBtn && themeDarkBtn) {
-        themeLightBtn.setAttribute('aria-pressed', !isDark ? 'true' : 'false')
-        themeDarkBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false')
+  // ---------- Render: list view ----------
+  const listEl = document.getElementById('list-container');
+  DATA.forEach(month => {
+    if (month.events.length === 0) return;
+    const row = document.createElement('div');
+    row.className = 'list-month';
+    row.dataset.label = `${month.m} ${month.y}`;
+    row.innerHTML = `
+      <div class="list-month-label">${month.m}<span class="yr">${month.y}</span></div>
+      <div class="list-events"></div>`;
+    const evRoot = row.querySelector('.list-events');
+    month.events.forEach(e => {
+      const ev = document.createElement('div');
+      ev.className = 'ev';
+      ev.dataset.kind = e.kind;
+      ev.innerHTML = `
+        <div class="ev-date">${e.date}</div>
+        <div class="ev-body">
+          <div class="ev-title">${e.title}</div>
+          <div class="ev-kind"><span class="swatch"></span>${KIND_LABEL[e.kind]}</div>
+        </div>`;
+      evRoot.appendChild(ev);
+    });
+    listEl.appendChild(row);
+  });
+  document.getElementById('list-count').textContent =
+    DATA.reduce((n, m) => n + m.events.length, 0) + ' items';
+  document.getElementById('breaks-count').textContent = '6 windows · 84 days total';
 
-        themeLightBtn.classList.toggle('bg-white', !isDark)
-        themeLightBtn.classList.toggle('text-gray-900', !isDark)
-        themeLightBtn.classList.toggle('text-gray-600', isDark)
+  // ---------- Render: timeline strip ----------
+  const tlEl = document.getElementById('timeline-row');
+  DATA.forEach(month => {
+    const cell = document.createElement('div');
+    cell.className = 'tl-cell';
+    cell.dataset.label = `${month.m} ${month.y}`;
+    const kinds = [...new Set(month.events.map(e => e.kind))];
+    const order = ['break', 'exam', 'holiday', 'event'];
+    const sorted = order.filter(k => kinds.includes(k));
+    cell.innerHTML = `
+      <div class="tl-month">${month.m.slice(0,3)}</div>
+      ${sorted.map(k => `<div class="tl-bar ${k}" title="${KIND_LABEL[k]}"></div>`).join('')}
+    `;
+    tlEl.appendChild(cell);
+  });
 
-        themeDarkBtn.classList.toggle('bg-white', isDark)
-        themeDarkBtn.classList.toggle('text-gray-900', isDark)
-        themeDarkBtn.classList.toggle('text-gray-600', !isDark)
-      }
-    }
+  // ---------- Highlight current month ----------
+  (function highlightCurrent() {
+    const now = new Date();
+    const label = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(now);
+    document.querySelectorAll('[data-label]').forEach(el => {
+      el.classList.toggle('is-current', el.dataset.label === label);
+    });
+  })();
 
-    const setTheme = (theme) => {
-      applyTheme(theme)
-      try {
-        localStorage.setItem(THEME_KEY, theme)
-      } catch {}
-    }
+  // ---------- Filter ----------
+  const filterBtns = document.querySelectorAll('.filter');
+  function applyFilter(kind) {
+    const all = kind === 'all';
+    document.querySelectorAll('.month .ev').forEach(el => {
+      el.classList.toggle('hidden', !all && el.dataset.kind !== kind);
+    });
+    document.querySelectorAll('#months-container .month').forEach(m => {
+      const visible = m.querySelectorAll('.ev:not(.hidden)').length;
+      m.classList.toggle('hidden', !all && visible === 0);
+    });
+    document.querySelectorAll('#list-container .ev').forEach(el => {
+      el.classList.toggle('hidden', !all && el.dataset.kind !== kind);
+    });
+    document.querySelectorAll('#list-container .list-month').forEach(m => {
+      const visible = m.querySelectorAll('.ev:not(.hidden)').length;
+      m.classList.toggle('hidden', !all && visible === 0);
+    });
+    document.querySelectorAll('#breaks-container .break-card').forEach(card => {
+      card.classList.toggle('hidden', !(all || kind === 'break'));
+    });
+  }
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const k = btn.dataset.filter;
+      filterBtns.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      applyFilter(k);
+    });
+  });
 
-    applyTheme(getInitialTheme())
+  // ---------- View switcher ----------
+  const calView  = document.getElementById('calendar-view');
+  const listView = document.getElementById('list-view');
+  const calBtn   = document.getElementById('view-calendar');
+  const listBtn  = document.getElementById('view-list');
+  function setView(v) {
+    const cal = v === 'calendar';
+    calView.classList.toggle('hidden', !cal);
+    listView.classList.toggle('hidden', cal);
+    calBtn.setAttribute('aria-pressed', cal ? 'true' : 'false');
+    listBtn.setAttribute('aria-pressed', cal ? 'false' : 'true');
+  }
+  calBtn.addEventListener('click', () => setView('calendar'));
+  listBtn.addEventListener('click', () => setView('list'));
 
-    const legendButtons = Array.from(document.querySelectorAll('.leg-item[data-filter]'))
-    const calendarView = document.getElementById('calendar-view')
-    const listView = document.getElementById('list-view')
-    const viewCalendarBtn = document.getElementById('view-calendar')
-    const viewListBtn = document.getElementById('view-list')
-    const breaksContainer = document.getElementById('breaks-container')
-    const monthContainer = document.getElementById('months-container')
-    const listEventsRoot = document.getElementById('events-list')
+  // ---------- Tweaks ----------
+  const TWEAK_DEFAULTS = {
+    sticky:   true,
+    compact:  false,
+    timeline: true,
+    accent:   "#DA4B26"
+  };
 
-    const setLegendActiveStyles = (activeFilter) => {
-      for (const b of legendButtons) {
-        const isActive = b.dataset.filter === activeFilter
-        b.classList.toggle('bg-white', isActive)
-        b.classList.toggle('text-gray-900', isActive)
-      }
-    }
+  const tweaksPanel = document.getElementById('tweaks');
+  const tweaksFab   = document.getElementById('tweaks-fab');
+  const twClose     = document.getElementById('tw-close');
+  const twSticky    = document.getElementById('tw-sticky');
+  const twCompact   = document.getElementById('tw-compact');
+  const twTimeline  = document.getElementById('tw-timeline');
+  const twAccent    = document.getElementById('tw-accent');
+  const twDensity   = document.getElementById('tw-density');
 
-    const setView = (view) => {
-      const isCalendar = view === 'calendar'
-      if (calendarView) calendarView.classList.toggle('hidden', !isCalendar)
-      if (listView) listView.classList.toggle('hidden', isCalendar)
+  const state = { ...TWEAK_DEFAULTS };
 
-      if (viewCalendarBtn) {
-        viewCalendarBtn.setAttribute('aria-pressed', isCalendar ? 'true' : 'false')
-        viewCalendarBtn.classList.toggle('bg-white', isCalendar)
-        viewCalendarBtn.classList.toggle('text-gray-900', isCalendar)
-        viewCalendarBtn.classList.toggle('text-gray-600', !isCalendar)
-      }
-      if (viewListBtn) {
-        viewListBtn.setAttribute('aria-pressed', !isCalendar ? 'true' : 'false')
-        viewListBtn.classList.toggle('bg-white', !isCalendar)
-        viewListBtn.classList.toggle('text-gray-900', !isCalendar)
-        viewListBtn.classList.toggle('text-gray-600', isCalendar)
-      }
-    }
+  function applyState() {
+    document.body.dataset.sticky   = state.sticky   ? 'on' : 'off';
+    document.body.dataset.compact  = state.compact  ? 'on' : 'off';
+    document.body.dataset.timeline = state.timeline ? 'on' : 'off';
+    document.documentElement.style.setProperty('--ppp-red', state.accent);
+    twSticky.checked   = state.sticky;
+    twCompact.checked  = state.compact;
+    twTimeline.checked = state.timeline;
+    twAccent.querySelectorAll('button').forEach(b => {
+      b.setAttribute('aria-pressed', b.dataset.color === state.accent ? 'true' : 'false');
+    });
+    twDensity.querySelectorAll('button').forEach(b => {
+      b.setAttribute('aria-pressed', (state.compact ? 'compact' : 'comfortable') === b.dataset.v ? 'true' : 'false');
+    });
+  }
 
-    const applyFilter = (kind) => {
-      const hasFilter = !!kind && kind !== 'all'
-      const matchesKind = (k) => !hasFilter || k === kind
+  twSticky.addEventListener('change',   () => { state.sticky   = twSticky.checked;   applyState(); });
+  twCompact.addEventListener('change',  () => { state.compact  = twCompact.checked;  applyState(); });
+  twTimeline.addEventListener('change', () => { state.timeline = twTimeline.checked; applyState(); });
+  twAccent.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-color]'); if (!b) return;
+    state.accent = b.dataset.color; applyState();
+  });
+  twDensity.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-v]'); if (!b) return;
+    state.compact = b.dataset.v === 'compact'; applyState();
+  });
 
-      // Break cards
-      if (breaksContainer) {
-        const breakCards = Array.from(breaksContainer.querySelectorAll('[data-kind]'))
-        for (const card of breakCards) {
-          const matches = matchesKind(card.dataset.kind)
-          card.classList.toggle('hidden', !matches)
-        }
-      }
+  tweaksFab.addEventListener('click', () => { tweaksPanel.dataset.open = 'true'; });
+  twClose.addEventListener('click',   () => { tweaksPanel.dataset.open = 'false'; });
 
-      // Calendar month cards
-      if (monthContainer) {
-        const monthSections = Array.from(monthContainer.querySelectorAll('.month-section'))
-        for (const section of monthSections) {
-          const chips = Array.from(section.querySelectorAll('[data-kind]'))
-          for (const chip of chips) {
-            const matches = matchesKind(chip.dataset.kind)
-            chip.classList.toggle('hidden', !matches)
-          }
-          const anyChipVisible = chips.some((c) => !c.classList.contains('hidden'))
-          const isEmptyMonth = chips.length === 0 || section.dataset.empty === 'true'
-          // Show empty months only when no filter is active (i.e. "All")
-          const showSection = isEmptyMonth ? !hasFilter : anyChipVisible
-          section.classList.toggle('hidden', !showSection)
-        }
-      }
+  // Expose tweaks FAB to parent frame (design tool integration)
+  window.addEventListener('message', (e) => {
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === '__activate_edit_mode')   { document.body.dataset.tweaks = 'on';  tweaksPanel.dataset.open = 'true'; }
+    if (e.data.type === '__deactivate_edit_mode') { document.body.dataset.tweaks = 'off'; tweaksPanel.dataset.open = 'false'; }
+  });
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch {}
 
-      // List view month groups
-      if (listEventsRoot) {
-        const listMonthGroups = Array.from(listEventsRoot.querySelectorAll('.month-section'))
-        for (const group of listMonthGroups) {
-          const chips = Array.from(group.querySelectorAll('[data-kind]'))
-          for (const chip of chips) {
-            const matches = matchesKind(chip.dataset.kind)
-            chip.classList.toggle('hidden', !matches)
-          }
-          const anyChipVisible = chips.some((c) => !c.classList.contains('hidden'))
-          group.classList.toggle('hidden', !anyChipVisible)
-        }
-      }
-    }
+  applyState();
 
-    const highlightCurrentMonth = () => {
-      const now = new Date()
-      const currentLabel = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(now)
+  // ---------- Sticky scroll state (IntersectionObserver only — no scroll listener) ----------
+  const stickybar = document.getElementById('stickybar');
+  const sentinel = document.createElement('div');
+  sentinel.style.cssText = 'position:absolute;top:8px;left:0;height:1px;width:1px;pointer-events:none';
+  document.body.prepend(sentinel);
+  const io = new IntersectionObserver(([entry]) => {
+    if (document.body.dataset.sticky !== 'on') { stickybar.classList.remove('is-stuck'); return; }
+    stickybar.classList.toggle('is-stuck', !entry.isIntersecting);
+  }, { threshold: 0, rootMargin: '-1px 0px 0px 0px' });
+  io.observe(sentinel);
 
-      // Calendar grid month cards
-      if (monthContainer) {
-        const monthSections = Array.from(monthContainer.querySelectorAll('.month-section'))
-        for (const section of monthSections) {
-          const titleEl = section.firstElementChild
-          const label = titleEl?.textContent?.trim() || ''
-          section.classList.toggle('is-current-month', label === currentLabel)
-        }
-      }
-
-      // List view month groups (within "All events")
-      if (listEventsRoot) {
-        const listMonthGroups = Array.from(listEventsRoot.querySelectorAll('.month-section'))
-        for (const group of listMonthGroups) {
-          const titleEl = group.firstElementChild
-          const label = titleEl?.textContent?.trim() || ''
-          group.classList.toggle('is-current-month', label === currentLabel)
-        }
-      }
-    }
-
-    for (const btn of legendButtons) {
-      btn.addEventListener('click', () => {
-        const filter = btn.dataset.filter
-
-        const current = legendButtons.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.filter
-        const next = current === filter ? 'all' : filter
-
-        for (const b of legendButtons) {
-          b.setAttribute('aria-pressed', b.dataset.filter === next ? 'true' : 'false')
-        }
-
-        setLegendActiveStyles(next)
-        applyFilter(next)
-      })
-    }
-
-    if (themeLightBtn) themeLightBtn.addEventListener('click', () => setTheme('light'))
-    if (themeDarkBtn) themeDarkBtn.addEventListener('click', () => setTheme('dark'))
-
-    // Initial state: All selected => no filter applied
-    setLegendActiveStyles('all')
-    if (viewCalendarBtn) viewCalendarBtn.addEventListener('click', () => setView('calendar'))
-    if (viewListBtn) viewListBtn.addEventListener('click', () => setView('list'))
-    setView('calendar')
-    applyFilter('all')
-    highlightCurrentMonth()
-  })()
+  // ---------- Theme ----------
+  const themeBtn = document.getElementById('theme-toggle');
+  const THEME_KEY = 'gera-theme';
+  function applyTheme(t) {
+    document.documentElement.classList.toggle('dark', t === 'dark');
+    themeBtn.checked = (t === 'dark');
+  }
+  function getInit() {
+    try { const s = localStorage.getItem(THEME_KEY); if (s) return s; } catch {}
+    return document.documentElement.getAttribute('data-default-theme') || 'light';
+  }
+  applyTheme(getInit());
+  themeBtn.addEventListener('change', () => {
+    const next = themeBtn.checked ? 'dark' : 'light';
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch {}
+  });
 </script>
 </body>
 </html>
