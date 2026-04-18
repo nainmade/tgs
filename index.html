@@ -12,10 +12,10 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Gera School — Holiday Planner 2026–27</title>
+<title>The Gera School · Holiday Planner 2026–27</title>
 <style>
 /* =========================================================================
-   Paper Pencil Pixel — Colors & Type (inlined)
+   Paper Pencil Pixel - Colors & Type (inlined)
    ========================================================================= */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -271,7 +271,7 @@ body[data-timeline="off"] .timeline { display: none; }
   font-size: clamp(34px, 5.2vw, 64px);
   font-weight: 600;
   line-height: 0.98;
-  letter-spacing: -0.03em;
+  letter-spacing: -3px;
   color: var(--ink);
   margin: 0;
   max-width: 14ch;
@@ -670,20 +670,14 @@ body[data-timeline="off"] .timeline { display: none; }
   line-height: 1.5;
 }
 .break-note {
-  font-size: 13px;
-  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-3);
   line-height: 1.4;
   margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid var(--rule);
-  display: flex;
-  gap: 8px;
-}
-.break-note::before {
-  content: '→';
-  color: var(--ppp-red);
-  font-weight: 700;
-  flex: 0 0 auto;
 }
 
 /* =========================================================================
@@ -780,7 +774,7 @@ html.dark .tool { border-color: var(--rule); }
 html.dark .theme-switch .track { border-color: var(--rule); }
 
 /* =========================================================================
-   View switch (Calendar / List) — matches theme switch
+   View switch (Calendar / List) - matches theme switch
    ========================================================================= */
 .view-switch { display: inline-flex; align-items: center; }
 .view-switch .track {
@@ -900,28 +894,28 @@ html.dark .view-switch .track { border-color: var(--rule); }
         <div class="break-duration"><span class="num">40</span><span class="unit">days</span></div>
         <h3 class="break-title">Summer Vacation</h3>
         <div class="break-dates">Fri 1 May → Tue 9 Jun 2026</div>
-        <div class="break-note">Biggest window of the year — ideal for long-haul travel.</div>
+        <div class="break-note">Biggest window of the year, ideal for long-haul travel.</div>
       </article>
       <article class="break-card" data-kind="break">
         <div class="break-index">02 / 06</div>
         <div class="break-duration"><span class="num">7</span><span class="unit">days</span></div>
         <h3 class="break-title">Ganesh Chaturthi</h3>
         <div class="break-dates">Mon 14 Sep → Sun 20 Sep 2026</div>
-        <div class="break-note">A quick getaway — short, sweet, seasonal.</div>
+        <div class="break-note">A quick getaway, short, sweet, seasonal.</div>
       </article>
       <article class="break-card" data-kind="break">
         <div class="break-index">03 / 06</div>
         <div class="break-duration"><span class="num">7</span><span class="unit">days</span></div>
         <h3 class="break-title">Excursion Week</h3>
         <div class="break-dates">Sat 3 Oct → Fri 9 Oct 2026</div>
-        <div class="break-note">School-organised — confirm whether your son's grade attends.</div>
+        <div class="break-note">School-organised, confirm whether your son's grade attends.</div>
       </article>
       <article class="break-card" data-kind="break">
         <div class="break-index">04 / 06</div>
         <div class="break-duration"><span class="num">10</span><span class="unit">days</span></div>
         <h3 class="break-title">Diwali Break</h3>
         <div class="break-dates">Fri 6 Nov → Sun 15 Nov 2026</div>
-        <div class="break-note">Great for a family trip — peak season, book early.</div>
+        <div class="break-note">Great for a family trip, peak season, book early.</div>
       </article>
       <article class="break-card" data-kind="break">
         <div class="break-index">05 / 06</div>
@@ -1003,7 +997,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
 
   <div class="footnote">
     <div><span class="star">✱</span> Date subject to moon sighting or official confirmation.</div>
-    <div>Made by a parent from <a href="https://www.thegeraschool.com">The Gera School</a> community.</div>
+    <div>Made by a parent from <a href="https://www.thegeraschool.com" target="_blank" rel="noopener noreferrer">The Gera School</a> community.</div>
   </div>
 </div>
 
@@ -1152,7 +1146,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
     const n = spanMonths.length;
     const monthWord = n === 1 ? 'month' : 'months';
     if (n === 0) {
-      el.textContent = '0 months · —';
+      el.textContent = '0 months · none';
       return;
     }
     const fmt = mo => `${mo.m.slice(0, 3)} '${String(mo.y).slice(-2)}`;
@@ -1320,7 +1314,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
 
   applyState();
 
-  // ---------- Sticky scroll state (IntersectionObserver only — no scroll listener) ----------
+  // ---------- Sticky scroll state (IntersectionObserver only - no scroll listener) ----------
   const stickybar = document.getElementById('stickybar');
   const sentinel = document.createElement('div');
   sentinel.style.cssText = 'position:absolute;top:8px;left:0;height:1px;width:1px;pointer-events:none';
