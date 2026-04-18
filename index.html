@@ -85,6 +85,23 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+a, a:visited {
+  color: var(--accent);
+  text-decoration: none;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.28s var(--ease-out);
+  padding-bottom: 1px;
+}
+a:hover {
+  background-size: 100% 1px;
+}
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 /* =========================================================================
    Layout shell
@@ -555,6 +572,14 @@ body[data-timeline="off"] .timeline { display: none; }
   line-height: 1.35;
   color: var(--ink);
 }
+.ev-title sup.fn-ref {
+  vertical-align: super;
+  font-size: 0.68em;
+  font-weight: 700;
+  color: var(--ppp-red);
+  line-height: 0;
+  margin-left: 4px;
+}
 .ev-kind {
   display: inline-flex;
   align-items: center;
@@ -903,7 +928,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
         <div class="break-duration"><span class="num">13</span><span class="unit">days</span></div>
         <h3 class="break-title">Winter Break</h3>
         <div class="break-dates">Wed 23 Dec 2026 → Mon 4 Jan 2027</div>
-        <div class="break-note">Christmas plus New Year — very peak, prices high.</div>
+        <div class="break-note">Christmas plus New Year - very peak, prices high.</div>
       </article>
       <article class="break-card" data-kind="break">
         <div class="break-index">06 / 06</div>
@@ -978,7 +1003,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
 
   <div class="footnote">
     <div><span class="star">✱</span> Date subject to moon sighting or official confirmation.</div>
-    <div>The Gera School · thegeraschool.com</div>
+    <div>Made by a parent from <a href="https://www.thegeraschool.com">The Gera School</a> community.</div>
   </div>
 </div>
 
@@ -1045,6 +1070,11 @@ html.dark .view-switch .track { border-color: var(--rule); }
 
   const KIND_LABEL = { break: 'Long break', holiday: 'Public holiday', event: 'School event', exam: 'Exam' };
 
+  /** Footnote marker (same ✱ as footer) → superscript in event titles. */
+  function formatEventTitle(title) {
+    return title.replace(/✱/g, '<sup class="fn-ref">✱</sup>');
+  }
+
   // ---------- Render: months ----------
   const monthsEl = document.getElementById('months-container');
   DATA.forEach(month => {
@@ -1069,7 +1099,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
         row.innerHTML = `
           <div class="ev-date">${e.date}</div>
           <div class="ev-body">
-            <div class="ev-title">${e.title}</div>
+            <div class="ev-title">${formatEventTitle(e.title)}</div>
             <div class="ev-kind"><span class="swatch"></span>${KIND_LABEL[e.kind]}</div>
           </div>`;
         events.appendChild(row);
@@ -1097,7 +1127,7 @@ html.dark .view-switch .track { border-color: var(--rule); }
       ev.innerHTML = `
         <div class="ev-date">${e.date}</div>
         <div class="ev-body">
-          <div class="ev-title">${e.title}</div>
+          <div class="ev-title">${formatEventTitle(e.title)}</div>
           <div class="ev-kind"><span class="swatch"></span>${KIND_LABEL[e.kind]}</div>
         </div>`;
       evRoot.appendChild(ev);
