@@ -51,7 +51,7 @@
 }
 .tt-head h2 {
   margin: 0;
-  font-size: clamp(26px, 3.2vw, 32px);
+  font-size: clamp(28px, 3.4vw, 32px);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -59,7 +59,7 @@
 }
 .tt-head .updated {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-3);
   letter-spacing: 0.04em;
 }
@@ -222,14 +222,15 @@
 }
 .legend-head h2 {
   margin: 0;
-  font-size: clamp(24px, 2.8vw, 28px);
+  font-size: clamp(28px, 3.4vw, 32px);
   font-weight: 600;
   letter-spacing: -0.02em;
+  line-height: 1;
   color: var(--ink);
 }
 .legend-head .count {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-3);
   letter-spacing: 0.04em;
 }

@@ -501,7 +501,6 @@ function selectClass(className) {
 function setupMeta() {
   $('#generated-tag').textContent = `Updated ${DATA.meta.generatedDisplay}`;
   $('#footer-date').textContent = DATA.meta.generated;
-  $('#footer-sync').textContent = DATA.meta.generatedDisplay;
 }
 
 function init() {
