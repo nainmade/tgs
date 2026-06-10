@@ -1,0 +1,281 @@
+/* =========================================================================
+   Timetable — page-specific styles
+   Design tokens, base, masthead, toolbar, page switch and theme switch all
+   come from shared.css. This file only adds what the timetable view needs.
+   ========================================================================= */
+
+/* =========================================================================
+   Grade pills
+   ========================================================================= */
+.grade-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 28px 0 8px;
+}
+.grade-pill {
+  padding: 7px 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  background: var(--bone);
+  color: var(--ink-3);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.grade-pill:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.grade-pill[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--ink);
+  font-weight: 600;
+}
+
+/* =========================================================================
+   Section header for selected class
+   ========================================================================= */
+.tt-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 32px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ink);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.tt-head h2 {
+  margin: 0;
+  font-size: clamp(26px, 3.2vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+}
+.tt-head .updated {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+/* =========================================================================
+   Timetable grid
+   ========================================================================= */
+.tt-wrapper {
+  position: relative;
+  background: var(--bone);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.tt-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tt {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  table-layout: fixed;
+}
+.tt thead th {
+  padding: 12px 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--ink);
+  text-align: left;
+  vertical-align: middle;
+}
+.tt thead th.period-col-head {
+  width: 116px;
+  border-right: 1px solid var(--rule);
+}
+.tt tbody td {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  vertical-align: middle;
+  height: 60px;
+  background: var(--bone);
+}
+.tt tbody tr:last-child td { border-bottom: none; }
+.tt tbody td:last-child { border-right: none; }
+
+.tt .period-cell {
+  background: var(--paper-2);
+  font-family: var(--font-mono);
+  border-right: 1px solid var(--rule);
+}
+.tt .period-cell .num {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.tt .period-cell .time {
+  display: block;
+  color: var(--ink-3);
+  font-size: 10px;
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.tt .subject {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+/* Lunch cells */
+.tt td.lun {
+  background: var(--paper-2);
+  color: var(--ink-4);
+}
+.tt td.lun .subject {
+  font-weight: 500;
+  font-style: italic;
+  color: var(--ink-4);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Empty cells (pre-primary half day) */
+.tt td.empty {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--paper) 0 6px,
+    var(--paper-2) 6px 12px
+  );
+}
+
+/* Whole-school activity highlight */
+.tt td.activity {
+  background: var(--ppp-red-soft);
+}
+.tt td.activity .subject {
+  color: var(--ppp-red-deep);
+  font-weight: 700;
+}
+
+/* Snack break row */
+.tt .break-row td {
+  padding: 8px 12px;
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: 1px solid var(--rule);
+  border-top: 1px solid var(--rule);
+  height: auto;
+}
+.tt .break-row td .break-label {
+  display: inline-block;
+  padding: 0 12px;
+}
+
+/* Sticky first column on mobile */
+@media (max-width: 720px) {
+  .tt .period-cell,
+  .tt thead th.period-col-head {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    box-shadow: 1px 0 0 var(--rule);
+  }
+  .tt thead th.period-col-head { z-index: 3; }
+  .tt tbody td { padding: 10px 8px; height: 56px; }
+  .tt .subject { font-size: 12px; }
+}
+
+/* =========================================================================
+   Legend
+   ========================================================================= */
+.legend-section {
+  margin-top: 56px;
+}
+.legend-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ink);
+}
+.legend-head h2 {
+  margin: 0;
+  font-size: clamp(24px, 2.8vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.legend-head .count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+.legend-group {
+  margin-bottom: 28px;
+}
+.legend-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px dotted var(--rule);
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2px 32px;
+}
+.legend-item {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  padding: 6px 0;
+  align-items: baseline;
+}
+.legend-key {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.legend-val {
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* =========================================================================
+   Dark theme (timetable-specific overrides)
+   ========================================================================= */
+html.dark { --ppp-red-soft: #3A2620; }
+html.dark .tt td.activity { background: var(--ppp-red-soft); }
+html.dark .tt td.activity .subject { color: #F0A48B; }
