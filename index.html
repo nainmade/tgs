@@ -106,6 +106,34 @@ a:focus-visible {
 }
 
 /* =========================================================================
+   Page switch (Holiday Planner / Timetable) — segmented toggle
+   ========================================================================= */
+.page-switch {
+  display: inline-flex;
+  margin: 0 0 8px;
+  border: 1px solid var(--rule);
+  background: transparent;
+}
+.page-switch a {
+  background: none;
+  background-image: none;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.page-switch a:hover { color: var(--ink); background-image: none; }
+.page-switch a.active,
+.page-switch a[aria-current="page"] {
+  color: var(--bone);
+  background: var(--ink);
+}
+
+/* =========================================================================
    Layout shell
    ========================================================================= */
 .shell {
@@ -841,6 +869,11 @@ html.dark .view-switch .track { border-color: var(--rule); }
 <div class="shell">
 
   <div class="stickybar" id="stickybar">
+    <nav class="page-switch" aria-label="Page sections">
+      <a href="index.html" data-nav="holiday-planner" aria-current="page">Holiday Planner</a>
+      <a href="timetable.html" data-nav="timetable">Timetable</a>
+    </nav>
+
     <header class="masthead">
       <div class="mast-left">
         <div>
