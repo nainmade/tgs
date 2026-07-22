@@ -1,0 +1,142 @@
+/* =========================================================================
+   Exam Schedule — page-specific styles
+   Design tokens, base, masthead, toolbar, page switch, theme switch, the
+   .tt table, .tt-head, .tt-wrapper and .legend-* blocks all come from
+   shared.css + timetable.css (both linked before this file). This file only
+   adds what the exam view needs on top of the reused timetable table.
+   ========================================================================= */
+
+/* Confidential / context banner above the table */
+.exam-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 28px 0 8px;
+  padding: 14px 16px;
+  background: var(--ppp-red-soft);
+  border: 1px solid var(--ppp-red);
+  color: var(--ppp-red-deep);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.exam-note .exam-note-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+.exam-note strong { font-weight: 700; }
+
+/* Toolbar scope label (left of the theme switch) */
+.exam-scope {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  align-self: center;
+}
+
+/* Reuse the timetable .period-cell for the date column, but the exam page
+   only has a few columns so let the table breathe a little more. */
+.tt.exam-tt { min-width: 640px; }
+.tt.exam-tt thead th.date-col-head { width: 148px; border-right: 1px solid var(--rule); }
+.tt.exam-tt thead th.dur-col-head { width: 120px; }
+.tt.exam-tt thead th.time-col-head { width: 150px; }
+
+/* Date cell spans a whole exam day (rowspan) — align to the top */
+.tt.exam-tt td.period-cell { vertical-align: top; padding-top: 14px; }
+.tt.exam-tt .period-cell .num { font-size: 14px; }
+.tt.exam-tt .period-cell .time { text-transform: none; letter-spacing: 0.02em; }
+.tt.exam-tt .period-cell .daytag {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-4);
+}
+
+/* Subject cell carries the exam identity: a coral accent bar */
+.tt.exam-tt td.exam-subject { border-left: 3px solid var(--ppp-red); }
+.tt.exam-tt td.exam-subject .subject { color: var(--ink); }
+
+/* Duration + time columns — mono, quiet */
+.tt.exam-tt td.exam-duration,
+.tt.exam-tt td.exam-time {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.tt.exam-tt td.exam-duration { color: var(--ink-3); }
+
+/* Next upcoming exam day — highlighted like a whole-school activity */
+.tt.exam-tt tr.is-next td { background: var(--ppp-red-soft); }
+.tt.exam-tt tr.is-next td.exam-subject .subject { color: var(--ppp-red-deep); font-weight: 700; }
+.exam-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  color: var(--white);
+  background: var(--ppp-red);
+}
+
+/* Past exam days — dimmed */
+.tt.exam-tt tr.is-past td { opacity: 0.5; }
+
+/* =========================================================================
+   Syllabus / portion
+   ========================================================================= */
+.syllabus-grid {
+  margin-top: 20px;
+  columns: 2;
+  column-gap: 32px;
+}
+.syllabus-card {
+  break-inside: avoid;
+  margin-bottom: 24px;
+}
+.syllabus-subject {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ppp-red-deep);
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px dotted var(--rule);
+}
+.syllabus-group { margin-bottom: 10px; }
+.syllabus-group:last-child { margin-bottom: 0; }
+.syllabus-group-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.syllabus-list {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.syllabus-list li { margin: 2px 0; }
+
+@media (max-width: 720px) {
+  .tt.exam-tt thead th.date-col-head { width: 104px; }
+  .syllabus-grid { columns: 1; }
+}
+
+/* Dark theme deltas (mirrors timetable.css) */
+html.dark .tt.exam-tt tr.is-next td { background: var(--ppp-red-soft); }
+html.dark .tt.exam-tt tr.is-next td.exam-subject .subject { color: #F0A48B; }
+html.dark .exam-note { background: #3A2620; border-color: var(--ppp-red); color: #F0A48B; }
+html.dark .exam-tag { color: var(--bone); }
+html.dark .syllabus-subject { color: #F0A48B; }

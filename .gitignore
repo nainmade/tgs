@@ -1,0 +1,9 @@
+# Plaintext source for the password-protected exam page — NEVER commit this.
+# Only the encrypted exams.html (repo root) is committed. See scripts/encrypt-exams.sh.
+src/exams.html
+
+# StatiCrypt scratch output dir
+.staticrypt-out/
+
+# Conductor machine-local workspace config (personal, not shared)
+.conductor/settings.local.toml
