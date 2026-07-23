@@ -168,8 +168,7 @@ body.syllabus-open { overflow: hidden; }
 .syllabus-dialog-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
   flex: none;
   padding: 18px 20px 14px;
   border-bottom: 1px solid var(--rule);
@@ -183,6 +182,8 @@ body.syllabus-open { overflow: hidden; }
   letter-spacing: 0.01em;
   line-height: 1.35;
   color: var(--ink);
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .syllabus-dialog-close {
   flex: none;
@@ -325,7 +326,7 @@ html.dark .syllabus-dialog::before { background: var(--rule); }
   gap: 6px;
   height: 30px;
   padding: 0 12px;
-  margin: -6px 4px -6px 0;
+  margin: -6px 0;
   background: transparent;
   border: 1px solid var(--rule);
   color: var(--ink-2);
