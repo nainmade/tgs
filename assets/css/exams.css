@@ -60,6 +60,33 @@
 .tt.exam-tt td.exam-subject { border-left: 3px solid var(--ppp-red); }
 .tt.exam-tt td.exam-subject .subject { color: var(--ink); }
 
+/* Subject name → opens that paper's syllabus dialog */
+.tt.exam-tt td.exam-subject .subject-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: inherit;
+  color: var(--ppp-red-deep);
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+  background-image: linear-gradient(var(--ppp-red), var(--ppp-red));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.28s cubic-bezier(.2,.7,.2,1);
+  padding-bottom: 1px;
+}
+.tt.exam-tt td.exam-subject .subject-link:hover,
+.tt.exam-tt td.exam-subject .subject-link:focus-visible {
+  background-size: 100% 1px;
+  outline: none;
+}
+.tt.exam-tt tr.is-next td.exam-subject .subject-link { color: var(--ppp-red-deep); font-weight: 700; }
+
 /* Duration + time columns — mono, quiet */
 .tt.exam-tt td.exam-duration,
 .tt.exam-tt td.exam-time {
@@ -91,17 +118,73 @@
 .tt.exam-tt tr.is-past td { opacity: 0.5; }
 
 /* =========================================================================
-   Syllabus / portion
+   Syllabus dialog (opened from subject links in the schedule)
    ========================================================================= */
-.syllabus-grid {
-  margin-top: 20px;
-  columns: 2;
-  column-gap: 32px;
+body.syllabus-open { overflow: hidden; }
+
+.syllabus-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(15, 15, 15, 0.35);
 }
-.syllabus-card {
-  break-inside: avoid;
-  margin-bottom: 24px;
+
+.syllabus-dialog {
+  position: fixed;
+  z-index: 90;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(520px, calc(100vw - 32px));
+  max-height: min(80vh, 720px);
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-lift);
 }
+.syllabus-dialog[hidden],
+.syllabus-backdrop[hidden] { display: none !important; }
+
+.syllabus-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex: none;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--ink);
+  color: var(--bone);
+}
+.syllabus-dialog-head h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+}
+.syllabus-dialog-close {
+  flex: none;
+  background: transparent;
+  border: none;
+  color: var(--bone);
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  padding: 0 2px;
+}
+.syllabus-dialog-close:hover,
+.syllabus-dialog-close:focus-visible { color: var(--white); outline: none; }
+
+.syllabus-dialog-body {
+  overflow: auto;
+  padding: 16px 18px 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.syllabus-card { margin-bottom: 20px; }
+.syllabus-card:last-child { margin-bottom: 0; }
 .syllabus-subject {
   font-size: 11px;
   font-weight: 700;
@@ -128,15 +211,34 @@
   font-size: 13px;
 }
 .syllabus-list li { margin: 2px 0; }
+.syllabus-empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+}
 
 @media (max-width: 720px) {
   .tt.exam-tt thead th.date-col-head { width: 104px; }
-  .syllabus-grid { columns: 1; }
+  .syllabus-dialog {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+    width: 100%;
+    max-height: 85vh;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
 }
 
 /* Dark theme deltas (mirrors timetable.css) */
 html.dark .tt.exam-tt tr.is-next td { background: var(--ppp-red-soft); }
-html.dark .tt.exam-tt tr.is-next td.exam-subject .subject { color: #F0A48B; }
+html.dark .tt.exam-tt tr.is-next td.exam-subject .subject,
+html.dark .tt.exam-tt tr.is-next td.exam-subject .subject-link { color: #F0A48B; }
+html.dark .tt.exam-tt td.exam-subject .subject-link { color: #F0A48B; }
 html.dark .exam-note { background: #3A2620; border-color: var(--ppp-red); color: #F0A48B; }
 html.dark .exam-tag { color: var(--bone); }
+html.dark .syllabus-dialog { background: var(--bg-surface); border-color: var(--rule); }
 html.dark .syllabus-subject { color: #F0A48B; }
