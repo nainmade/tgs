@@ -168,7 +168,7 @@ body.syllabus-open { overflow: hidden; }
 .syllabus-dialog-head {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 0;
   flex: none;
   padding: 18px 20px 14px;
   border-bottom: 1px solid var(--rule);
@@ -184,15 +184,17 @@ body.syllabus-open { overflow: hidden; }
   color: var(--ink);
   flex: 1 1 auto;
   min-width: 0;
+  order: 1;
 }
 .syllabus-dialog-close {
+  order: 3;
   flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
-  margin: -6px -6px -6px 0;
+  margin: -6px -6px -6px 16px;
   background: transparent;
   border: none;
   color: var(--ink-3);
@@ -320,13 +322,14 @@ html.dark .syllabus-dialog::before { background: var(--rule); }
    Drawer "Download as PDF" button (injected by assets/js/exams.js)
    ========================================================================= */
 .syllabus-download-pdf {
+  order: 2;
   flex: none;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   height: 30px;
   padding: 0 12px;
-  margin: -6px 0;
+  margin: -6px 0 -6px auto;
   background: transparent;
   border: 1px solid var(--rule);
   color: var(--ink-2);
