@@ -118,7 +118,8 @@
 .tt.exam-tt tr.is-past td { opacity: 0.5; }
 
 /* =========================================================================
-   Syllabus dialog (opened from subject links in the schedule)
+   Syllabus drawer (opened from subject links in the schedule)
+   Right-side slide-in on desktop, bottom sheet on mobile.
    ========================================================================= */
 body.syllabus-open { overflow: hidden; }
 
@@ -126,25 +127,43 @@ body.syllabus-open { overflow: hidden; }
   position: fixed;
   inset: 0;
   z-index: 80;
-  background: rgba(15, 15, 15, 0.35);
+  background: rgba(15, 15, 15, 0.28);
+  animation: syllabus-fade-in 180ms ease-out;
 }
 
 .syllabus-dialog {
   position: fixed;
   z-index: 90;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(520px, calc(100vw - 32px));
-  max-height: min(80vh, 720px);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(460px, 92vw);
   display: flex;
   flex-direction: column;
   background: var(--white);
-  border: 1px solid var(--ink);
-  box-shadow: var(--shadow-lift);
+  border-left: 1px solid var(--rule);
+  box-shadow: -12px 0 32px rgba(15, 15, 15, 0.10);
+  animation: syllabus-slide-in-right 240ms cubic-bezier(.2, .7, .2, 1);
 }
 .syllabus-dialog[hidden],
 .syllabus-backdrop[hidden] { display: none !important; }
+
+@keyframes syllabus-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes syllabus-slide-in-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes syllabus-slide-in-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .syllabus-backdrop,
+  .syllabus-dialog { animation: none; }
+}
 
 .syllabus-dialog-head {
   display: flex;
@@ -152,85 +171,128 @@ body.syllabus-open { overflow: hidden; }
   justify-content: space-between;
   gap: 12px;
   flex: none;
-  padding: 14px 16px;
+  padding: 18px 20px 14px;
   border-bottom: 1px solid var(--rule);
-  background: var(--ink);
-  color: var(--bone);
+  background: var(--white);
+  color: var(--ink);
 }
 .syllabus-dialog-head h2 {
   margin: 0;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   line-height: 1.35;
+  color: var(--ink);
 }
 .syllabus-dialog-close {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -6px -6px -6px 0;
   background: transparent;
   border: none;
-  color: var(--bone);
+  color: var(--ink-3);
   cursor: pointer;
   font-size: 22px;
   line-height: 1;
-  padding: 0 2px;
+  border-radius: 50%;
+  transition: background 140ms ease, color 140ms ease;
 }
 .syllabus-dialog-close:hover,
-.syllabus-dialog-close:focus-visible { color: var(--white); outline: none; }
+.syllabus-dialog-close:focus-visible {
+  background: var(--bg-alt);
+  color: var(--ink);
+  outline: none;
+}
 
 .syllabus-dialog-body {
   overflow: auto;
-  padding: 16px 18px 20px;
+  padding: 20px 22px 28px;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
-.syllabus-card { margin-bottom: 20px; }
+.syllabus-card { margin-bottom: 26px; }
 .syllabus-card:last-child { margin-bottom: 0; }
 .syllabus-subject {
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ppp-red-deep);
-  margin: 0 0 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px dotted var(--rule);
+  margin: 0 0 14px;
 }
-.syllabus-group { margin-bottom: 10px; }
+.syllabus-group { margin-bottom: 18px; }
 .syllabus-group:last-child { margin-bottom: 0; }
 .syllabus-group-title {
   font-size: 13px;
   font-weight: 700;
   color: var(--ink);
-  margin: 0 0 4px;
+  margin: 0 0 6px;
+  letter-spacing: 0.01em;
 }
 .syllabus-list {
   margin: 0;
-  padding-left: 18px;
-  line-height: 1.5;
+  padding-left: 0;
+  list-style: none;
+  line-height: 1.55;
   color: var(--ink-2);
-  font-size: 13px;
+  font-size: 14px;
 }
-.syllabus-list li { margin: 2px 0; }
+.syllabus-list li {
+  position: relative;
+  margin: 4px 0;
+  padding-left: 16px;
+}
+.syllabus-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ppp-red);
+  opacity: 0.7;
+}
 .syllabus-empty {
   margin: 0;
   font-size: 13px;
   color: var(--ink-3);
+  font-style: italic;
 }
 
 @media (max-width: 720px) {
   .tt.exam-tt thead th.date-col-head { width: 104px; }
   .syllabus-dialog {
     top: auto;
-    bottom: 0;
     left: 0;
     right: 0;
-    transform: none;
+    bottom: 0;
     width: 100%;
-    max-height: 85vh;
+    max-height: 88vh;
     border-left: none;
-    border-right: none;
-    border-bottom: none;
+    border-top: 1px solid var(--rule);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    box-shadow: 0 -8px 32px rgba(15, 15, 15, 0.12);
+    animation: syllabus-slide-in-up 260ms cubic-bezier(.2, .7, .2, 1);
   }
+  .syllabus-dialog::before {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 4px;
+    margin: 8px auto 0;
+    border-radius: 999px;
+    background: var(--rule);
+    flex: none;
+  }
+  .syllabus-dialog-head { padding-top: 10px; }
 }
 
 /* Dark theme deltas (mirrors timetable.css) */
@@ -240,5 +302,168 @@ html.dark .tt.exam-tt tr.is-next td.exam-subject .subject-link { color: #F0A48B;
 html.dark .tt.exam-tt td.exam-subject .subject-link { color: #F0A48B; }
 html.dark .exam-note { background: #3A2620; border-color: var(--ppp-red); color: #F0A48B; }
 html.dark .exam-tag { color: var(--bone); }
-html.dark .syllabus-dialog { background: var(--bg-surface); border-color: var(--rule); }
+html.dark .syllabus-backdrop { background: rgba(0, 0, 0, 0.55); }
+html.dark .syllabus-dialog {
+  background: var(--bg-surface);
+  border-left-color: var(--rule);
+  box-shadow: -12px 0 32px rgba(0, 0, 0, 0.4);
+}
+html.dark .syllabus-dialog-head { background: var(--bg-surface); }
+html.dark .syllabus-dialog-head h2 { color: var(--ink); }
+html.dark .syllabus-dialog-close:hover,
+html.dark .syllabus-dialog-close:focus-visible { background: rgba(255, 255, 255, 0.06); }
 html.dark .syllabus-subject { color: #F0A48B; }
+html.dark .syllabus-dialog::before { background: var(--rule); }
+
+/* =========================================================================
+   Drawer "Download as PDF" button (injected by assets/js/exams.js)
+   ========================================================================= */
+.syllabus-download-pdf {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  margin: -6px 4px -6px 0;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+.syllabus-download-pdf svg { display: block; }
+.syllabus-download-pdf:hover,
+.syllabus-download-pdf:focus-visible {
+  background: var(--ppp-red);
+  border-color: var(--ppp-red);
+  color: var(--white);
+  outline: none;
+}
+html.dark .syllabus-download-pdf { color: var(--ink-2); border-color: var(--rule); }
+html.dark .syllabus-download-pdf:hover,
+html.dark .syllabus-download-pdf:focus-visible { color: var(--white); }
+
+/* =========================================================================
+   "All syllabi" accordion (injected by assets/js/exams.js)
+   ========================================================================= */
+.syllabi-accordion {
+  margin: 40px 0 32px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+}
+.syllabi-accordion > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  color: var(--ink);
+  transition: background 140ms ease;
+}
+.syllabi-accordion > summary::-webkit-details-marker { display: none; }
+.syllabi-accordion > summary::marker { content: ''; }
+.syllabi-accordion > summary:hover { background: var(--bg-alt); }
+.syllabi-accordion-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.syllabi-accordion-hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+.syllabi-accordion > summary::after {
+  content: '+';
+  margin-left: auto;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ink-3);
+  transition: color 140ms ease;
+}
+.syllabi-accordion[open] > summary::after { content: '−'; color: var(--ppp-red); }
+
+.syllabi-accordion-body {
+  padding: 8px 20px 24px;
+  border-top: 1px solid var(--rule);
+}
+.syllabi-item { padding-top: 20px; }
+.syllabi-item + .syllabi-item {
+  margin-top: 20px;
+  border-top: 1px dashed var(--rule);
+}
+.syllabi-item-title {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ppp-red-deep);
+}
+.syllabi-item-body {
+  padding: 0;
+  overflow: visible;
+}
+html.dark .syllabi-accordion { background: var(--bg-surface); border-color: var(--rule); }
+html.dark .syllabi-accordion > summary:hover { background: rgba(255, 255, 255, 0.03); }
+html.dark .syllabi-item-title { color: #F0A48B; }
+
+@media (max-width: 720px) {
+  .syllabi-accordion-hint { display: none; }
+  .syllabi-accordion-body { padding-inline: 16px; }
+}
+
+/* =========================================================================
+   Print — when a drawer is being saved as PDF, isolate it on the page.
+   ========================================================================= */
+@media print {
+  @page { margin: 18mm; }
+  body.printing-syllabus { background: #fff !important; overflow: visible !important; }
+  body.printing-syllabus * { visibility: hidden !important; }
+  body.printing-syllabus .syllabus-dialog,
+  body.printing-syllabus .syllabus-dialog * { visibility: visible !important; }
+  body.printing-syllabus .syllabus-backdrop { display: none !important; }
+  body.printing-syllabus .syllabus-download-pdf,
+  body.printing-syllabus .syllabus-dialog-close { display: none !important; }
+  body.printing-syllabus .syllabus-dialog {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    width: 100% !important;
+    max-height: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  body.printing-syllabus .syllabus-dialog-head {
+    background: #fff !important;
+    color: #000 !important;
+    padding: 0 0 12px !important;
+    border-bottom: 1px solid #ccc !important;
+  }
+  body.printing-syllabus .syllabus-dialog-head h2 { color: #000 !important; }
+  body.printing-syllabus .syllabus-dialog-body {
+    overflow: visible !important;
+    padding: 16px 0 0 !important;
+    color: #000 !important;
+  }
+  body.printing-syllabus .syllabus-subject,
+  body.printing-syllabus .syllabus-group-title { color: #000 !important; }
+  body.printing-syllabus .syllabus-list { color: #222 !important; }
+  body.printing-syllabus .syllabus-list li::before { background: #444 !important; opacity: 1 !important; }
+}

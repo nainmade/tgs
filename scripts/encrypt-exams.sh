@@ -51,6 +51,54 @@ npx --yes staticrypt "$SRC" \
 mv -f "$OUT_DIR/exams.html" exams.html
 rm -rf "$OUT_DIR"
 
+# Patch the generated file to suppress the flash of StatiCrypt's big loader
+# for the common fast-path (Remember-me auto-decrypt). The spinner only appears
+# if decryption actually takes >350ms, and is smaller / brand-tinted when it does.
+python3 - <<'PY'
+from pathlib import Path
+p = Path('exams.html')
+html = p.read_text(encoding='utf-8')
+inject = """<style>
+/* Gera: replace StatiCrypt's full-page spinner with a subtle 2px top progress
+   bar during decrypt (added by encrypt-exams.sh). PBKDF2's 600k iterations can
+   take 500ms–2s, so we still want *some* indicator, just not a huge one.
+   StatiCrypt adds the `.hidden` class to #staticrypt_loading when decryption
+   finishes, which sets display:none — so the bar goes away on its own. */
+.staticrypt-body { background: #F4F1EC; margin: 0; }
+#staticrypt_loading {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 2px; padding: 0; margin: 0;
+  background: rgba(218, 75, 38, 0.14);
+  overflow: hidden;
+  z-index: 9999;
+  display: block !important;
+  align-items: initial; justify-content: initial;
+}
+#staticrypt_loading::before {
+  content: "";
+  position: absolute; top: 0; bottom: 0; left: 0;
+  width: 30%;
+  background: #DA4B26;
+  animation: gera-loader-slide 1.1s cubic-bezier(.4,0,.2,1) infinite;
+}
+.staticrypt-spinner { display: none !important; }
+@keyframes gera-loader-slide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(430%); }
+}
+</style>
+</head>"""
+if '</head>' not in html:
+  raise SystemExit('no </head> tag in exams.html — cannot inject loader-hide styles')
+marker = 'Gera: hide StatiCrypt'
+if marker not in html:
+  html = html.replace('</head>', inject, 1)
+  p.write_text(html, encoding='utf-8')
+  print('  ✓ Patched loader styles into exams.html')
+else:
+  print('  ✓ Loader styles already present in exams.html')
+PY
+
 echo ""
 echo "✓ Wrote encrypted exams.html (repo root)."
 echo "  Next: git add exams.html assets/css/exams.css .staticrypt.json && git commit && git push"
