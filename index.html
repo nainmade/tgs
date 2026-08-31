@@ -872,7 +872,8 @@ html.dark .view-switch .track { border-color: var(--rule); }
     <nav class="page-switch" aria-label="Page sections">
       <a href="index.html" data-nav="holiday-planner" aria-current="page">Holiday Planner</a>
       <a href="timetable.html" data-nav="timetable">Timetable</a>
-      <a href="exams.html" data-nav="exams">Exams</a>
+      <!-- Exams tab hidden — Term I exams over; restore for next term's exams.
+      <a href="exams.html" data-nav="exams">Exams</a> -->
     </nav>
 
     <header class="masthead">
@@ -1092,12 +1093,13 @@ html.dark .view-switch .track { border-color: var(--rule); }
       { kind: 'holiday', date: 'Tue 20', title: 'Dussehra' },
     ]},
     { m: 'November',  y: 2026, events: [
+      { kind: 'event',   date: 'Wed 4',  title: 'Sports Day · Early Years – Grade 5' },
+      { kind: 'event',   date: 'Thu 5',  title: 'Sports Day · Grades 6–12' },
       { kind: 'break',   date: '6–15',   title: 'Diwali Break' },
       { kind: 'exam',    date: 'TBD',    title: 'Assessment Week · Grades 6–12' },
     ]},
     { m: 'December',  y: 2026, events: [
       { kind: 'holiday', date: 'Thu 3',  title: 'St Francis Xavier Feast' },
-      { kind: 'event',   date: 'TBD',    title: 'Sports Day' },
       { kind: 'event',   date: 'TBD',    title: 'Winter Fete' },
       { kind: 'holiday', date: 'Sat 19', title: 'Goa Liberation Day' },
       { kind: 'break',   date: '23–31',  title: 'Winter Break (to 4 Jan)' },
