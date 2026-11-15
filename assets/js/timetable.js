@@ -37,8 +37,8 @@
 
 const DATA = {
   meta: {
-    generated: "29-08-2026",
-    generatedDisplay: "31 Aug 2026"
+    generated: "15-11-2026",
+    generatedDisplay: "16 Nov 2026"
   },
 
   days: ["Mo", "Tu", "We", "Th", "Fr"],
@@ -70,211 +70,211 @@ const DATA = {
   ],
 
   // Subjects shown with the whole-school activity highlight (coral background)
-  activitySubjects: ["DMA", "Sports", "M/D", "Drama", "Ev'ts", "Clubs",
-                     "SDP", "SDP EY", "SDP 1", "SDP 2", "MP"],
+  activitySubjects: ["DMA", "Sports", "Drama", "Ev'ts", "Clubs",
+                     "ADP 1", "ADP 2", "EY ADP", "MDD"],
 
   schedules: {
 
     /* ─── PRE-PRIMARY ──────────────────────────────────────────────────── */
     "NUR": {
       label: "Nursery",
-      Mo: ["SDP", "SDP EY", "UTW", "Lit'cy", "Lib", "", "", "", "", ""],
-      Tu: ["SDP EY", "Num", "Lit'cy", "UTW", "Mus", "", "", "", "", ""],
-      We: ["Drama", "Art", "UTW", "Num", "Dan", "", "", "", "", ""],
-      Th: ["SDP", "SDP EY", "Num", "Lit'cy", "Art", "", "", "", "", ""],
-      Fr: ["SDP EY", "UTW", "PE", "Num", "Lit'cy", "", "", "", "", ""]
+      Mo: ["Num", "OP", "UTW", "Lit'cy", "Lib", "", "", "", "", ""],
+      Tu: ["Num", "UTW", "Lit'cy", "EY ADP", "EY ADP", "", "", "", "", ""],
+      We: ["Lit'cy", "Art", "UTW", "Num", "ST", "", "", "", "", ""],
+      Th: ["Num", "PE", "UTW", "Lit'cy", "Art", "", "", "", "", ""],
+      Fr: ["EY ADP", "EY ADP", "UTW", "Num", "Lit'cy", "", "", "", "", ""]
     },
     "LKG-A": {
       label: "LKG-A",
-      Mo: ["SDP", "SDP EY", "UTW", "Art", "Num", "", "", "", "", ""],
-      Tu: ["SDP EY", "Art", "Lit'cy", "PE", "UTW", "", "", "", "", ""],
-      We: ["Lit'cy", "UTW", "Drama", "Num", "Lib", "", "", "", "", ""],
-      Th: ["SDP", "SDP EY", "Num", "Mus", "Lit'cy", "", "", "", "", ""],
-      Fr: ["SDP EY", "Lit'cy", "UTW", "Num", "Dan", "", "", "", "", ""]
+      Mo: ["Num", "Lit'cy", "UTW", "Art", "UTW", "", "", "", "", ""],
+      Tu: ["Num", "Art", "Lit'cy", "EY ADP", "EY ADP", "", "", "", "", ""],
+      We: ["Lit'cy", "UTW", "Lit'cy", "Num", "Lib", "", "", "", "", ""],
+      Th: ["Num", "UTW", "PE", "Lit'cy", "ST", "", "", "", "", ""],
+      Fr: ["EY ADP", "EY ADP", "Lit'cy", "UTW", "Num", "", "", "", "", ""]
     },
     "UKG-A": {
       label: "UKG-A",
-      Mo: ["SDP", "SDP EY", "Art", "PE", "Lit'cy", "Num", "", "", "", ""],
-      Tu: ["SDP EY", "Num", "OP/ED", "Mus", "UTW", "Lit'cy", "", "", "", ""],
-      We: ["Sports", "Num", "Lib", "Drama", "Lit'cy", "UTW", "", "", "", ""],
-      Th: ["SDP", "SDP EY", "Art", "Lit'cy", "UTW", "Num", "", "", "", ""],
-      Fr: ["SDP EY", "Hin", "Num", "UTW", "Lit'cy", "Dan", "", "", "", ""]
+      Mo: ["Num", "UTW", "Art", "PE", "Lit'cy", "Num", "", "", "", ""],
+      Tu: ["Num", "Hin", "UTW", "EY ADP", "EY ADP", "Lit'cy", "", "", "", ""],
+      We: ["Sports", "Num", "Lib", "UTW", "Lit'cy", "OP", "", "", "", ""],
+      Th: ["Lit'cy", "OP", "Art", "Lit'cy", "UTW", "Num", "", "", "", ""],
+      Fr: ["EY ADP", "EY ADP", "Num", "UTW", "Lit'cy", "PE", "", "", "", ""]
     },
     "UKG-B": {
       label: "UKG-B",
-      Mo: ["SDP", "SDP EY", "Lit'cy", "Lib", "Num", "UTW", "", "", "", ""],
-      Tu: ["SDP EY", "Num", "Art", "OP/ED", "Lit'cy", "UTW", "", "", "", ""],
-      We: ["Sports", "UTW", "Num", "Hin", "PE", "Lit'cy", "", "", "", ""],
-      Th: ["SDP", "SDP EY", "Mus", "Drama", "Num", "Lit'cy", "", "", "", ""],
-      Fr: ["SDP EY", "Num", "Dan", "UTW", "Art", "Lit'cy", "", "", "", ""]
+      Mo: ["PE", "UTW", "Lit'cy", "Lib", "Num", "Lit'cy", "", "", "", ""],
+      Tu: ["OP", "Num", "Art", "EY ADP", "EY ADP", "UTW", "", "", "", ""],
+      We: ["Sports", "UTW", "Num", "Lit'cy", "Art", "Num", "", "", "", ""],
+      Th: ["UTW", "Lit'cy", "Num", "PE", "Lit'cy", "Hin", "", "", "", ""],
+      Fr: ["EY ADP", "EY ADP", "Num", "Lit'cy", "OP", "UTW", "", "", "", ""]
     },
 
     /* ─── PRIMARY ──────────────────────────────────────────────────────── */
     "Gr1A": {
       label: "Grade 1A",
-      Mo: ["Eng", "Math", "Dan", "ICT", "Sci", "LUN", "Math", "Eng", "Hin/Fr", "Sci"],
-      Tu: ["Math", "Yog", "Eng", "Sci", "Hin/Fr", "LUN", "Lib", "GP", "PE", "Sci"],
+      Mo: ["Eng", "Math", "Math", "ICT", "Sci", "LUN", "Art", "Eng", "Sci", "Hin/Fr"],
+      Tu: ["ADP 1", "ADP 1", "GP", "Math", "Hin/Fr", "LUN", "Lib", "Sci", "PE", "Sci"],
       We: ["Sports", "Hin/Fr", "Art", "Hin/Fr", "DMA", "LUN", "Sci", "PE", "Eng", "CT"],
-      Th: ["Math", "Mus", "Math", "Art", "Sci", "LUN", "Hin/Fr", "Eng", "Eng", "Kon"],
-      Fr: ["MP", "Math", "Drama", "ICT", "Math", "LUN", "Eng", "Lib", "DMA", "Ev'ts"]
+      Th: ["Math", "Mus", "Math", "ADP 2", "ADP 2", "LUN", "Hin/Fr", "Eng", "Eng", "Kon"],
+      Fr: ["Yog", "Sci", "Drama", "ICT", "Math", "LUN", "Eng", "Lib", "DMA", "Ev'ts"]
     },
     "Gr2A": {
       label: "Grade 2A",
-      Mo: ["Math", "Math", "Eng", "Sci", "PE", "LUN", "Hin/Fr", "Eng", "Art", "Kon"],
-      Tu: ["Eng", "Math", "Sci", "Lib", "Math", "LUN", "CT", "ICT", "Hin/Fr", "Sci"],
-      We: ["Sports", "Hin/Fr", "Math", "GP", "DMA", "LUN", "Sci", "Eng", "Eng", "Mus"],
-      Th: ["Dan", "Eng", "Yog", "Lib", "PE", "LUN", "Math", "Art", "Sci", "Hin/Fr"],
-      Fr: ["MP", "Drama", "Hin/Fr", "Sci", "ICT", "LUN", "Eng", "Math", "DMA", "Ev'ts"]
+      Mo: ["Math", "Math", "Hin/Fr", "Sci", "PE", "LUN", "Sci", "Eng", "Art", "Kon"],
+      Tu: ["ADP 1", "ADP 1", "PE", "Sci", "Lib", "LUN", "CT", "ICT", "Math", "Sci"],
+      We: ["Sports", "Hin/Fr", "Math", "GP", "DMA", "LUN", "Hin/Fr", "Eng", "Eng", "Mus"],
+      Th: ["Hin/Fr", "Eng", "ICT", "ADP 2", "ADP 2", "LUN", "Hin/Fr", "Art", "Sci", "Eng"],
+      Fr: ["Yog", "Math", "Eng", "Sci", "Drama", "LUN", "Lib", "Math", "DMA", "Ev'ts"]
     },
     "Gr2B": {
       label: "Grade 2B",
-      Mo: ["Eng", "ICT", "Math", "Eng", "PE", "LUN", "Hin/Fr", "Math", "Sci", "Kon"],
-      Tu: ["Math", "Lib", "Sci", "Eng", "Eng", "LUN", "Sci", "Art", "Hin/Fr", "CT"],
-      We: ["Sports", "Hin/Fr", "Math", "Sci", "DMA", "LUN", "Eng", "Sci", "Math", "Mus"],
-      Th: ["Dan", "Math", "Yog", "Eng", "PE", "LUN", "ICT", "GP", "Lib", "Hin/Fr"],
-      Fr: ["MP", "Drama", "Hin/Fr", "Eng", "Math", "LUN", "Sci", "Art", "DMA", "Ev'ts"]
+      Mo: ["Eng", "ICT", "Hin/Fr", "Math", "PE", "LUN", "Eng", "Math", "Sci", "Kon"],
+      Tu: ["ADP 1", "ADP 1", "PE", "Eng", "Eng", "LUN", "Math", "Art", "Sci", "CT"],
+      We: ["Sports", "Hin/Fr", "Math", "Sci", "DMA", "LUN", "Hin/Fr", "Sci", "Math", "Mus"],
+      Th: ["Hin/Fr", "ICT", "Math", "ADP 2", "ADP 2", "LUN", "Hin/Fr", "GP", "Lib", "Sci"],
+      Fr: ["Yog", "Lib", "Eng", "Eng", "Drama", "LUN", "Sci", "Art", "DMA", "Ev'ts"]
     },
     "Gr3A": {
       label: "Grade 3A",
       Mo: ["Math", "LeadCurr", "PE", "Eng", "Sci", "LUN", "Math", "Hin/Fr", "Lib", "GP"],
-      Tu: ["Art", "GP", "Eng", "Mus", "Eng", "LUN", "Hin/Fr", "Sci", "ICT", "Math"],
-      We: ["Math", "Sci", "Sports", "GP", "DMA", "LUN", "ICT", "Eng", "Clubs", "Kon"],
-      Th: ["Sci", "Dan", "Drama", "Hin/Fr", "Art", "LUN", "Math", "GP", "PE", "Eng"],
-      Fr: ["MP", "Sci", "Lib", "Math", "Hin/Fr", "LUN", "Eng", "ICT", "DMA", "Ev'ts"]
+      Tu: ["ADP 1", "ADP 1", "Eng", "GP", "ICT", "LUN", "Sci", "Math", "Hin/Fr", "Math"],
+      We: ["Math", "Sci", "Sports", "Hin/Fr", "DMA", "LUN", "ICT", "Art", "Clubs", "Kon"],
+      Th: ["Sci", "Art", "Eng", "ADP 2", "ADP 2", "LUN", "Math", "GP", "PE", "Eng"],
+      Fr: ["GP", "Sci", "Lib", "Eng", "Eng", "LUN", "GP", "ICT", "DMA", "Ev'ts"]
     },
     "Gr3B": {
       label: "Grade 3B",
-      Mo: ["Sci", "Eng", "PE", "GP", "ICT", "LUN", "Math", "Hin/Fr", "Eng", "Kon"],
-      Tu: ["Math", "Mus", "Lib", "Art", "Sci", "LUN", "Hin/Fr", "GP", "Eng", "Sci"],
-      We: ["Sci", "ICT", "Sports", "Art", "DMA", "LUN", "Math", "GP", "Clubs", "Eng"],
-      Th: ["Drama", "Math", "Dan", "Hin/Fr", "Math", "LUN", "Lib", "Eng", "PE", "LeadCurr"],
-      Fr: ["MP", "Eng", "ICT", "GP", "Hin/Fr", "LUN", "Sci", "Math", "DMA", "Ev'ts"]
+      Mo: ["Sci", "Lib", "PE", "Math", "ICT", "LUN", "GP", "Hin/Fr", "Eng", "Kon"],
+      Tu: ["ADP 1", "ADP 1", "Math", "Sci", "Art", "LUN", "Eng", "GP", "Hin/Fr", "Sci"],
+      We: ["Sci", "ICT", "Sports", "Hin/Fr", "DMA", "LUN", "Math", "GP", "Clubs", "Eng"],
+      Th: ["Eng", "Math", "Math", "ADP 2", "ADP 2", "LUN", "Lib", "Eng", "PE", "LeadCurr"],
+      Fr: ["GP", "Art", "ICT", "GP", "Sci", "LUN", "Eng", "Math", "DMA", "Ev'ts"]
     },
     "Gr4A": {
       label: "Grade 4A",
-      Mo: ["SDP", "Art", "Hin/Fr", "GP", "Dan", "LUN", "Math", "Eng", "ICT", "Kon"],
-      Tu: ["SDP", "Sci", "Mus", "Hin/Fr", "PE", "LUN", "GP", "Math", "Eng", "Eng"],
-      We: ["Hin/Fr", "Lib", "Sports", "Math", "DMA", "LUN", "Eng", "Sci", "Clubs", "Lib"],
-      Th: ["SDP", "SDP", "Sci", "Math", "ICT", "LUN", "Math", "Sci", "Art", "GP"],
-      Fr: ["MP", "Sci", "Math", "Drama", "Eng", "LUN", "GP", "LeadCurr", "DMA", "Ev'ts"]
+      Mo: ["Sci", "Art", "Sci", "GP", "Eng", "LUN", "Math", "Eng", "ICT", "Hin/Fr"],
+      Tu: ["ADP 1", "ADP 1", "Hin/Fr", "Hin/Fr", "PE", "LUN", "GP", "Math", "Eng", "Eng"],
+      We: ["Math", "Eng", "Sports", "Math", "DMA", "LUN", "Art", "Sci", "Clubs", "Lib"],
+      Th: ["Lib", "GP", "Sci", "ADP 2", "ADP 2", "LUN", "Math", "ICT", "Sci", "Kon"],
+      Fr: ["ICT", "Math", "PE", "Sci", "Eng", "LUN", "GP", "LeadCurr", "DMA", "Ev'ts"]
     },
     "Gr4B": {
       label: "Grade 4B",
-      Mo: ["SDP", "Sci", "Hin/Fr", "Dan", "Art", "LUN", "Eng", "Eng", "Math", "Sci"],
-      Tu: ["SDP", "Math", "ICT", "Hin/Fr", "PE", "LUN", "Kon", "GP", "Sci", "Lib"],
-      We: ["Hin/Fr", "Drama", "Sports", "Sci", "DMA", "LUN", "Math", "Mus", "Clubs", "GP"],
-      Th: ["SDP", "SDP", "Eng", "GP", "Math", "LUN", "Sci", "LeadCurr", "ICT", "Eng"],
-      Fr: ["MP", "Lib", "Eng", "Art", "Math", "LUN", "Math", "GP", "DMA", "Ev'ts"]
+      Mo: ["ICT", "Sci", "GP", "Math", "Art", "LUN", "Eng", "Eng", "Math", "Hin/Fr"],
+      Tu: ["ADP 1", "ADP 1", "Hin/Fr", "Hin/Fr", "PE", "LUN", "Kon", "GP", "Sci", "Lib"],
+      We: ["Math", "Art", "Sports", "ICT", "DMA", "LUN", "Sci", "Eng", "Clubs", "GP"],
+      Th: ["Math", "Sci", "Eng", "ADP 2", "ADP 2", "LUN", "Sci", "LeadCurr", "ICT", "Eng"],
+      Fr: ["Lib", "Eng", "PE", "GP", "Math", "LUN", "Math", "Sci", "DMA", "Ev'ts"]
     },
     "Gr5A": {
       label: "Grade 5A",
-      Mo: ["SDP", "LeadCurr", "Math", "Hin/Fr", "Sci", "LUN", "GP", "Math", "PE", "Lib"],
-      Tu: ["SDP", "Sci", "Math", "Dan", "Math", "LUN", "ICT", "Eng", "Art", "GP"],
+      Mo: ["Eng", "LeadCurr", "Math", "Hin/Fr", "Sci", "LUN", "GP", "Math", "PE", "Lib"],
+      Tu: ["ADP 1", "ADP 1", "Eng", "Math", "Math", "LUN", "ICT", "Sci", "Art", "GP"],
       We: ["Math", "Eng", "Sports", "GP", "DMA", "LUN", "Mus", "Sci", "Clubs", "Hin/Fr"],
-      Th: ["SDP", "SDP", "Lib", "Sci", "Drama", "LUN", "Art", "Eng", "Eng", "Kon"],
-      Fr: ["MP", "Math", "Hin/Fr", "Sci", "GP", "LUN", "ICT", "Eng", "DMA", "Ev'ts"]
+      Th: ["Sci", "Drama", "Lib", "ADP 2", "ADP 2", "LUN", "Art", "Eng", "Eng", "GP"],
+      Fr: ["Math", "Hin/Fr", "Hin/Fr", "Sci", "Kon", "LUN", "ICT", "Eng", "DMA", "Ev'ts"]
     },
     "Gr5B": {
       label: "Grade 5B",
-      Mo: ["SDP", "Eng", "Math", "Hin/Fr", "Sci", "LUN", "ICT", "Art", "PE", "GP"],
-      Tu: ["SDP", "GP", "Sci", "Math", "Mus", "LUN", "Eng", "Lib", "LeadCurr", "Sci"],
+      Mo: ["Math", "Eng", "Math", "Hin/Fr", "Sci", "LUN", "ICT", "Art", "PE", "GP"],
+      Tu: ["ADP 1", "ADP 1", "Sci", "Math", "Mus", "LUN", "Eng", "Lib", "LeadCurr", "Sci"],
       We: ["ICT", "Math", "Sports", "GP", "DMA", "LUN", "Sci", "Eng", "Clubs", "Hin/Fr"],
-      Th: ["SDP", "SDP", "Eng", "Dan", "Math", "LUN", "Drama", "GP", "Math", "Kon"],
-      Fr: ["MP", "Eng", "Hin/Fr", "Math", "Lib", "LUN", "Art", "Sci", "DMA", "Ev'ts"]
+      Th: ["Eng", "Eng", "Sci", "ADP 2", "ADP 2", "LUN", "Drama", "GP", "Math", "Kon"],
+      Fr: ["GP", "Hin/Fr", "Hin/Fr", "Math", "Lib", "LUN", "Art", "Eng", "DMA", "Ev'ts"]
     },
 
     /* ─── MIDDLE (Gr6–Gr8: lunch at P7) ────────────────────────────────── */
     "Gr6A": {
       label: "Grade 6A",
-      Mo: ["MP", "SDP 1", "Eng", "Lib", "Hin/Fr", "Math", "LUN", "Hist", "GP", "Math"],
-      Tu: ["Hin/Fr", "SDP 2", "ICT", "Eng", "Bio", "PE", "LUN", "Art", "Math", "Phy"],
-      We: ["M/D", "Sports", "Eng", "Eng", "Chem", "Phy", "LUN", "Math", "Clubs", "ICT"],
-      Th: ["SDP 1", "SDP 2", "GP", "Eng", "Geog", "Chem", "LUN", "Hist", "DMA", "Ev'ts"],
-      Fr: ["SDP 1", "SDP 2", "Geog", "LeadCurr", "Bio", "Art", "LUN", "Hin/Fr", "Drama", "Math"]
+      Mo: ["Math", "Hin/Fr", "Eng", "Geog", "Hin/Fr", "DMA", "LUN", "Hist", "GP", "Math"],
+      Tu: ["Eng", "Art", "ICT", "Eng", "Bio", "DMA", "LUN", "MDD", "Math", "Phy"],
+      We: ["Hin/Fr", "Sports", "Eng", "Phy", "Chem", "Art", "LUN", "MDD", "Clubs", "ICT"],
+      Th: ["Bio", "Hin/Fr", "GP", "Math", "Lib", "Hist", "LUN", "Chem", "DMA", "Ev'ts"],
+      Fr: ["Eng", "PE", "Geog", "LeadCurr", "MDD", "MDD", "LUN", "Math", "Drama", "Math"]
     },
     "Gr6B": {
       label: "Grade 6B",
-      Mo: ["MP", "SDP 1", "Art", "ICT", "Hin/Fr", "Phy", "LUN", "GP", "Eng", "Bio"],
-      Tu: ["Hin/Fr", "SDP 2", "Chem", "Math", "Eng", "PE", "LUN", "Math", "Hist", "Drama"],
-      We: ["Math", "Sports", "M/D", "ICT", "Eng", "GP", "LUN", "Bio", "Clubs", "LeadCurr"],
-      Th: ["SDP 1", "SDP 2", "Lib", "Math", "Eng", "Geog", "LUN", "Phy", "DMA", "Ev'ts"],
-      Fr: ["SDP 1", "SDP 2", "Math", "Chem", "Eng", "Geog", "LUN", "Hin/Fr", "Art", "Hist"]
+      Mo: ["GP", "Hin/Fr", "Art", "ICT", "Hin/Fr", "DMA", "LUN", "Math", "Eng", "Bio"],
+      Tu: ["Math", "Geog", "Chem", "Math", "Eng", "DMA", "LUN", "MDD", "Hist", "Drama"],
+      We: ["Hin/Fr", "Sports", "Phy", "ICT", "Math", "Bio", "LUN", "MDD", "Clubs", "LeadCurr"],
+      Th: ["Eng", "Hin/Fr", "Lib", "Math", "GP", "Phy", "LUN", "Geog", "DMA", "Ev'ts"],
+      Fr: ["Math", "PE", "Eng", "Eng", "MDD", "MDD", "LUN", "Chem", "Art", "Hist"]
     },
     "Gr7A": {
       label: "Grade 7A",
-      Mo: ["MP", "SDP 1", "Hist", "Math", "Geog", "Chem", "LUN", "Eng", "Drama", "PE"],
-      Tu: ["ICT", "SDP 2", "M/D", "Math", "Phy", "Eng", "LUN", "GP", "Art", "Hin/Fr"],
-      We: ["Art", "Sports", "Hin/Fr", "Math", "Hist", "Chem", "LUN", "Eng", "Clubs", "Bio"],
-      Th: ["SDP 1", "SDP 2", "Math", "Eng", "Hin/Fr", "GP", "LUN", "Math", "DMA", "Ev'ts"],
-      Fr: ["SDP 1", "SDP 2", "Phy", "Bio", "ICT", "Lib", "LUN", "Geog", "LeadCurr", "Eng"]
+      Mo: ["Eng", "Eng", "Hist", "Math", "Geog", "DMA", "LUN", "Art", "Drama", "PE"],
+      Tu: ["GP", "ICT", "Math", "Hist", "Eng", "DMA", "LUN", "MDD", "Phy", "Hin/Fr"],
+      We: ["ICT", "Sports", "Hin/Fr", "Math", "Geog", "Chem", "LUN", "MDD", "Clubs", "Bio"],
+      Th: ["Hin/Fr", "Math", "Eng", "Lib", "GP", "Art", "LUN", "Math", "DMA", "Ev'ts"],
+      Fr: ["Chem", "Math", "Phy", "Bio", "MDD", "MDD", "LUN", "Hin/Fr", "LeadCurr", "Eng"]
     },
     "Gr7B": {
       label: "Grade 7B",
-      Mo: ["MP", "SDP 1", "Bio", "Art", "Eng", "Eng", "LUN", "Math", "ICT", "PE"],
-      Tu: ["Math", "SDP 2", "Eng", "Chem", "GP", "M/D", "LUN", "LeadCurr", "Bio", "Hin/Fr"],
-      We: ["Phy", "Sports", "Hin/Fr", "Eng", "Math", "Art", "LUN", "Hist", "Clubs", "Geog"],
-      Th: ["SDP 1", "SDP 2", "Phy", "Math", "Hin/Fr", "ICT", "LUN", "Eng", "DMA", "Ev'ts"],
-      Fr: ["SDP 1", "SDP 2", "Lib", "Geog", "Math", "Hist", "LUN", "GP", "Chem", "Drama"]
+      Mo: ["Art", "Chem", "Bio", "Hist", "Eng", "DMA", "LUN", "Math", "ICT", "PE"],
+      Tu: ["Math", "Math", "Eng", "Eng", "GP", "DMA", "LUN", "MDD", "Bio", "Hin/Fr"],
+      We: ["Phy", "Sports", "Hin/Fr", "Eng", "Math", "LeadCurr", "LUN", "MDD", "Clubs", "Geog"],
+      Th: ["Hin/Fr", "Eng", "Math", "Phy", "Art", "ICT", "LUN", "Hist", "DMA", "Ev'ts"],
+      Fr: ["Geog", "GP", "Lib", "Math", "MDD", "MDD", "LUN", "Hin/Fr", "Chem", "Drama"]
     },
     "Gr8A": {
       label: "Grade 8A",
-      Mo: ["MP", "SDP 1", "Eng", "Bio", "Chem", "Lib", "LUN", "Math", "Phy", "Hist"],
-      Tu: ["Eng", "SDP 2", "Geog", "Art", "GP", "LeadCurr", "LUN", "Math", "ICT", "Hist"],
-      We: ["Bio", "Sports", "Math", "Chem", "Hin/Fr", "M/D", "LUN", "ICT", "Clubs", "Drama"],
-      Th: ["SDP 1", "SDP 2", "Hin/Fr", "Math", "Phy", "Eng", "LUN", "GP", "DMA", "Ev'ts"],
-      Fr: ["SDP 1", "SDP 2", "Art", "Eng", "Eng", "Hin/Fr", "LUN", "Math", "Geog", "PE"]
+      Mo: ["Hin/Fr", "Math", "Eng", "Bio", "Chem", "DMA", "LUN", "Math", "Phy", "Hist"],
+      Tu: ["Eng", "Math", "Geog", "Art", "GP", "DMA", "LUN", "MDD", "ICT", "Hist"],
+      We: ["Bio", "Sports", "Hin/Fr", "Chem", "Hin/Fr", "Lib", "LUN", "MDD", "Clubs", "Drama"],
+      Th: ["GP", "ICT", "Hin/Fr", "Eng", "Phy", "Math", "LUN", "LeadCurr", "DMA", "Ev'ts"],
+      Fr: ["Eng", "Eng", "Art", "Math", "MDD", "MDD", "LUN", "Math", "Geog", "PE"]
     },
     "Gr8B": {
       label: "Grade 8B",
-      Mo: ["MP", "SDP 1", "ICT", "Hist", "Math", "Eng", "LUN", "GP", "Lib", "LeadCurr"],
-      Tu: ["Art", "SDP 2", "Chem", "Eng", "Math", "Bio", "LUN", "Phy", "Drama", "Geog"],
-      We: ["Bio", "Sports", "Math", "M/D", "Hin/Fr", "Eng", "LUN", "Geog", "Clubs", "Hist"],
-      Th: ["SDP 1", "SDP 2", "Hin/Fr", "Chem", "Math", "Eng", "LUN", "Phy", "DMA", "Ev'ts"],
-      Fr: ["SDP 1", "SDP 2", "Math", "Art", "GP", "Hin/Fr", "LUN", "Eng", "ICT", "PE"]
+      Mo: ["Hin/Fr", "Hist", "ICT", "Eng", "Math", "DMA", "LUN", "GP", "Lib", "LeadCurr"],
+      Tu: ["Art", "Chem", "Eng", "Eng", "Math", "DMA", "LUN", "MDD", "Drama", "Geog"],
+      We: ["Math", "Sports", "Hin/Fr", "Bio", "Hin/Fr", "Eng", "LUN", "MDD", "Clubs", "Hist"],
+      Th: ["Chem", "Phy", "Hin/Fr", "GP", "Math", "Eng", "LUN", "Phy", "DMA", "Ev'ts"],
+      Fr: ["Math", "Geog", "Math", "Art", "MDD", "MDD", "LUN", "Bio", "ICT", "PE"]
     },
 
     /* ─── SECONDARY (Gr9 & Gr10: elective bands) ───────────────────────── */
     "Gr9A": {
       label: "Grade 9A",
-      Mo: ["B1", "B6", "B8", "LeadCurr", "B-4", "B7", "LUN", "B5", "B3", "Drama"],
-      Tu: ["MP", "B2", "B-4", "B8", "B5", "B1", "LUN", "DMA", "Lib", "B7"],
-      We: ["B3", "B8", "B-4", "Sports", "B1", "B3", "LUN", "B2", "Clubs", "B6"],
-      Th: ["B-4", "B5", "B7", "B6", "B1", "B3", "LUN", "B2", "DMA", "Ev'ts"],
-      Fr: ["B3", "B6", "B5", "B8", "B-4", "PE", "LUN", "B7", "B1", "B2"]
+      Mo: ["B7", "B6", "LeadCurr", "B8", "B1", "DMA", "LUN", "B5", "B2", "B3"],
+      Tu: ["B3", "PE", "B-4", "B8", "B5", "DMA", "LUN", "MDD", "Lib", "B7"],
+      We: ["B3", "B8", "B-4", "Sports", "B1", "B3", "LUN", "MDD", "Clubs", "B6"],
+      Th: ["B-4", "B5", "B7", "B6", "B1", "B8", "LUN", "B2", "DMA", "Ev'ts"],
+      Fr: ["B3", "B6", "B5", "B-4", "MDD", "MDD", "LUN", "B7", "B1", "B2"]
     },
     "Gr9B": {
       label: "Grade 9B",
-      Mo: ["B1", "B-4", "B8", "B6", "B3", "B7", "LUN", "B5", "B6", "B1"],
-      Tu: ["MP", "B2", "B6", "B8", "B5", "B-4", "LUN", "DMA", "B3", "B7"],
-      We: ["B1", "B8", "B6", "Sports", "B3", "B-4", "LUN", "B2", "Clubs", "LeadCurr"],
-      Th: ["B1", "B5", "B7", "B-4", "B3", "Lib", "LUN", "B2", "DMA", "Ev'ts"],
-      Fr: ["B-4", "B3", "B5", "B8", "Drama", "PE", "LUN", "B7", "B1", "B2"]
+      Mo: ["B7", "B-4", "B6", "B8", "B3", "DMA", "LUN", "B5", "B2", "B1"],
+      Tu: ["B6", "PE", "B1", "B8", "B5", "DMA", "LUN", "MDD", "B3", "B7"],
+      We: ["B1", "B8", "B6", "Sports", "B3", "B-4", "LUN", "MDD", "Clubs", "LeadCurr"],
+      Th: ["Lib", "B5", "B7", "B-4", "B1", "B8", "LUN", "B2", "DMA", "Ev'ts"],
+      Fr: ["B-4", "B3", "B5", "B3", "MDD", "MDD", "LUN", "B7", "B6", "B2"]
     },
     "Gr10": {
       label: "Grade 10",
-      Mo: ["B2", "B1", "B8", "B-4", "B5", "B6", "LUN", "B3", "B7", "Lib"],
-      Tu: ["MP", "B3", "B2", "PE", "B3", "B7", "LUN", "DMA", "B-4", "B8"],
-      We: ["B-4", "B1", "B7", "Sports", "B5", "B3", "LUN", "B8", "Clubs", "B1"],
-      Th: ["B6", "B2", "B6", "B1", "B5", "B-4", "LUN", "B7", "DMA", "Ev'ts"],
-      Fr: ["B3", "B-4", "B6", "LeadCurr", "B1", "B8", "LUN", "Drama", "B2", "B5"]
+      Mo: ["B2", "B1", "B8", "B-4", "B5", "DMA", "LUN", "B3", "B7", "Lib"],
+      Tu: ["PE", "B3", "B8", "B3", "B-4", "DMA", "LUN", "MDD", "B5", "B7"],
+      We: ["B8", "B6", "B7", "Sports", "B5", "B3", "LUN", "MDD", "Clubs", "B1"],
+      Th: ["B1", "B2", "B6", "B1", "B6", "B-4", "LUN", "B7", "DMA", "Ev'ts"],
+      Fr: ["B3", "B-4", "B6", "LeadCurr", "MDD", "MDD", "LUN", "B8", "B2", "B5"]
     },
 
     /* ─── SENIOR (Gr11 & Gr12: stream electives) ───────────────────────── */
     "Gr11": {
       label: "Grade 11",
-      Mo: ["Ma|So", "Ma|So", "Eng", "Ph|Ac|Ps", "Ph|Ac|Ps", "CS|Bi|Ec|Hi", "LUN", "Drama", "Ch|Bu|Ad", "Ch|Bu|Ad"],
-      Tu: ["MP", "CS|Bi|Ec|Hi", "Ch|Bu|Ad", "Ph|Ac|Ps", "Ph|Ac|Ps", "Ch|Bu|Ad", "LUN", "DMA", "Eng", "Eng"],
-      We: ["Ma|So", "Ph|Ac|Ps", "Ch|Bu|Ad", "Sports", "CS|Bi|Ec|Hi", "CS|Bi|Ec|Hi", "LUN", "Ch|Bu|Ad", "Clubs", "Ma|So"],
-      Th: ["Ph|Ac|Ps", "CS|Bi|Ec|Hi", "Ph|Ac|Ps", "Ma|So", "Lib", "Ma|So", "LUN", "Ch|Bu|Ad", "DMA", "Ev'ts"],
-      Fr: ["Eng", "Ph|Ac|Ps", "CS|Bi|Ec|Hi", "CS|Bi|Ec|Hi", "Ch|Bu|Ad", "Ma|So", "LUN", "Ma|So", "PE", "LeadCurr"]
+      Mo: ["Ma|So", "Ma|So", "Eng", "Ch|Bu|Ad", "Ph|Ac|Ps", "DMA", "LUN", "CS|Bi|Ec|Hi", "Ch|Bu|Ad", "Ch|Bu|Ad"],
+      Tu: ["Ma|So", "CS|Bi|Ec|Hi", "Ch|Bu|Ad", "Ph|Ac|Ps", "Ph|Ac|Ps", "DMA", "LUN", "MDD", "Eng", "Eng"],
+      We: ["Ma|So", "Ph|Ac|Ps", "Ch|Bu|Ad", "Sports", "CS|Bi|Ec|Hi", "CS|Bi|Ec|Hi", "LUN", "MDD", "Clubs", "Ma|So"],
+      Th: ["Ph|Ac|Ps", "CS|Bi|Ec|Hi", "Ph|Ac|Ps", "Ma|So", "Ma|So", "Lib", "LUN", "Ch|Bu|Ad", "DMA", "Ev'ts"],
+      Fr: ["Ch|Bu|Ad", "Ph|Ac|Ps", "CS|Bi|Ec|Hi", "CS|Bi|Ec|Hi", "MDD", "MDD", "LUN", "Eng", "PE", "LeadCurr"]
     },
     "Gr12": {
       label: "Grade 12",
-      Mo: ["Ph|Ac|Ps", "Ph|Ac|Ps", "A4(B)", "PE", "CS|Bi|Ec|Ar", "Ch|Bu|So", "LUN", "Ph|Ac|Ps", "Eng", "CS|Bi|Ec|Ar"],
-      Tu: ["MP", "Ch|Bu|So", "A4(B)", "Eng", "CS|Bi|Ec|Ar", "Ma|Hi", "LUN", "DMA", "Ph|Ac|Ps", "Lib"],
-      We: ["Eng", "Eng", "Ma|Hi", "Sports", "Ph|Ac|Ps", "Ch|Bu|So", "LUN", "Ph|Ac|Ps", "Clubs", "Ch|Bu|So"],
-      Th: ["Ma|Hi", "LeadCurr", "Eng", "CS|Bi|Ec|Ar", "CS|Bi|Ec|Ar", "Ch|Bu|So", "LUN", "A4(B)", "DMA", "Ev'ts"],
-      Fr: ["CS|Bi|Ec|Ar", "CS|Bi|Ec|Ar", "Ph|Ac|Ps", "Ch|Bu|So", "Ma|Hi", "Drama", "LUN", "Ch|Bu|So", "Ph|Ac|Ps", "A4(B)"]
+      Mo: ["Ph|Ac|Ps", "Ph|Ac|Ps", "A4(B)", "PE", "CS|Bi|Ec|Ar", "DMA", "LUN", "LeadCurr", "A4(B)", "CS|Bi|Ec|Ar"],
+      Tu: ["Ch|Bu|So", "Ch|Bu|So", "A4(B)", "Lib", "CS|Bi|Ec|Ar", "DMA", "LUN", "MDD", "Ph|Ac|Ps", "Eng"],
+      We: ["Eng", "Eng", "Ma|Hi", "Sports", "Ph|Ac|Ps", "Ch|Bu|So", "LUN", "MDD", "Clubs", "Ch|Bu|So"],
+      Th: ["Ma|Hi", "Ph|Ac|Ps", "CS|Bi|Ec|Ar", "CS|Bi|Ec|Ar", "Ch|Bu|So", "Ch|Bu|So", "LUN", "A4(B)", "DMA", "Ev'ts"],
+      Fr: ["CS|Bi|Ec|Ar", "CS|Bi|Ec|Ar", "Ph|Ac|Ps", "Ch|Bu|So", "MDD", "MDD", "LUN", "Eng", "Ph|Ac|Ps", "A4(B)"]
     }
   },
 
@@ -302,18 +302,17 @@ const DATA = {
         ["Lit'cy", "Literacy"],
         ["Num",    "Numeracy"],
         ["UTW",    "Understanding the World"],
-        ["OP/ED",  "Outdoor Play"]
+        ["OP",     "Outdoor Play"],
+        ["ST",     "Story Time"]
       ]
     },
     {
-      label: "Sports Day practice",
-      note: "In effect from 31 Aug. Sports Day: 4 Nov (Early Years – Gr 5) & 5 Nov (Gr 6–12).",
+      label: "Annual Day practice",
+      note: "Nursery – Grade 5. Annual Day: Feb 2027, date to be confirmed.",
       items: [
-        ["SDP",    "Sports Day Practice"],
-        ["SDP EY", "Sports Day Practice — Early Years"],
-        ["SDP 1",  "Sports Day Practice — Group 1"],
-        ["SDP 2",  "Sports Day Practice — Group 2"],
-        ["MP",     "March Past practice"]
+        ["EY ADP", "Annual Day Practice — Early Years"],
+        ["ADP 1",  "Annual Day Practice — session 1"],
+        ["ADP 2",  "Annual Day Practice — session 2"]
       ]
     },
     {
@@ -321,9 +320,8 @@ const DATA = {
       items: [
         ["Art",       "Art"],
         ["Mus",       "Music"],
-        ["Dan",       "Dance"],
         ["Drama",     "Drama"],
-        ["M/D",       "Music & Dance"],
+        ["MDD",       "Music, Dance & Drama — Grades 6–12"],
         ["DMA",       "Drama / Music / Arts — whole school"],
         ["Sports",    "Sports — whole school"],
         ["PE",        "Physical Education"],
